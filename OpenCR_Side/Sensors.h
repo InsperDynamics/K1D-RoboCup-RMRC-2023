@@ -9,7 +9,7 @@ float mlx90640_pixels[32*24];
 void SensorsInitialize() {
 	ThermalImager.begin(MLX90640_I2CADDR_DEFAULT, &Wire);
   ThermalImager.setResolution(MLX90640_ADC_18BIT);
-  ThermalImager.setRefreshRate(MLX90640_2_HZ);
+  ThermalImager.setRefreshRate(MLX90640_8_HZ);
 	GasDetector.begin();
 }
 
