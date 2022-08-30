@@ -1,18 +1,20 @@
 #include <Wire.h>
-#include <Adafruit_AMG88xx.h>
+#include <Adafruit_MLX90640.h>
 #include <Adafruit_CCS811.h>
-Adafruit_AMG88xx ThermalImager;
+Adafruit_MLX90640 ThermalImager;
 Adafruit_CCS811 GasDetector;
 int CO2level = 0;
-float amg88_pixels[AMG88xx_PIXEL_ARRAY_SIZE];
+float mlx90640_pixels[32*24];
 
 void SensorsInitialize() {
-	ThermalImager.begin();
+	ThermalImager.begin(MLX90640_I2CADDR_DEFAULT, &Wire);
+  ThermalImager.setResolution(MLX90640_ADC_18BIT);
+  ThermalImager.setRefreshRate(MLX90640_2_HZ);
 	GasDetector.begin();
 }
 
 void ReadSensors() {
   GasDetector.readData();
 	CO2level = GasDetector.geteCO2();
-	ThermalImager.readPixels(amg88_pixels);
+	ThermalImager.getFrame(mlx90640_pixels);
 }

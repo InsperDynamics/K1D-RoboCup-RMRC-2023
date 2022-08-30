@@ -71,9 +71,9 @@ void setup() {
 
 void loop() {
   ReadSensors();
-  temperature.data_length = AMG88xx_PIXEL_ARRAY_SIZE;
-  for (int i=0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++) {
-    temperature.data[i] = amg88_pixels[i];
+  temperature.data_length = 32*24;
+  for (int i=0; i < 32*24; i++) {
+    temperature.data[i] = mlx90640_pixels[i];
   }
   gas.data = CO2level;
   pub_temperature.publish(&temperature);
