@@ -1,0 +1,50 @@
+<annotation>
+	<folder>Dangerous when wet</folder>
+	<filename>Dangerous143.jpg</filename>
+	<path>C:\insper\NOME_TBD-RoboCup-RMRC-Challenge\Hazmat_identification\Hazmat Datasets\Dangerous when wet\Dangerous143.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>749</width>
+		<height>1000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Dangerous when wet</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>128</xmin>
+			<ymin>111</ymin>
+			<xmax>204</xmax>
+			<ymax>179</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Dangerous when wet</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>320</xmin>
+			<ymin>234</ymin>
+			<xmax>420</xmax>
+			<ymax>329</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Dangerous when wet</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1</xmin>
+			<ymin>200</ymin>
+			<xmax>60</xmax>
+			<ymax>295</ymax>
+		</bndbox>
+	</object>
+</annotation>

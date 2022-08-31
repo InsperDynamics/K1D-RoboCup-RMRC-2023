@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Corrosive</folder>
+	<filename>Corrosion116.jpg</filename>
+	<path>C:\insper\NOME_TBD-RoboCup-RMRC-Challenge\Hazmat_identification\Hazmat Datasets\Corrosive\Corrosion116.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2848</width>
+		<height>4288</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Corrosive</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>972</xmin>
+			<ymin>914</ymin>
+			<xmax>1964</xmax>
+			<ymax>1964</ymax>
+		</bndbox>
+	</object>
+</annotation>

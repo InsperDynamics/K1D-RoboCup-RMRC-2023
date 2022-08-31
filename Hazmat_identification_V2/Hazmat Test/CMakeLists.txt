@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.16.3)
+project(Hazmat)
+find_package(OpenCV REQUIRED)
+include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${OpenCV_INCLUDE_DIRS})
+add_executable(Hazmat Hazmat.cpp)
+target_link_libraries(Hazmat PUBLIC ${OpenCV_LIBS})
