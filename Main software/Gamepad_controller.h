@@ -15,6 +15,7 @@ int gamepad_value_1 = 0;
 int gamepad_value_2 = 0;
 bool autonomous_mode = false;
 bool dexterity_mode = false;
+bool invert_camera = false;
 
 
 void InitializeGamepad()
@@ -51,7 +52,7 @@ void UpdateAnalog()
 				break;
 			case 4:
 			case 5:
-				gamepad_command = "turn_camera";
+				gamepad_command = "invert_camera";
 				return;
 				break;
 			case 6:

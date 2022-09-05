@@ -10,17 +10,15 @@
 #include "Hazmat_detection.h"
 using namespace std;
 using namespace cv;
-VideoCapture capture;
-VideoCapture captureClaw;
-Mat webcam_image;
-Mat webcam_imageClaw;
-int current_camera = 1;
+VideoCapture captureA;
+VideoCapture captureB;
+Mat webcam_image
 
 
-void openCamera(int index)
+void openCamera()
 {
-	//1 = xiaomi_forwards, 2 = xiaomi_backwards, 3 = D435i
-	current_camera = index;
+	captureA.open(0);
+	captureB.open(1);
 }
 
 
@@ -29,31 +27,19 @@ void checkUserInput()
 	if (gamepad_command == "autonomous_mode")
 		autonomous_mode = !autonomous_mode;
 	else if (gamepad_command == "dexterity_mode")
-	{
 		dexterity_mode = !dexterity_mode;
-		cout << "DEXTERITY: " << to_string(dexterity_mode) << "\n";
-		if (dexterity_mode)
-			openCamera(3);
-		else
-			openCamera(1);
-	}
-	else if (gamepad_command == "turn_camera")
-	{
-		if (current_camera == 1)
-			openCamera(2);
-		else if (current_camera == 2)
-			openCamera(1);
-	}
 	else if (gamepad_command == "motion_detection")
 		motion_detection = !motion_detection;
 	else if (gamepad_command == "qr_detection")
 		qr_detection = !qr_detection;
 	else if (gamepad_command == "hazmat_detection")
 		hazmat_detection = !hazmat_detection;
+	else if (gamepad_command == "invert_camera")
+		invert_camera = !invert_camera;
 	//condition for claw goes here
 	else if (!autonomous_mode && !gamepad_command.empty())
 	{
-		if (current_camera == 2)
+		if (invert_camera)
 		{
 			int temp = gamepad_value_1;	
 			gamepad_value_1 = -gamepad_value_2;
@@ -78,7 +64,10 @@ void checkSensorsFeed()
 	ReadOpenCR();
 	UpdateGas(current_gas);
 	UpdateThermal(current_temperature);
-	//frame from camera to Mat using >> operator
+	if (!invert_camera)
+		captureA >> webcam_image;
+	else
+		captureB >> webcam_image;
 	if (qr_detection)
 		webcam_image = ReadQR(webcam_image);
 	if (hazmat_detection)
@@ -92,7 +81,7 @@ void setup(int argc, char** argv)
 {
 	system("gnome-terminal -- play '|rec --buffer 512 -d'");
 	ConnectROS(argc, argv);
-	openCamera(1);
+	openCamera();
 	InitializeQR();
 	InitializeHazmat();
 }
