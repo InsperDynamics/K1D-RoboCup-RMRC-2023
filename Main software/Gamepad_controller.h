@@ -13,8 +13,6 @@ static int yAnalog_left = 0;
 string gamepad_command = "";
 int gamepad_value_1 = 0;
 int gamepad_value_2 = 0;
-bool autonomous_mode = false;
-bool dexterity_mode = false;
 bool invert_camera = false;
 
 
@@ -32,34 +30,10 @@ void UpdateAnalog()
 		if (sdl_event.type == SDL_JOYBUTTONDOWN)
 		{
 			int buttonId = sdl_event.jbutton.button;
-			switch (buttonId)
+			if (buttonId == 4 || buttonId == 5)
 			{
-			case 0:
-				gamepad_command = "dexterity_mode";
-				return;
-				break;
-			case 1:
-				gamepad_command = "motion_detection";
-				return;
-				break;
-			case 2:
-				gamepad_command = "qr_detection";
-				return;
-				break;
-			case 3:
-				gamepad_command = "hazmat_detection";
-				return;
-				break;
-			case 4:
-			case 5:
 				gamepad_command = "invert_camera";
 				return;
-				break;
-			case 6:
-			case 7:
-				gamepad_command = "autonomous_mode";
-				return;
-				break;
 			}
 		}
 		else if (sdl_event.type == SDL_JOYAXISMOTION)

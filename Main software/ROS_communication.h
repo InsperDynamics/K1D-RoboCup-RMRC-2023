@@ -18,13 +18,18 @@ using namespace cv;
 float current_temperature[768] = {0};
 int current_gas = 0;
 float cmdvel_linear_x = 0, cmdvel_angular_z = 0;
+bool autonomous_mode = false;
+bool dexterity_mode = false;
+bool qr_detection = false;
+bool hazmat_detection = false;
+bool motion_detection = false;
 std_msgs::String opencr_command;
 std_msgs::UInt16 opencr_value_1, opencr_value_2;
 std_msgs::Header header;
 cv_bridge::CvImage img_bridge;
 sensor_msgs::Image img_msg;
 ros::Publisher pub_command, pub_value_1, pub_value_2, pub_webcam, pub_mattemp, pub_matgas;
-ros::Subscriber sub_temperature, sub_gas, sub_cmdvel;
+ros::Subscriber sub_temperature, sub_gas, sub_cmdvel, sub_autonomousmode, sub_dexteritymode, sub_qrdetection, sub_hazmatdetection, sub_motiondetection;
 
 
 void temperatureCallback(const std_msgs::Float32MultiArray& temperature)
@@ -34,8 +39,7 @@ void temperatureCallback(const std_msgs::Float32MultiArray& temperature)
   	}
 }
 
-void gasCallback(const std_msgs::UInt16& gas)
-{
+void gasCallback(const std_msgs::UInt16& gas){
 	current_gas = gas.data;
 }
 
@@ -44,6 +48,12 @@ void cmdvelCallback(const geometry_msgs::Twist& cmdvel)
 	cmdvel_linear_x = cmdvel.linear.x;
 	cmdvel_angular_z = cmdvel.angular.z;
 }
+
+void autonomousModeCallback(const std_msgs::bool& autonomous_mode){autonomous_mode = autonomous_mode.data;}
+void dexterityModeCallback(const std_msgs::bool& dexterity_mode){dexterity_mode = dexterity_mode.data;}
+void qrDetectionCallback(const std_msgs::bool& qr_detection){qr_detection = qr_detection.data;}
+void hazmatDetectionCallback(const std_msgs::bool& hazmat_detection){hazmat_detection = hazmat_detection.data;}
+void motionDetectionCallback(const std_msgs::bool& motion_detection){motion_detection = motion_detection.data;}
 
 
 void ConnectROS(int argc, char** argv)
@@ -61,6 +71,11 @@ void ConnectROS(int argc, char** argv)
 	sub_temperature = nodehandle.subscribe("temperature", 1000, &temperatureCallback);
 	sub_gas = nodehandle.subscribe("gas", 1000, &gasCallback);
 	sub_cmdvel = nodehandle.subscribe("cmd_vel", 1000, &cmdvelCallback);
+	sub_autonomousmode = nodehandle.subscribe("autonomous_mode", 1000, &autonomousModeCallback);
+	sub_dexteritymode = nodehandle.subscribe("dexterity_mode", 1000, &dexterityModeCallback);
+	sub_qrdetection = nodehandle.subscribe("qr_detection", 1000, &qrDetectionCallback);
+	sub_hazmatdetection = nodehandle.subscribe("hazmat_detection", 1000, &hazmatDetectionCallback);
+	sub_motiondetection = nodehandle.subscribe("motion_detection", 1000, &motionDetectionCallback);
 }
 
 

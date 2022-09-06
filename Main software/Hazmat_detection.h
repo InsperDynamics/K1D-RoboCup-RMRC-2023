@@ -9,7 +9,6 @@
 using namespace std;
 using namespace cv;
 using namespace dnn;
-bool hazmat_detection = false;
 
 Net network;
 vector<string> classes = { "poison", "oxygen", "flammable", "flammable-solid", "corrosive", "dangerous", "non-flammable-gas", "organic-peroxide", "explosive", "radioactive", "inhalation-hazard", "spontaneously-combustible", "infectious-substance" };

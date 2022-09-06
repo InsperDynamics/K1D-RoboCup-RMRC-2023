@@ -3,7 +3,6 @@
 #include <iostream>
 using namespace std;
 using namespace cv;
-bool motion_detection = false;
 
 Mat firstFrame;
 

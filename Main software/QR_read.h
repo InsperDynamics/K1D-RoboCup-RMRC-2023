@@ -6,7 +6,6 @@
 using namespace std;
 using namespace cv;
 using namespace zbar;
-bool qr_detection = false;
 
 static ImageScanner scanner;
 static Mat image;
