@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Non-flammable gas</folder>
+	<filename>Non_Flammable127.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Non-flammable gas\Non_Flammable127.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>800</width>
+		<height>533</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Non-flammable gas</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>358</xmin>
+			<ymin>95</ymin>
+			<xmax>689</xmax>
+			<ymax>425</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Miscellaneous</folder>
+	<filename>Miscellane36.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Miscellaneous\Miscellane36.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>820</width>
+		<height>545</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Miscellaneous</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>372</xmin>
+			<ymin>68</ymin>
+			<xmax>775</xmax>
+			<ymax>470</ymax>
+		</bndbox>
+	</object>
+</annotation>

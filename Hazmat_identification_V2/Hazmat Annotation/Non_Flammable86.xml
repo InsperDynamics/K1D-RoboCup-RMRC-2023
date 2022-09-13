@@ -1,0 +1,50 @@
+<annotation>
+	<folder>Non-flammable gas</folder>
+	<filename>Non_Flammable86.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Non-flammable gas\Non_Flammable86.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>485</width>
+		<height>1000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Non-flammable gas</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>51</xmin>
+			<ymin>402</ymin>
+			<xmax>351</xmax>
+			<ymax>692</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Explosive</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1</xmin>
+			<ymin>1</ymin>
+			<xmax>154</xmax>
+			<ymax>178</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Inhalation hazard</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>284</xmin>
+			<ymin>1</ymin>
+			<xmax>485</xmax>
+			<ymax>88</ymax>
+		</bndbox>
+	</object>
+</annotation>
