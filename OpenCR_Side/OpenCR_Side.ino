@@ -1,3 +1,5 @@
+// K1D Robot (Redox 2)
+// Insper Dynamics
 #include <ros.h>
 #include <std_msgs/String.h>
 #include <std_msgs/UInt16.h>
@@ -5,6 +7,8 @@
 #include "Sensors.h"
 #include "Motors.h"
 #include "Servos.h"
+#include "IMU.h"
+#include "Encoders.h"
 
 String current_command = "";
 int current_value_1 = 0;
@@ -28,26 +32,16 @@ ros::Subscriber<std_msgs::UInt16> sub_value_1("arduino_value_1", value1Callback)
 ros::Subscriber<std_msgs::UInt16> sub_value_2("arduino_value_2", value2Callback);
 
 void ControlMotors(String command, int command_parameter_1, int command_parameter_2) {
-  if (command == "MoveBasearm"){
-    MoveServo(0, command_parameter_1);
-  } else if (command == "MoveForearm"){
-    MoveServo(1, command_parameter_1);
-  } else if (command == "MoveHand"){
-    MoveServo(2, command_parameter_1);
-  } else if (command == "MoveGripperTurner"){
-    MoveServo(3, command_parameter_1);
-  } else if (command == "MoveGripperOpener"){
-    MoveServo(4, command_parameter_1);
-  } else if (command == "RetractClaw"){
-    RetractClaw();
-  } else if (command == "ExtendClaw"){
-    ExtendClaw();
-  } else if (command == "MotorsStop"){
-    MotorsStop();
-  } else if (command == "MotorsRelease"){
-    MotorsRelease();
-  } else if (command == "MotorsMove"){
+  switch (command)
+  {
+  case "MotorsMove":
     Move(command_parameter_1, command_parameter_2);
+    break;
+  case "MotorsStop":
+    MotorsStop();
+    break;
+  default:
+    break;
   }
 }
 
@@ -55,6 +49,7 @@ void setup() {
   MotorsInitialize();
   RetractClaw();
   SensorsInitialize();
+  CalibrateIMU();
   nodehandle.getHardware()->setBaud(115200);
   nodehandle.initNode();
   temperature.layout.dim[0].label = "temperature";
@@ -71,6 +66,8 @@ void setup() {
 
 void loop() {
   ReadSensors();
+  UpdateIMU();
+  UpdateEncoders();
   temperature.data_length = 32*24;
   for (int i=0; i < 32*24; i++) {
     temperature.data[i] = mlx90640_pixels[i];
