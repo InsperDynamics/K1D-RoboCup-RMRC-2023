@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Dangerous when wet</folder>
+	<filename>Dangerous177.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Dangerous when wet\Dangerous177.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>767</width>
+		<height>798</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Dangerous when wet</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>264</xmin>
+			<ymin>238</ymin>
+			<xmax>576</xmax>
+			<ymax>565</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Explosive</folder>
+	<filename>Explosive129.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Explosive\Explosive129.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>750</width>
+		<height>1000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Explosive</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>246</xmin>
+			<ymin>315</ymin>
+			<xmax>403</xmax>
+			<ymax>468</ymax>
+		</bndbox>
+	</object>
+</annotation>

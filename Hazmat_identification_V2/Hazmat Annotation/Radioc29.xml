@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Radioactive</folder>
+	<filename>Radioc29.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Radioactive\Radioc29.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1000</width>
+		<height>1000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Radioactive</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>64</xmin>
+			<ymin>59</ymin>
+			<xmax>758</xmax>
+			<ymax>754</ymax>
+		</bndbox>
+	</object>
+</annotation>

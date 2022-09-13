@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Flammable solid</folder>
+	<filename>Flammable S145.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Flammable solid\Flammable S145.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>485</width>
+		<height>1000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Flammable solid</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>8</xmin>
+			<ymin>334</ymin>
+			<xmax>312</xmax>
+			<ymax>658</ymax>
+		</bndbox>
+	</object>
+</annotation>

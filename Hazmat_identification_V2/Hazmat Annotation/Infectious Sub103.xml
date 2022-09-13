@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Infectious substance</folder>
+	<filename>Infectious Sub103.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Infectious substance\Infectious Sub103.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>512</width>
+		<height>512</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Infectious substance</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>67</xmin>
+			<ymin>33</ymin>
+			<xmax>460</xmax>
+			<ymax>464</ymax>
+		</bndbox>
+	</object>
+</annotation>

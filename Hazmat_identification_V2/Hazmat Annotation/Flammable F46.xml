@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Flammable Fluid</folder>
+	<filename>Flammable F46.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Flammable Fluid\Flammable F46.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>750</width>
+		<height>750</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Flammable Fluid</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>8</xmin>
+			<ymin>20</ymin>
+			<xmax>740</xmax>
+			<ymax>731</ymax>
+		</bndbox>
+	</object>
+</annotation>
