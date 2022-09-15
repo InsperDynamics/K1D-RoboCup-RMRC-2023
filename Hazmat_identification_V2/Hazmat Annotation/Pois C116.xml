@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Poison</folder>
+	<filename>Pois C116.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Poison\Pois C116.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>749</width>
+		<height>1000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Poison</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>271</xmin>
+			<ymin>329</ymin>
+			<xmax>374</xmax>
+			<ymax>424</ymax>
+		</bndbox>
+	</object>
+</annotation>

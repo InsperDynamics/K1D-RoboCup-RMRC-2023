@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Spontaneously combustile</folder>
+	<filename>Spontaneously C41.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Spontaneously combustile\Spontaneously C41.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>651</width>
+		<height>867</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Spontaneously combustile</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>242</xmin>
+			<ymin>444</ymin>
+			<xmax>426</xmax>
+			<ymax>644</ymax>
+		</bndbox>
+	</object>
+</annotation>

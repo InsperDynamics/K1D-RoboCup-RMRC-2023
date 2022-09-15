@@ -1,0 +1,50 @@
+<annotation>
+	<folder>Poison</folder>
+	<filename>Pois C134.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Poison\Pois C134.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>485</width>
+		<height>1000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Poison</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>75</xmin>
+			<ymin>474</ymin>
+			<xmax>327</xmax>
+			<ymax>718</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Inhalation hazard</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>264</xmin>
+			<ymin>165</ymin>
+			<xmax>449</xmax>
+			<ymax>318</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Inhalation hazard</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1</xmin>
+			<ymin>131</ymin>
+			<xmax>148</xmax>
+			<ymax>272</ymax>
+		</bndbox>
+	</object>
+</annotation>

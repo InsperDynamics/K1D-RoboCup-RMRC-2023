@@ -1,0 +1,62 @@
+<annotation>
+	<folder>Oxidizer</folder>
+	<filename>Oxidizer32.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Oxidizer\Oxidizer32.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>485</width>
+		<height>1000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Oxidizer</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>67</xmin>
+			<ymin>321</ymin>
+			<xmax>417</xmax>
+			<ymax>672</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Radioactive</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1</xmin>
+			<ymin>639</ymin>
+			<xmax>131</xmax>
+			<ymax>917</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Flammable solid</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>304</xmin>
+			<ymin>654</ymin>
+			<xmax>485</xmax>
+			<ymax>1000</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Non-flammable gas</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>144</xmin>
+			<ymin>1</ymin>
+			<xmax>341</xmax>
+			<ymax>68</ymax>
+		</bndbox>
+	</object>
+</annotation>

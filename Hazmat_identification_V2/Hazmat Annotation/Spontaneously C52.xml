@@ -1,0 +1,50 @@
+<annotation>
+	<folder>Spontaneously combustile</folder>
+	<filename>Spontaneously C52.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Spontaneously combustile\Spontaneously C52.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>252</width>
+		<height>520</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Spontaneously combustile</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>58</xmin>
+			<ymin>160</ymin>
+			<xmax>230</xmax>
+			<ymax>343</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Explosive</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1</xmin>
+			<ymin>13</ymin>
+			<xmax>40</xmax>
+			<ymax>113</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Infectious substance</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>181</xmin>
+			<ymin>1</ymin>
+			<xmax>252</xmax>
+			<ymax>59</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,0 +1,38 @@
+<annotation>
+	<folder>Organic peroxide</folder>
+	<filename>Organic Per144.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Organic peroxide\Organic Per144.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>388</width>
+		<height>520</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Organic peroxide</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>116</xmin>
+			<ymin>199</ymin>
+			<xmax>211</xmax>
+			<ymax>310</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Organic peroxide</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>324</xmin>
+			<ymin>503</ymin>
+			<xmax>364</xmax>
+			<ymax>520</ymax>
+		</bndbox>
+	</object>
+</annotation>

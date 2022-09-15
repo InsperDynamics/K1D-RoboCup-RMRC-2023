@@ -1,0 +1,38 @@
+<annotation>
+	<folder>Oxidizer</folder>
+	<filename>Oxidizer6.jpg</filename>
+	<path>C:\Users\Felipe Catapano\Documents\GitHub\K1D-RoboCup-RMRC-2023\Hazmat_identification_V2\Hazmat Datasets\Oxidizer\Oxidizer6.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>749</width>
+		<height>1000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Oxidizer</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>169</xmin>
+			<ymin>458</ymin>
+			<xmax>267</xmax>
+			<ymax>551</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Oxidizer</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>384</xmin>
+			<ymin>447</ymin>
+			<xmax>484</xmax>
+			<ymax>542</ymax>
+		</bndbox>
+	</object>
+</annotation>
