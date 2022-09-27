@@ -1,3 +1,0 @@
-/home/insper/catkin_ws/src/REDOX-RoboCup-RMRC-Challenge/Hazmat_identification/Hazmat Test/build/CMakeFiles/rebuild_cache.dir
-/home/insper/catkin_ws/src/REDOX-RoboCup-RMRC-Challenge/Hazmat_identification/Hazmat Test/build/CMakeFiles/Hazmat.dir
-/home/insper/catkin_ws/src/REDOX-RoboCup-RMRC-Challenge/Hazmat_identification/Hazmat Test/build/CMakeFiles/edit_cache.dir
