@@ -15,9 +15,9 @@
 String current_command = "";
 int current_value_1 = 0;
 int current_value_2 = 0;
-sensor_msgs::JointState joint_states;
-std_msgs::Float64 position_frontFlipper;
-std_msgs::Float64 position_backFlipper;
+sensor_msgs::JointState joint_states_claw;
+float position_frontFlipper;
+float position_backFlipper;
 std_msgs::UInt16 gas;
 std_msgs::Float32MultiArray temperature;
 void commandCallback(const std_msgs::String& command){
@@ -30,13 +30,13 @@ void value2Callback(const std_msgs::UInt16& value2){
   current_value_2 = value2.data;
 }
 void jointStateCallback(const sensor_msgs::JointState& joint_state){
-  joint_states = joint_state;
+  joint_states_claw = joint_state.data;
 }
 void FrontFlipperCallback(const std_msgs::Float64& position_frontFlipper){
-  position_frontFlipper = position_frontFlipper;
+  position_frontFlipper = position_frontFlipper.data;
 }
 void BackFlipperCallback(const std_msgs::Float64& position_backFlipper){
-  position_backFlipper = position_backFlipper;
+  position_backFlipper = position_backFlipper.data;
 }
 ros::NodeHandle nodehandle;
 ros::Publisher pub_temperature("temperature", &temperature);
@@ -95,5 +95,5 @@ void loop() {
   nodehandle.spinOnce();
   delay(1);
   ControlMotors(current_command, current_value_1, current_value_2);
-  ControlDynamixels(joint_states, position_frontFlipper, position_backFlipper);
+  ControlDynamixels(joint_states_claw, position_frontFlipper, position_backFlipper);
 }
