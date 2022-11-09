@@ -11,7 +11,8 @@
     <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
     <meta name="generator" content="Nicepage 4.21.5, nicepage.com">
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
-    
+    <script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
     
     <script type="application/ld+json">{
 		"@context": "http://schema.org",
@@ -22,6 +23,36 @@
     <meta name="theme-color" content="#478ac9">
     <meta property="og:title" content="Dynamics view">
     <meta property="og:type" content="website">
+    <script type="text/javascript" type="text/javascript">
+      // Connecting to ROS
+      var ros = new ROSLIB.Ros({
+        url : 'ws://localhost:9090'
+      });
+    
+      ros.on('connection', function() {
+        console.log('Connected to websocket server.');
+      });
+    
+      ros.on('error', function(error) {
+        console.log('Error connecting to websocket server: ', error);
+      });
+    
+      ros.on('close', function() {
+        console.log('Connection to websocket server closed.');
+      });
+    
+      // Subscribing to a Topic
+      var listener = new ROSLIB.Topic({
+        ros : ros,
+        name : '/listener',
+        messageType : 'std_msgs/String'
+      });
+    
+      listener.subscribe(function(message) {
+        console.log('Received message on ' + listener.name + ': ' + message.data);
+        listener.unsubscribe();
+      });
+    </script>
   </head>
   <body data-home-page="Dynamics-view.html" data-home-page-title="Dynamics view" class="u-body u-custom-color-2 u-xl-mode" data-lang="pt"><header class="u-clearfix u-header u-white u-header" id="sec-a3fc"><div class="u-clearfix u-sheet u-sheet-1">
         <a href="#" class="u-image u-logo u-image-1" data-image-width="3024" data-image-height="648">
