@@ -95,7 +95,7 @@ void PublishOpenCR(string command, int value_1, int value_2)
 	pub_value_2.publish(opencr_value_2);
 }
 
-void PublishMats(Mat webcam, Mat mattemp, Mat matgas)
+void PublishMats(Mat webcam, Mat mattemp)
 {
 	header.stamp = ros::Time::now();
 	img_bridge = cv_bridge::CvImage(header, sensor_msgs::image_encodings::BGR8, webcam);
@@ -104,7 +104,4 @@ void PublishMats(Mat webcam, Mat mattemp, Mat matgas)
 	img_bridge = cv_bridge::CvImage(header, sensor_msgs::image_encodings::BGR8, mattemp);
 	img_bridge.toImageMsg(img_msg);
 	pub_mattemp.publish(img_msg);
-	img_bridge = cv_bridge::CvImage(header, sensor_msgs::image_encodings::BGR8, matgas);
-	img_bridge.toImageMsg(img_msg);
-	pub_matgas.publish(img_msg);
 }

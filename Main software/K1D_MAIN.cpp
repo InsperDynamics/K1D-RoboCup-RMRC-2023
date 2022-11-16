@@ -4,7 +4,7 @@
 #include "ROS_communication.h"
 #include "Gamepad_controller.h"
 #include "Claw.h"
-#include "Thermal_gas.h"
+#include "Thermal.h"
 #include "QR_read.h"
 #include "Motion_detection.h"
 #include "Hazmat_detection.h"
@@ -103,7 +103,7 @@ void loop()
 	UpdateGamepadInput();
 	checkUserInput();
 	checkSensorsFeed();
-	PublishMats();
+	PublishMats(webcam_image, thermal_image);
 	waitKey(1);
 }
 
