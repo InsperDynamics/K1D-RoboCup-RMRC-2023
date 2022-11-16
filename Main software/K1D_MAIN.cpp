@@ -12,7 +12,9 @@ using namespace std;
 using namespace cv;
 VideoCapture captureA;
 VideoCapture captureB;
-Mat webcam_image
+Mat frameA;
+Mat frameB;
+Mat webcam_image;
 
 
 void openCamera()
@@ -21,6 +23,26 @@ void openCamera()
 	captureB.open(1);
 }
 
+void MoveManual()
+{
+	if (invert_camera)
+	{
+		int temp = gamepad_value_1;	
+		gamepad_value_1 = -gamepad_value_2;
+		gamepad_value_2 = -temp;
+	}
+	cout << gamepad_command << " " << to_string(gamepad_value_1) << " " << to_string(gamepad_value_2) << "\n";
+	PublishOpenCR(gamepad_command, gamepad_value_1, gamepad_value_2);
+}
+
+void MoveAutonomous()
+{
+	int pwm_l = 0;
+	int pwm_r = 0;
+	//autonomous mode pwm logic goes here
+	cout << "(AUTONOMOUS) MotorsMove " << to_string(pwm_l) << " " << to_string(pwm_r) << "\n";
+	PublishOpenCR("MotorsMove", pwm_l, pwm_r);
+}
 
 void checkUserInput()
 {
@@ -38,36 +60,18 @@ void checkUserInput()
 		invert_camera = !invert_camera;
 	//condition for claw goes here
 	else if (!autonomous_mode && !gamepad_command.empty())
-	{
-		if (invert_camera)
-		{
-			int temp = gamepad_value_1;	
-			gamepad_value_1 = -gamepad_value_2;
-			gamepad_value_2 = -temp;
-		}
-		cout << gamepad_command << " " << to_string(gamepad_value_1) << " " << to_string(gamepad_value_2) << "\n";
-		PublishOpenCR(gamepad_command, gamepad_value_1, gamepad_value_2);
-	} 
+		MoveManual();
 	else if (autonomous_mode)
-	{
-		int pwm_l = 0;
-		int pwm_r = 0;
-		//autonomous mode pwm logic goes here
-		cout << "(AUTONOMOUS) MotorsMove " << to_string(pwm_l) << " " << to_string(pwm_r) << "\n";
-		PublishOpenCR("MotorsMove", pwm_l, pwm_r);
-	}
+		MoveAutonomous();
 }
-
 
 void checkSensorsFeed()
 {
 	ReadOpenCR();
-	UpdateGas(current_gas);
 	UpdateThermal(current_temperature);
-	if (!invert_camera)
-		captureA >> webcam_image;
-	else
-		captureB >> webcam_image;
+	captureA >> frameA;
+	captureB >> frameB;
+	hconcat(frameA, frameB, webcam_image);
 	if (qr_detection)
 		webcam_image = ReadQR(webcam_image);
 	if (hazmat_detection)
@@ -90,16 +94,7 @@ void setup(int argc, char** argv)
 void loop()
 {
 	if (SDL_NumJoysticks() < 1)
-	{
-		try
-		{
-			InitializeGamepad();
-		}
-		catch(const std::exception& e)
-		{
-			std::cerr << e.what() << '\n';
-		}
-	}
+		InitializeGamepad();
 	UpdateGamepadInput();
 	checkUserInput();
 	checkSensorsFeed();
@@ -113,26 +108,11 @@ int main(int argc, char** argv)
 	setup(argc, argv);
 	while (true)
 	{
-		try
-		{
-			loop();
-		}
-		catch (const exception& e)
-		{
-			cout << e.what() << endl;
-		}
-		catch ( ros::Exception &e )
-		{
-			cout << e.what() << endl;
-		}
-		catch (const cv::Exception& e)
-		{
-			cout << e.what() << endl;
-		}
-		catch (...)
-		{
-			cout << "Unknown error occurred!" << endl;
-		}
+		try {loop();}
+		catch (const std::exception& e){cout << e.what() << endl;}
+		catch (ros::Exception &e ){cout << e.what() << endl;}
+		catch (const cv::Exception& e){cout << e.what() << endl;}
+		catch (...){cout << "Unknown error occurred!" << endl;}
 	}
 	return 0;
 }

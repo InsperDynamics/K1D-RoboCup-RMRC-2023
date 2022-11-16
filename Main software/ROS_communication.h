@@ -7,6 +7,7 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
+#include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
 #include <std_msgs/UInt16.h>
 #include <std_msgs/Float32MultiArray.h>
@@ -16,7 +17,6 @@ using namespace std::this_thread;
 using namespace std::chrono;
 using namespace cv;
 float current_temperature[768] = {0};
-int current_gas = 0;
 float cmdvel_linear_x = 0, cmdvel_angular_z = 0;
 bool autonomous_mode = false;
 bool dexterity_mode = false;
@@ -28,8 +28,8 @@ std_msgs::UInt16 opencr_value_1, opencr_value_2;
 std_msgs::Header header;
 cv_bridge::CvImage img_bridge;
 sensor_msgs::Image img_msg;
-ros::Publisher pub_command, pub_value_1, pub_value_2, pub_webcam, pub_mattemp, pub_matgas;
-ros::Subscriber sub_temperature, sub_gas, sub_cmdvel, sub_autonomousmode, sub_dexteritymode, sub_qrdetection, sub_hazmatdetection, sub_motiondetection;
+ros::Publisher pub_command, pub_value_1, pub_value_2, pub_webcam, pub_mattemp;
+ros::Subscriber sub_temperature, sub_cmdvel, sub_autonomousmode, sub_dexteritymode, sub_qrdetection, sub_hazmatdetection, sub_motiondetection;
 
 
 void temperatureCallback(const std_msgs::Float32MultiArray& temperature)
@@ -39,21 +39,17 @@ void temperatureCallback(const std_msgs::Float32MultiArray& temperature)
   	}
 }
 
-void gasCallback(const std_msgs::UInt16& gas){
-	current_gas = gas.data;
-}
-
 void cmdvelCallback(const geometry_msgs::Twist& cmdvel)
 {
 	cmdvel_linear_x = cmdvel.linear.x;
 	cmdvel_angular_z = cmdvel.angular.z;
 }
 
-void autonomousModeCallback(const std_msgs::bool& autonomous_mode){autonomous_mode = autonomous_mode.data;}
-void dexterityModeCallback(const std_msgs::bool& dexterity_mode){dexterity_mode = dexterity_mode.data;}
-void qrDetectionCallback(const std_msgs::bool& qr_detection){qr_detection = qr_detection.data;}
-void hazmatDetectionCallback(const std_msgs::bool& hazmat_detection){hazmat_detection = hazmat_detection.data;}
-void motionDetectionCallback(const std_msgs::bool& motion_detection){motion_detection = motion_detection.data;}
+void autonomousModeCallback(const std_msgs::Bool& autonomous){autonomous_mode = autonomous.data;}
+void dexterityModeCallback(const std_msgs::Bool& dexterity){dexterity_mode = dexterity.data;}
+void qrDetectionCallback(const std_msgs::Bool& qr){qr_detection = qr.data;}
+void hazmatDetectionCallback(const std_msgs::Bool& hazmat){hazmat_detection = hazmat.data;}
+void motionDetectionCallback(const std_msgs::Bool& motion){motion_detection = motion.data;}
 
 
 void ConnectROS(int argc, char** argv)
@@ -69,7 +65,6 @@ void ConnectROS(int argc, char** argv)
 	pub_value_1 = nodehandle.advertise<std_msgs::UInt16>("opencr_value_1", 1000);
 	pub_value_2 = nodehandle.advertise<std_msgs::UInt16>("opencr_value_2", 1000);
 	sub_temperature = nodehandle.subscribe("temperature", 1000, &temperatureCallback);
-	sub_gas = nodehandle.subscribe("gas", 1000, &gasCallback);
 	sub_cmdvel = nodehandle.subscribe("cmd_vel", 1000, &cmdvelCallback);
 	sub_autonomousmode = nodehandle.subscribe("autonomous_mode", 1000, &autonomousModeCallback);
 	sub_dexteritymode = nodehandle.subscribe("dexterity_mode", 1000, &dexterityModeCallback);
