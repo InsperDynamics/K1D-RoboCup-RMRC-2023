@@ -62,7 +62,7 @@ void UpdateAnalog()
 void UpdateGamepadInput()
 {
 	float magnitude = sqrt(xAnalog_left * xAnalog_left + yAnalog_left * yAnalog_left);
-	int pwm = static_cast<int>(0.000042*pow(magnitude, 3) - 0.017060*pow(magnitude, 2) + 2.810082*magnitude - 56.496350);
+	int pwm = static_cast<int>(magnitude);
 	if (pwm > max_pwm)
 		pwm = max_pwm;
 	else if (pwm < 0)
