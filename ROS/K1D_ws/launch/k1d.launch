@@ -14,7 +14,7 @@
     </node>
 
     <node pkg="K1D_ws" type="k1d_planner.py" name="k1d_planner" output="screen"/>
-    <param name="robot_description" textfile="$(find K1D_robot_description)/URDF/k1d_robot.xacro"/>
+    <param name="robot_description" textfile="$(find k1d_description)/urdf/k1d.xacro"/>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find K1D_ws)/k1d.rviz"/>

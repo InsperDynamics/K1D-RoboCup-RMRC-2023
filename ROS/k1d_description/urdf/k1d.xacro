@@ -1,0 +1,1333 @@
+<?xml version="1.0" ?>
+<robot name="k1d" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find k1d_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find k1d_description)/urdf/k1d.trans" />
+<xacro:include filename="$(find k1d_description)/urdf/k1d.gazebo" />
+<link name="base_link">
+  <inertial>
+    <origin xyz="-0.000633320061717951 -0.041414084124841974 -0.011332276162165584" rpy="0 0 0"/>
+    <mass value="0.8679378922144382"/>
+    <inertia ixx="0.00128" iyy="0.001289" izz="0.001492" ixy="-0.0" iyz="-0.000284" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="base_scan_1">
+  <inertial>
+    <origin xyz="-0.031013242986738847 0.03010215849057539 0.006905221273833313" rpy="0 0 0"/>
+    <mass value="0.05487799022217015"/>
+    <inertia ixx="3.6e-05" iyy="1.8e-05" izz="4.5e-05" ixy="-0.0" iyz="5e-06" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.030184 0.029366 -0.034911" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/base_scan_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.030184 0.029366 -0.034911" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/base_scan_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="bearing_1">
+  <inertial>
+    <origin xyz="-4.700706713833781e-07 0.005000307196905395 -4.6923354529115034e-07" rpy="0 0 0"/>
+    <mass value="0.05425530512749553"/>
+    <inertia ixx="4e-06" iyy="8e-06" izz="4e-06" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.000625 0.009697 8.9e-05" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/bearing_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.000625 0.009697 8.9e-05" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/bearing_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="limiter_1">
+  <inertial>
+    <origin xyz="0.00021788879744154987 0.0009369691662430065 0.008633565621573192" rpy="0 0 0"/>
+    <mass value="0.006375075725917784"/>
+    <inertia ixx="1e-06" iyy="1e-06" izz="0.0" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.000625 -0.004303 8.9e-05" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/limiter_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.000625 -0.004303 8.9e-05" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/limiter_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="chassisback_1">
+  <inertial>
+    <origin xyz="-1.2436701145940895e-05 0.03463766858738379 -0.0253679156939081" rpy="0 0 0"/>
+    <mass value="0.6099593335094626"/>
+    <inertia ixx="0.000856" iyy="0.000808" izz="0.001331" ixy="0.0" iyz="0.000176" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.000625 -0.000303 8.9e-05" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/chassisback_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.000625 -0.000303 8.9e-05" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/chassisback_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="bracket_1">
+  <inertial>
+    <origin xyz="-0.02889063899231881 -0.01561538393544995 0.006770707043989903" rpy="0 0 0"/>
+    <mass value="0.04195982764049016"/>
+    <inertia ixx="9e-06" iyy="1.6e-05" izz="1.7e-05" ixy="0.0" iyz="-0.0" ixz="4e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.025571 -0.086772 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/bracket_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.025571 -0.086772 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/bracket_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="bracket_4">
+  <inertial>
+    <origin xyz="0.028890977169466116 0.015615750207864133 0.006770707043183961" rpy="0 0 0"/>
+    <mass value="0.04195982764049016"/>
+    <inertia ixx="9e-06" iyy="1.6e-05" izz="1.7e-05" ixy="0.0" iyz="0.0" ixz="-4e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.024254 -0.05553 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/bracket_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.024254 -0.05553 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/bracket_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="bracket_3">
+  <inertial>
+    <origin xyz="-0.02889063896005917 0.015626470195984704 0.006770707043985354" rpy="0 0 0"/>
+    <mass value="0.04195982764049016"/>
+    <inertia ixx="9e-06" iyy="1.6e-05" izz="1.7e-05" ixy="0.0" iyz="-0.0" ixz="4e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.025571 0.094869 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/bracket_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.025571 0.094869 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/bracket_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="bracket_2">
+  <inertial>
+    <origin xyz="0.02889097720172588 0.015615604339298622 0.006770707043178906" rpy="0 0 0"/>
+    <mass value="0.04195982764049016"/>
+    <inertia ixx="9e-06" iyy="1.6e-05" izz="1.7e-05" ixy="0.0" iyz="0.0" ixz="-4e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.024254 0.094869 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/bracket_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.024254 0.094869 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/bracket_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="dcmotor_1">
+  <inertial>
+    <origin xyz="0.028507599418057812 -2.7385761959139443e-05 0.0068004551265215905" rpy="0 0 0"/>
+    <mass value="0.45909174206904396"/>
+    <inertia ixx="7.2e-05" iyy="0.00019" izz="0.00019" ixy="0.0" iyz="-0.0" ixz="-2e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.070009 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/dcmotor_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.070009 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/dcmotor_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="dcmotor_2">
+  <inertial>
+    <origin xyz="-0.02850726120844349 2.7606165807755878e-05 0.006800455125904808" rpy="0 0 0"/>
+    <mass value="0.45909174206904396"/>
+    <inertia ixx="7.2e-05" iyy="0.00019" izz="0.00019" ixy="0.0" iyz="0.0" ixz="2e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.068692 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/dcmotor_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.068692 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/dcmotor_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="dcmotor_3">
+  <inertial>
+    <origin xyz="0.028507599450317465 -2.753163052453267e-05 0.006800455126517084" rpy="0 0 0"/>
+    <mass value="0.45909174206904396"/>
+    <inertia ixx="7.2e-05" iyy="0.00019" izz="0.00019" ixy="0.0" iyz="-0.0" ixz="-2e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.070009 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/dcmotor_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.070009 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/dcmotor_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="dcmotor_4">
+  <inertial>
+    <origin xyz="-0.028507261240703193 2.7752034373065837e-05 0.006800455125909762" rpy="0 0 0"/>
+    <mass value="0.45909174206904396"/>
+    <inertia ixx="7.2e-05" iyy="0.00019" izz="0.00019" ixy="0.0" iyz="0.0" ixz="2e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.068692 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/dcmotor_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.068692 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/dcmotor_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="hub_1">
+  <inertial>
+    <origin xyz="0.0031138310480299386 -0.0001543860489675447 9.100569364329028e-05" rpy="0 0 0"/>
+    <mass value="0.02001967132782171"/>
+    <inertia ixx="2e-06" iyy="1e-06" izz="1e-06" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.092009 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/hub_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.092009 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/hub_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="hub_2">
+  <inertial>
+    <origin xyz="-0.003113492838516446 0.00015460645281629992 9.100569231643499e-05" rpy="0 0 0"/>
+    <mass value="0.02001967132782171"/>
+    <inertia ixx="2e-06" iyy="1e-06" izz="1e-06" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.090692 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/hub_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.090692 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/hub_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="hub_3">
+  <inertial>
+    <origin xyz="0.0031138310802898694 -0.0001545319175329657 9.100569363862387e-05" rpy="0 0 0"/>
+    <mass value="0.02001967132782171"/>
+    <inertia ixx="2e-06" iyy="1e-06" izz="1e-06" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.092009 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/hub_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.092009 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/hub_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="hub_4">
+  <inertial>
+    <origin xyz="-0.0031134928707760023 0.00015475232138174866 9.100569232154895e-05" rpy="0 0 0"/>
+    <mass value="0.02001967132782171"/>
+    <inertia ixx="2e-06" iyy="1e-06" izz="1e-06" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.090692 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/hub_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.090692 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/hub_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="wheel_1">
+  <inertial>
+    <origin xyz="-0.011849757228356753 1.8315325828188733e-07 2.629076953537812e-07" rpy="0 0 0"/>
+    <mass value="2.126491898240408"/>
+    <inertia ixx="0.004598" iyy="0.002411" izz="0.002411" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.090692 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.090692 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="wheel_2">
+  <inertial>
+    <origin xyz="-0.011849757196097072 3.728469279151714e-08 2.629076902745109e-07" rpy="0 0 0"/>
+    <mass value="2.126491898240408"/>
+    <inertia ixx="0.004598" iyy="0.002411" izz="0.002411" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.090692 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/wheel_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.090692 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/wheel_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="wheel_3">
+  <inertial>
+    <origin xyz="0.011850095437869135 3.725059061210345e-08 2.629088816027969e-07" rpy="0 0 0"/>
+    <mass value="2.126491898240408"/>
+    <inertia ixx="0.004598" iyy="0.002411" izz="0.002411" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.092009 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/wheel_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.092009 0.079248 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/wheel_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="wheel_4">
+  <inertial>
+    <origin xyz="0.011850095405609426 1.8311915624125152e-07 2.6290888621716135e-07" rpy="0 0 0"/>
+    <mass value="2.126491898240408"/>
+    <inertia ixx="0.004598" iyy="0.002411" izz="0.002411" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.092009 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/wheel_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.092009 -0.071151 0.016958" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/wheel_4.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="spacer_1">
+  <inertial>
+    <origin xyz="0.03099956508952051 -3.111700395755368e-07 0.01073353076646108" rpy="0 0 0"/>
+    <mass value="0.002382449094157573"/>
+    <inertia ixx="0.0" iyy="2e-06" izz="2e-06" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.031816 0.029366 -0.041211" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/spacer_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.031816 0.029366 -0.041211" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/spacer_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="clawholder_1">
+  <inertial>
+    <origin xyz="0.031997119905123016 -0.006143865086212039 0.010024736780897991" rpy="0 0 0"/>
+    <mass value="0.11911655346514588"/>
+    <inertia ixx="1.5e-05" iyy="6.9e-05" izz="6.2e-05" ixy="0.0" iyz="1e-06" ixz="1e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.031816 0.029366 -0.062679" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/clawholder_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.031816 0.029366 -0.062679" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/clawholder_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="gassensor_1">
+  <inertial>
+    <origin xyz="-0.004746631959460942 -0.0008000280042196398 -0.007877393733740051" rpy="0 0 0"/>
+    <mass value="0.0034603887447628642"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.015808 0.044105 -0.086221" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/gassensor_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.015808 0.044105 -0.086221" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/gassensor_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="thermalsensor_1">
+  <inertial>
+    <origin xyz="0.009947674706848693 -0.0011020386741580346 -0.009714002418419354" rpy="0 0 0"/>
+    <mass value="0.004996183093515437"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.011291 0.044105 -0.089763" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/thermalsensor_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.011291 0.044105 -0.089763" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/thermalsensor_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="battery_1">
+  <inertial>
+    <origin xyz="-0.05500011915754396 -0.017595185994781874 0.010103203711203074" rpy="0 0 0"/>
+    <mass value="0.6140038483319866"/>
+    <inertia ixx="8.4e-05" iyy="0.00064" izz="0.000682" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.054375 0.019697 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/battery_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.054375 0.019697 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/battery_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="usbhub_1">
+  <inertial>
+    <origin xyz="-0.050083838124938704 0.016946085208227595 0.013118894325403644" rpy="0 0 0"/>
+    <mass value="0.555204593683218"/>
+    <inertia ixx="8.3e-05" iyy="0.000508" izz="0.000541" ixy="-3e-06" iyz="-1e-06" ixz="1.5e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.054375 -0.005303 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/usbhub_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.054375 -0.005303 0.030758" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/usbhub_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="DC12_W-IDLE_ALT1_1">
+  <inertial>
+    <origin xyz="-0.016299122954718883 0.020480802014490297 -0.011000469233539034" rpy="0 0 0"/>
+    <mass value="0.33646225639068494"/>
+    <inertia ixx="8.2e-05" iyy="5.4e-05" izz="9.4e-05" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.016392 0.038255 -0.092529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/DC12_W-IDLE_ALT1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.016392 0.038255 -0.092529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/DC12_W-IDLE_ALT1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FR12_H101_1">
+  <inertial>
+    <origin xyz="-0.021000110478255726 0.020374146907254635 -4.6923355151440305e-07" rpy="0 0 0"/>
+    <mass value="0.03437095087164525"/>
+    <inertia ixx="4e-06" iyy="1.1e-05" izz="1.2e-05" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.020292 0.006255 -0.081529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/FR12_H101_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.020292 0.006255 -0.081529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/FR12_H101_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="ILA-A01_OPEN_1">
+  <inertial>
+    <origin xyz="-0.012000110474712982 0.039399195230753525 -0.006003908265283173" rpy="0 0 0"/>
+    <mass value="0.13410736520700092"/>
+    <inertia ixx="8.6e-05" iyy="1.5e-05" izz="9.2e-05" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.011292 -0.022245 -0.087529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/ILA-A01_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.011292 -0.022245 -0.087529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/ILA-A01_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FR12_S101_1">
+  <inertial>
+    <origin xyz="-0.012000110478030184 0.002327711166216606 0.005999530766310754" rpy="0 0 0"/>
+    <mass value="0.024686418261500025"/>
+    <inertia ixx="5e-06" iyy="9e-06" izz="5e-06" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.011292 -0.102245 -0.087529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/FR12_S101_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.011292 -0.102245 -0.087529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/FR12_S101_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FR12_H101_2">
+  <inertial>
+    <origin xyz="-0.021000110482432277 -0.0203238284716646 0.0014207353834639752" rpy="0 0 0"/>
+    <mass value="0.03437095087164525"/>
+    <inertia ixx="4e-06" iyy="1.1e-05" izz="1.2e-05" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.020192 -0.121745 -0.105529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/FR12_H101_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.020192 -0.121745 -0.105529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/FR12_H101_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="ILA-A02_OPEN_1">
+  <inertial>
+    <origin xyz="-0.012000110478114587 -0.027307262569741378 -0.004101798037027038" rpy="0 0 0"/>
+    <mass value="0.09495273808046654"/>
+    <inertia ixx="3.2e-05" iyy="1.1e-05" izz="3.6e-05" ixy="0.0" iyz="2e-06" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.011192 -0.093733 -0.113502" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/ILA-A02_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.011192 -0.093733 -0.113502" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/ILA-A02_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FR12_S102_2">
+  <inertial>
+    <origin xyz="-0.012000110496538735 -0.0031995611667791288 -0.005791315715793652" rpy="0 0 0"/>
+    <mass value="0.01630992935911327"/>
+    <inertia ixx="1e-06" iyy="4e-06" izz="3e-06" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.011192 -0.038867 -0.117339" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/FR12_S102_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.011192 -0.038867 -0.117339" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/FR12_S102_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="DC12_W-IDLE_ALT1_3">
+  <inertial>
+    <origin xyz="-0.0162991229786601 -0.019663116396526195 0.012401770852094388" rpy="0 0 0"/>
+    <mass value="0.33646225639068494"/>
+    <inertia ixx="8.2e-05" iyy="5.4e-05" izz="9.4e-05" ixy="0.0" iyz="3e-06" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.016192 -0.029202 -0.100973" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/DC12_W-IDLE_ALT1_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.016192 -0.029202 -0.100973" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/DC12_W-IDLE_ALT1_3.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="FR12_H104_1">
+  <inertial>
+    <origin xyz="-0.02050011059852679 -0.022576590762154753 0.00821656608975628" rpy="0 0 0"/>
+    <mass value="0.033869717896312025"/>
+    <inertia ixx="8e-06" iyy="1.4e-05" izz="1.1e-05" ixy="-0.0" iyz="1e-06" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.019892 0.001953 -0.114178" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/FR12_H104_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.019892 0.001953 -0.114178" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/FR12_H104_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="camera__1__1">
+  <inertial>
+    <origin xyz="8.864610952068479e-06 0.019607953749089864 0.024310133593720626" rpy="0 0 0"/>
+    <mass value="0.4370558986671765"/>
+    <inertia ixx="0.000146" iyy="0.000217" izz="0.000148" ixy="-0.0" iyz="-2.8e-05" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.000808 -0.039181 -0.121828" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/camera__1__1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.000808 -0.039181 -0.121828" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/camera__1__1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="DC12_STD_2">
+  <inertial>
+    <origin xyz="-0.011000110514608745 -0.017207209159882827 -0.020921334605471617" rpy="0 0 0"/>
+    <mass value="0.33324515761008355"/>
+    <inertia ixx="9.3e-05" iyy="8.1e-05" izz="5.3e-05" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.010392 0.031052 -0.145182" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/DC12_STD_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.010392 0.031052 -0.145182" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/DC12_STD_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="IRB-A01_OPEN_1">
+  <inertial>
+    <origin xyz="0.014570487048808227 0.005103189606448406 -0.027737819550585255" rpy="0 0 0"/>
+    <mass value="0.13126007140606222"/>
+    <inertia ixx="4.5e-05" iyy="7.3e-05" izz="4.7e-05" ixy="9e-06" iyz="-2e-06" ixz="8e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.010392 0.065032 -0.143995" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IRB-A01_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.010392 0.065032 -0.143995" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IRB-A01_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="IRB-A02_OPEN_1">
+  <inertial>
+    <origin xyz="-0.014800178908918049 0.005099047672322728 -0.027896796307701782" rpy="0 0 0"/>
+    <mass value="0.13009105325420064"/>
+    <inertia ixx="4.4e-05" iyy="7.1e-05" izz="4.6e-05" ixy="-9e-06" iyz="-2e-06" ixz="-7e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.011608 0.065032 -0.143995" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IRB-A02_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.011608 0.065032 -0.143995" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IRB-A02_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="ICA-A01_OPEN_1">
+  <inertial>
+    <origin xyz="-1.1051919610234086e-07 -0.004208611058888992 -0.00014721580911623844" rpy="0 0 0"/>
+    <mass value="0.019070893365448417"/>
+    <inertia ixx="1e-06" iyy="2e-06" izz="1e-06" ixy="-0.0" iyz="0.0" ixz="1e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.000608 0.065914 -0.111945" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/ICA-A01_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.000608 0.065914 -0.111945" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/ICA-A01_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="PR33_SPD-A01_1">
+  <inertial>
+    <origin xyz="-0.0021497706930674893 -5.782148976285484e-08 2.3123534301228155e-07" rpy="0 0 0"/>
+    <mass value="0.017485090000000002"/>
+    <inertia ixx="2e-06" iyy="0.0" izz="2e-06" ixy="0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.014131 0.128329 -0.109865" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/PR33_SPD-A01_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.014131 0.128329 -0.109865" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/PR33_SPD-A01_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="PR33_SPD-A01_2">
+  <inertial>
+    <origin xyz="0.0021495496512901405 -1.7964915863255548e-07 2.111345877991999e-07" rpy="0 0 0"/>
+    <mass value="0.017485090000000002"/>
+    <inertia ixx="2e-06" iyy="0.0" izz="2e-06" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.014097 0.128129 -0.109872" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/PR33_SPD-A01_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.014097 0.128129 -0.109872" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/PR33_SPD-A01_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="IBL-A01_OPEN_2">
+  <inertial>
+    <origin xyz="0.011084595517718229 -0.008566113175039497 0.017712042914393725" rpy="0 0 0"/>
+    <mass value="0.06898740811834467"/>
+    <inertia ixx="2.4e-05" iyy="2.3e-05" izz="6e-06" ixy="0.0" iyz="1e-06" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.038597 0.065789 -0.094038" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IBL-A01_OPEN_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.038597 0.065789 -0.094038" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IBL-A01_OPEN_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="IGP-A01_OPEN_1">
+  <inertial>
+    <origin xyz="0.001166364316056212 -0.024350369942469863 -0.0248504820054104" rpy="0 0 0"/>
+    <mass value="0.12878886955273366"/>
+    <inertia ixx="7.6e-05" iyy="3.4e-05" izz="5.6e-05" ixy="-1e-06" iyz="-1e-06" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.016131 0.075649 -0.135719" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IGP-A01_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.016131 0.075649 -0.135719" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IGP-A01_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="IGP-A01_OPEN_2">
+  <inertial>
+    <origin xyz="-0.0011665853578225922 -0.02434951571948707 -0.024878452539785434" rpy="0 0 0"/>
+    <mass value="0.12878886955273366"/>
+    <inertia ixx="7.6e-05" iyy="3.4e-05" izz="5.6e-05" ixy="1e-06" iyz="-1e-06" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.016097 0.075449 -0.135726" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IGP-A01_OPEN_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.016097 0.075449 -0.135726" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IGP-A01_OPEN_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="camera_1">
+  <inertial>
+    <origin xyz="0.020990914390233664 0.012791622826963436 0.010071359720055323" rpy="0 0 0"/>
+    <mass value="0.4370558986671765"/>
+    <inertia ixx="0.000146" iyy="0.000219" izz="0.000146" ixy="-0.0" iyz="2.5e-05" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.021108 0.026668 -0.148587" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/camera_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.021108 0.026668 -0.148587" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/camera_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="DC12_W-IDLE_ALT1_2">
+  <inertial>
+    <origin xyz="-0.016299122954603316 0.011000344436144519 -0.019520011655149716" rpy="0 0 0"/>
+    <mass value="0.33646225639068494"/>
+    <inertia ixx="8.2e-05" iyy="9.4e-05" izz="5.4e-05" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.016292 -0.110745 -0.113529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/DC12_W-IDLE_ALT1_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.016292 -0.110745 -0.113529" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/DC12_W-IDLE_ALT1_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="IBL-A01_OPEN_1">
+  <inertial>
+    <origin xyz="-0.01108481655900485 -0.005767991352286506 0.01780906301543693" rpy="0 0 0"/>
+    <mass value="0.06898740811834467"/>
+    <inertia ixx="2.4e-05" iyy="2.3e-05" izz="6e-06" ixy="-0.0" iyz="1e-06" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.038631 0.068787 -0.093934" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IBL-A01_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.038631 0.068787 -0.093934" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://k1d_description/meshes/IBL-A01_OPEN_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="Rigid1" type="fixed">
+  <origin xyz="0.030184 -0.029366 0.034911" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="base_scan_1"/>
+</joint>
+
+<joint name="Rigid2" type="fixed">
+  <origin xyz="-0.000625 -0.009697 -8.9e-05" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="bearing_1"/>
+</joint>
+
+<joint name="Rigid3" type="fixed">
+  <origin xyz="-0.000625 0.004303 -8.9e-05" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="limiter_1"/>
+</joint>
+
+<joint name="Rev4" type="continuous">
+  <origin xyz="0.0 0.01 0.0" rpy="0 0 0"/>
+  <parent link="bearing_1"/>
+  <child link="chassisback_1"/>
+  <axis xyz="-0.0 1.0 0.0"/>
+</joint>
+
+<joint name="Rigid5" type="fixed">
+  <origin xyz="-0.024946 0.086469 -0.030669" rpy="0 0 0"/>
+  <parent link="chassisback_1"/>
+  <child link="bracket_1"/>
+</joint>
+
+<joint name="Rigid6" type="fixed">
+  <origin xyz="0.024879 0.055227 -0.030669" rpy="0 0 0"/>
+  <parent link="chassisback_1"/>
+  <child link="bracket_4"/>
+</joint>
+
+<joint name="Rigid7" type="fixed">
+  <origin xyz="-0.025571 -0.094869 -0.030758" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="bracket_3"/>
+</joint>
+
+<joint name="Rigid8" type="fixed">
+  <origin xyz="0.024254 -0.094869 -0.030758" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="bracket_2"/>
+</joint>
+
+<joint name="Rigid9" type="fixed">
+  <origin xyz="-0.044438 -0.015621 0.0138" rpy="0 0 0"/>
+  <parent link="bracket_1"/>
+  <child link="dcmotor_1"/>
+</joint>
+
+<joint name="Rigid10" type="fixed">
+  <origin xyz="0.044438 0.015621 0.0138" rpy="0 0 0"/>
+  <parent link="bracket_2"/>
+  <child link="dcmotor_2"/>
+</joint>
+
+<joint name="Rigid11" type="fixed">
+  <origin xyz="-0.044438 0.015621 0.0138" rpy="0 0 0"/>
+  <parent link="bracket_3"/>
+  <child link="dcmotor_3"/>
+</joint>
+
+<joint name="Rigid12" type="fixed">
+  <origin xyz="0.044438 0.015621 0.0138" rpy="0 0 0"/>
+  <parent link="bracket_4"/>
+  <child link="dcmotor_4"/>
+</joint>
+
+<joint name="Rigid13" type="fixed">
+  <origin xyz="-0.022 0.0 0.0" rpy="0 0 0"/>
+  <parent link="dcmotor_1"/>
+  <child link="hub_1"/>
+</joint>
+
+<joint name="Rigid14" type="fixed">
+  <origin xyz="0.022 0.0 0.0" rpy="0 0 0"/>
+  <parent link="dcmotor_2"/>
+  <child link="hub_2"/>
+</joint>
+
+<joint name="Rigid15" type="fixed">
+  <origin xyz="-0.022 0.0 0.0" rpy="0 0 0"/>
+  <parent link="dcmotor_3"/>
+  <child link="hub_3"/>
+</joint>
+
+<joint name="Rigid16" type="fixed">
+  <origin xyz="0.022 0.0 0.0" rpy="0 0 0"/>
+  <parent link="dcmotor_4"/>
+  <child link="hub_4"/>
+</joint>
+
+<joint name="Rev17" type="continuous">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  <parent link="hub_4"/>
+  <child link="wheel_1"/>
+  <axis xyz="-1.0 -0.0 0.0"/>
+</joint>
+
+<joint name="Rev18" type="continuous">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  <parent link="hub_2"/>
+  <child link="wheel_2"/>
+  <axis xyz="-1.0 -0.0 0.0"/>
+</joint>
+
+<joint name="Rev19" type="continuous">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  <parent link="hub_3"/>
+  <child link="wheel_3"/>
+  <axis xyz="1.0 0.0 -0.0"/>
+</joint>
+
+<joint name="Rev20" type="continuous">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  <parent link="hub_1"/>
+  <child link="wheel_4"/>
+  <axis xyz="1.0 0.0 -0.0"/>
+</joint>
+
+<joint name="Rigid21" type="fixed">
+  <origin xyz="-0.062 0.0 0.0063" rpy="0 0 0"/>
+  <parent link="base_scan_1"/>
+  <child link="spacer_1"/>
+</joint>
+
+<joint name="Rigid22" type="fixed">
+  <origin xyz="0.0 0.0 0.021468" rpy="0 0 0"/>
+  <parent link="spacer_1"/>
+  <child link="clawholder_1"/>
+</joint>
+
+<joint name="Rigid23" type="fixed">
+  <origin xyz="0.016008 -0.014739 0.023542" rpy="0 0 0"/>
+  <parent link="clawholder_1"/>
+  <child link="gassensor_1"/>
+</joint>
+
+<joint name="Rigid24" type="fixed">
+  <origin xyz="0.043107 -0.014739 0.027084" rpy="0 0 0"/>
+  <parent link="clawholder_1"/>
+  <child link="thermalsensor_1"/>
+</joint>
+
+<joint name="Rigid25" type="fixed">
+  <origin xyz="0.054375 -0.019697 -0.030758" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="battery_1"/>
+</joint>
+
+<joint name="Rigid26" type="fixed">
+  <origin xyz="0.055 0.005 -0.030669" rpy="0 0 0"/>
+  <parent link="chassisback_1"/>
+  <child link="usbhub_1"/>
+</joint>
+
+<joint name="Rigid27" type="fixed">
+  <origin xyz="0.048208 -0.008889 0.02985" rpy="0 0 0"/>
+  <parent link="clawholder_1"/>
+  <child link="DC12_W-IDLE_ALT1_1"/>
+</joint>
+
+<joint name="Rev28" type="continuous">
+  <origin xyz="0.0039 0.032 -0.011" rpy="0 0 0"/>
+  <parent link="DC12_W-IDLE_ALT1_1"/>
+  <child link="FR12_H101_1"/>
+  <axis xyz="-1.0 0.0 0.0"/>
+</joint>
+
+<joint name="Rigid29" type="fixed">
+  <origin xyz="-0.009 0.0285 0.006" rpy="0 0 0"/>
+  <parent link="FR12_H101_1"/>
+  <child link="ILA-A01_OPEN_1"/>
+</joint>
+
+<joint name="Rigid30" type="fixed">
+  <origin xyz="0.0 0.08 0.0" rpy="0 0 0"/>
+  <parent link="ILA-A01_OPEN_1"/>
+  <child link="FR12_S101_1"/>
+</joint>
+
+<joint name="Rev32" type="continuous">
+  <origin xyz="0.0039 0.011 -0.008" rpy="0 0 0"/>
+  <parent link="DC12_W-IDLE_ALT1_2"/>
+  <child link="FR12_H101_2"/>
+  <axis xyz="-1.0 0.0 0.0"/>
+</joint>
+
+<joint name="Rigid33" type="fixed">
+  <origin xyz="-0.009 -0.028012 0.007973" rpy="0 0 0"/>
+  <parent link="FR12_H101_2"/>
+  <child link="ILA-A02_OPEN_1"/>
+</joint>
+
+<joint name="Rigid34" type="fixed">
+  <origin xyz="0.0 -0.054866 0.003837" rpy="0 0 0"/>
+  <parent link="ILA-A02_OPEN_1"/>
+  <child link="FR12_S102_2"/>
+</joint>
+
+<joint name="Rigid35" type="fixed">
+  <origin xyz="0.005 -0.009665 -0.016366" rpy="0 0 0"/>
+  <parent link="FR12_S102_2"/>
+  <child link="DC12_W-IDLE_ALT1_3"/>
+</joint>
+
+<joint name="Rev36" type="continuous">
+  <origin xyz="0.0037 -0.031155 0.013205" rpy="0 0 0"/>
+  <parent link="DC12_W-IDLE_ALT1_3"/>
+  <child link="FR12_H104_1"/>
+  <axis xyz="-1.0 0.0 -0.0"/>
+</joint>
+
+<joint name="Rigid38" type="fixed">
+  <origin xyz="-0.012 -0.054552 0.008326" rpy="0 0 0"/>
+  <parent link="ILA-A02_OPEN_1"/>
+  <child link="camera__1__1"/>
+</joint>
+
+<joint name="Rigid39" type="fixed">
+  <origin xyz="-0.0095 -0.029099 0.031004" rpy="0 0 0"/>
+  <parent link="FR12_H104_1"/>
+  <child link="DC12_STD_2"/>
+</joint>
+
+<joint name="Rigid40" type="fixed">
+  <origin xyz="0.0 -0.03398 -0.001187" rpy="0 0 0"/>
+  <parent link="DC12_STD_2"/>
+  <child link="IRB-A01_OPEN_1"/>
+</joint>
+
+<joint name="Rigid41" type="fixed">
+  <origin xyz="-0.022 -0.03398 -0.001187" rpy="0 0 0"/>
+  <parent link="DC12_STD_2"/>
+  <child link="IRB-A02_OPEN_1"/>
+</joint>
+
+<joint name="Rev42" type="continuous">
+  <origin xyz="-0.011 -0.034862 -0.033237" rpy="0 0 0"/>
+  <parent link="DC12_STD_2"/>
+  <child link="ICA-A01_OPEN_1"/>
+  <axis xyz="0.0 0.999391 0.034899"/>
+</joint>
+
+<joint name="Rigid43" type="fixed">
+  <origin xyz="-0.002 -0.05268 -0.025854" rpy="0 0 0"/>
+  <parent link="IGP-A01_OPEN_1"/>
+  <child link="PR33_SPD-A01_1"/>
+</joint>
+
+<joint name="Rigid44" type="fixed">
+  <origin xyz="0.002 -0.05268 -0.025854" rpy="0 0 0"/>
+  <parent link="IGP-A01_OPEN_2"/>
+  <child link="PR33_SPD-A01_2"/>
+</joint>
+
+<joint name="Rigid46" type="fixed">
+  <origin xyz="-0.026989 -0.000757 -0.049957" rpy="0 0 0"/>
+  <parent link="IRB-A02_OPEN_1"/>
+  <child link="IBL-A01_OPEN_2"/>
+</joint>
+
+<joint name="Rigid47" type="fixed">
+  <origin xyz="-0.0225 -0.006862 0.041785" rpy="0 0 0"/>
+  <parent link="IBL-A01_OPEN_1"/>
+  <child link="IGP-A01_OPEN_1"/>
+</joint>
+
+<joint name="Rigid48" type="fixed">
+  <origin xyz="0.0225 -0.00966 0.041688" rpy="0 0 0"/>
+  <parent link="IBL-A01_OPEN_2"/>
+  <child link="IGP-A01_OPEN_2"/>
+</joint>
+
+<joint name="Rigid49" type="fixed">
+  <origin xyz="-0.041 -0.024715 0.034409" rpy="0 0 0"/>
+  <parent link="FR12_H104_1"/>
+  <child link="camera_1"/>
+</joint>
+
+<joint name="Rigid50" type="fixed">
+  <origin xyz="0.005 0.0085 0.026" rpy="0 0 0"/>
+  <parent link="FR12_S101_1"/>
+  <child link="DC12_W-IDLE_ALT1_2"/>
+</joint>
+
+<joint name="Rigid51" type="fixed">
+  <origin xyz="0.028239 -0.003755 -0.050061" rpy="0 0 0"/>
+  <parent link="IRB-A01_OPEN_1"/>
+  <child link="IBL-A01_OPEN_1"/>
+</joint>
+
+</robot>
