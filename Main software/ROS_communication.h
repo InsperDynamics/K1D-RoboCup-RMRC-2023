@@ -57,6 +57,7 @@ void ConnectROS(int argc, char** argv)
 	system("sudo chmod a+rw /dev/ttyACM0");
 	sleep_for(seconds(10));
 	system("gnome-terminal -- roscore");
+	system("gnome-terminal -- roslaunch rosbridge_server rosbridge_websocket.launch");
 	system("gnome-terminal -- roslaunch K1D k1d.launch");
 	system("gnome-terminal -- rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=115200");
 	ros::init(argc, argv, "k1d_main");
