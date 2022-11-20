@@ -10,17 +10,20 @@
 #include "Hazmat_detection.h"
 using namespace std;
 using namespace cv;
+int resolution_horizontal = 640;
+int resolution_vertical = 480;
 VideoCapture captureA;
 VideoCapture captureB;
-Mat frameA;
-Mat frameB;
-Mat webcam_image;
-
+Mat frameA = Mat::zeros(resolution_horizontal, resolution_vertical, CV_8UC3);
+Mat frameB = Mat::zeros(resolution_horizontal, resolution_vertical, CV_8UC3);
+Mat webcam_image = Mat::zeros(2 * resolution_horizontal, resolution_vertical, CV_8UC3);
 
 void openCamera()
 {
-	captureA.open(0);
-	captureB.open(1);
+	captureA.open(2);
+	captureB.open(4);
+	captureA.set(CAP_PROP_FPS, 30);
+	captureB.set(CAP_PROP_FPS, 30);
 }
 
 void MoveManual()
@@ -71,6 +74,8 @@ void checkSensorsFeed()
 	UpdateThermal(current_temperature);
 	captureA >> frameA;
 	captureB >> frameB;
+	resize(frameA, frameA, Size(resolution_horizontal, resolution_vertical), INTER_NEAREST);
+	resize(frameB, frameB, Size(resolution_horizontal, resolution_vertical), INTER_NEAREST);
 	hconcat(frameA, frameB, webcam_image);
 	if (qr_detection)
 		webcam_image = ReadQR(webcam_image);
@@ -99,6 +104,7 @@ void loop()
 	checkUserInput();
 	checkSensorsFeed();
 	PublishMats(webcam_image, thermal_image);
+	imshow("K1D", webcam_image);
 	waitKey(1);
 }
 

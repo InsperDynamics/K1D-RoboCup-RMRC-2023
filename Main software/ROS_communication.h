@@ -20,9 +20,9 @@ float current_temperature[768] = {0};
 float cmdvel_linear_x = 0, cmdvel_angular_z = 0;
 bool autonomous_mode = false;
 bool dexterity_mode = false;
-bool qr_detection = false;
-bool hazmat_detection = false;
-bool motion_detection = false;
+bool qr_detection = true;
+bool hazmat_detection = true;
+bool motion_detection = true;
 std_msgs::String opencr_command;
 std_msgs::UInt16 opencr_value_1, opencr_value_2;
 std_msgs::Header header;
@@ -55,8 +55,8 @@ void motionDetectionCallback(const std_msgs::Bool& motion){motion_detection = mo
 void ConnectROS(int argc, char** argv)
 {
 	system("sudo chmod a+rw /dev/ttyACM0");
-	sleep_for(seconds(10));
 	system("gnome-terminal -- roscore");
+	sleep_for(seconds(10));
 	system("gnome-terminal -- roslaunch rosbridge_server rosbridge_websocket.launch");
 	system("gnome-terminal -- roslaunch K1D k1d.launch");
 	system("gnome-terminal -- rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=115200");
@@ -65,6 +65,8 @@ void ConnectROS(int argc, char** argv)
 	pub_command = nodehandle.advertise<std_msgs::String>("opencr_command", 1000);
 	pub_value_1 = nodehandle.advertise<std_msgs::UInt16>("opencr_value_1", 1000);
 	pub_value_2 = nodehandle.advertise<std_msgs::UInt16>("opencr_value_2", 1000);
+	pub_webcam = nodehandle.advertise<sensor_msgs::Image>("webcam", 1000);
+	pub_mattemp = nodehandle.advertise<std_msgs::Float32MultiArray>("thermalcam", 1000);
 	sub_temperature = nodehandle.subscribe("temperature", 1000, &temperatureCallback);
 	sub_cmdvel = nodehandle.subscribe("cmd_vel", 1000, &cmdvelCallback);
 	sub_autonomousmode = nodehandle.subscribe("autonomous_mode", 1000, &autonomousModeCallback);
