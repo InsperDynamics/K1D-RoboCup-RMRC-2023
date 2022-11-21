@@ -1,0 +1,16 @@
+<launch>
+
+    <node pkg="hector_mapping" type="hector_mapping" name="slam" output="screen">
+        <param name="pub_map_odom_transform " type="bool" value="true"/>
+        <param name="map_frame" value="map" />
+        <param name="base_frame" value="base_link" />
+        <param name="odom_frame" value="odom" />
+    </node>
+
+    <node pkg="k1d" type="autonomous.py" name="autonomous" output="screen" />
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find k1d)/k1d.rviz"/>
+
+</launch>
