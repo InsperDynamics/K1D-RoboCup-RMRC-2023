@@ -66,7 +66,7 @@ void ConnectROS(int argc, char** argv)
 	pub_value_1 = nodehandle.advertise<std_msgs::UInt16>("opencr_value_1", 1000);
 	pub_value_2 = nodehandle.advertise<std_msgs::UInt16>("opencr_value_2", 1000);
 	pub_webcam = nodehandle.advertise<sensor_msgs::Image>("webcam", 1000);
-	pub_mattemp = nodehandle.advertise<std_msgs::Float32MultiArray>("thermalcam", 1000);
+	pub_mattemp = nodehandle.advertise<sensor_msgs::Image>("thermalcam", 1000);
 	sub_temperature = nodehandle.subscribe("temperature", 1000, &temperatureCallback);
 	sub_cmdvel = nodehandle.subscribe("cmd_vel", 1000, &cmdvelCallback);
 	sub_autonomousmode = nodehandle.subscribe("autonomous_mode", 1000, &autonomousModeCallback);
