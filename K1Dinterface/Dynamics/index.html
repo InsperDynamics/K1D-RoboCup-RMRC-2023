@@ -23,100 +23,70 @@
     <meta name="theme-color" content="#478ac9">
     <meta property="og:title" content="Dynamics view">
     <meta property="og:type" content="website">
-    <script type="text/javascript" type="text/javascript">
-      // Connecting to ROS
-      var ros = new ROSLIB.Ros({
-        url : 'ws://localhost:9090'
-      });
-    
-      ros.on('connection', function() {
-        console.log('Connected to websocket server.');
-      });
-    
-      ros.on('error', function(error) {
-        console.log('Error connecting to websocket server: ', error);
-      });
-    
-      ros.on('close', function() {
-        console.log('Connection to websocket server closed.');
-      });
-    
-      // Subscribing to a Topic
-      var listener = new ROSLIB.Topic({
-        ros : ros,
-        name : '/listener',
-        messageType : 'std_msgs/String'
-      });
-    
-      listener.subscribe(function(message) {
-        console.log('Received message on ' + listener.name + ': ' + message.data);
-        listener.unsubscribe();
-      });
-    </script>
-  </head>
-  <body data-home-page="Dynamics-view.html" data-home-page-title="Dynamics view" class="u-body u-custom-color-2 u-xl-mode" data-lang="pt"><header class="u-clearfix u-header u-white u-header" id="sec-a3fc"><div class="u-clearfix u-sheet u-sheet-1">
-        <a href="#" class="u-image u-logo u-image-1" data-image-width="3024" data-image-height="648">
-          <img src="images/logo2dynamics.png" class="u-logo-image u-logo-image-1">
-        </a>
-        <p class="u-text u-text-custom-color-1 u-text-1">
-          <span style="font-size: 2.25rem;">K1D control panel</span>
-          <span style="font-size: 1rem;"></span>
-        </p>
-      </div></header>
-    <section class="u-clearfix u-section-1" id="sec-8b6f">
-      <div class="u-clearfix u-sheet u-sheet-1">
-        <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
-          <div class="u-layout">
-            <div class="u-layout-col">
-              <div class="u-size-40">
-                <div class="u-layout-row">
-                  <div class="u-container-style u-layout-cell u-size-60 u-layout-cell-1">
-                    <div class="u-container-layout u-container-layout-1">
-                      <div class="u-container-style u-custom-color-3 u-group u-group-1">
-                        <div class="u-container-layout u-container-layout-2">
-                          <h3 class="u-text u-text-default u-text-1">Camera</h3>
-                        </div>
+    <script src="ros.js"></script> 
+</head>
+<body data-home-page="Dynamics-view.html" data-home-page-title="Dynamics view" class="u-body u-custom-color-2 u-xl-mode" data-lang="pt"><header class="u-clearfix u-header u-white u-header" id="sec-a3fc"><div class="u-clearfix u-sheet u-sheet-1">
+      <a href="#" class="u-image u-logo u-image-1" data-image-width="3024" data-image-height="648">
+        <img src="images/logo2dynamics.png" class="u-logo-image u-logo-image-1">
+      </a>
+      <p class="u-text u-text-custom-color-1 u-text-1">
+        <span style="font-size: 2.25rem;">K1D control panel</span>
+        <span style="font-size: 1rem;"></span>
+      </p>
+    </div></header>
+  <section class="u-clearfix u-section-1" id="sec-8b6f">
+    <div class="u-clearfix u-sheet u-sheet-1">
+      <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
+        <div class="u-layout">
+          <div class="u-layout-col">
+            <div class="u-size-40">
+              <div class="u-layout-row">
+                <div class="u-container-style u-layout-cell u-size-60 u-layout-cell-1">
+                  <div class="u-container-layout u-container-layout-1">
+                    <div class="u-container-style u-custom-color-3 u-group u-group-1">
+                      <div class="u-container-layout u-container-layout-2">
+                        <h3 class="u-text u-text-default u-text-1">Camera</h3>
                       </div>
-                      <div class="u-container-style u-grey-90 u-group u-group-2">
-                        <div class="u-container-layout u-container-layout-3"></div>
-                      </div>
+                    </div>
+                    <div class="u-container-style u-grey-90 u-group u-group-2">
+                      <div class="u-container-layout u-container-layout-3"></div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="u-size-20">
-                <div class="u-layout-row">
-                  <div class="u-container-style u-layout-cell u-size-40 u-layout-cell-2">
-                    <div class="u-container-layout u-container-layout-4">
-                      <div class="u-container-style u-custom-color-3 u-group u-group-3">
-                        <div class="u-container-layout u-container-layout-5">
-                          <h3 class="u-text u-text-default u-text-2">Modes</h3>
-                        </div>
+            </div>
+            <div class="u-size-20">
+              <div class="u-layout-row">
+                <div class="u-container-style u-layout-cell u-size-40 u-layout-cell-2">
+                  <div class="u-container-layout u-container-layout-4">
+                    <div class="u-container-style u-custom-color-3 u-group u-group-3">
+                      <div class="u-container-layout u-container-layout-5">
+                        <h3 class="u-text u-text-default u-text-2">Modes</h3>
                       </div>
-                      <p class="u-text u-text-3">hazmat detection</p>
-                      <p class="u-text u-text-4">motion detection</p>
-                      <p class="u-text u-text-default u-text-5">QR code Detect </p>
-                      <a href="#" class="u-border-none u-btn u-button-style u-custom-color-4 u-hover-custom-color-5 u-btn-1">Activate</a>
-                      <a href="#" class="u-border-none u-btn u-button-style u-custom-color-4 u-hover-custom-color-5 u-btn-2">Activate</a>
-                      <a href="#" class="u-border-none u-btn u-button-style u-custom-color-4 u-hover-custom-color-5 u-btn-3">Activate</a>
-                      <p class="u-text u-text-6">autonomous mode</p>
-                      <p class="u-text u-text-7">dexterity mode</p>
-                      <a href="#" class="u-border-none u-btn u-button-style u-custom-color-4 u-hover-custom-color-5 u-btn-4">Activate</a>
-                      <a href="#" class="u-border-none u-btn u-button-style u-custom-color-4 u-hover-custom-color-5 u-btn-5">Activate</a>
                     </div>
+                    <p class="u-text u-text-3">hazmat detection</p>
+                    <p class="u-text u-text-4">motion detection</p>
+                    <p class="u-text u-text-default u-text-5">QR code Detect </p>
+                    <a href="#" class="u-border-none u-btn u-button-style u-custom-color-4 u-hover-custom-color-5 u-btn-1">Activate</a>
+                    <a href="#" class="u-border-none u-btn u-button-style u-custom-color-4 u-hover-custom-color-5 u-btn-2">Activate</a>
+                    <a href="#" class="u-border-none u-btn u-button-style u-custom-color-4 u-hover-custom-color-5 u-btn-3">Activate</a>
+                    <p class="u-text u-text-6">autonomous mode</p>
+                    <p class="u-text u-text-7">dexterity mode</p>
+                    <a href="#" class="u-border-none u-btn u-button-style u-custom-color-4 u-hover-custom-color-5 u-btn-4">Activate</a>
+                    <a href="#" class="u-border-none u-btn u-button-style u-custom-color-4 u-hover-custom-color-5 u-btn-5">Activate</a>
                   </div>
-                  <div class="u-container-style u-layout-cell u-size-20 u-layout-cell-3">
-                    <div class="u-container-layout u-container-layout-6">
-                      <div class="u-container-style u-custom-color-3 u-group u-group-4">
-                        <div class="u-container-layout u-container-layout-7">
-                          <h3 class="u-text u-text-8">Sensors</h3>
-                        </div>
+                </div>
+                <div class="u-container-style u-layout-cell u-size-20 u-layout-cell-3">
+                  <div class="u-container-layout u-container-layout-6">
+                    <div class="u-container-style u-custom-color-3 u-group u-group-4">
+                      <div class="u-container-layout u-container-layout-7">
+                        <h3 class="u-text u-text-8">Sensors</h3>
                       </div>
-                      <div class="u-black u-container-style u-group u-group-5">
-                        <div class="u-container-layout u-container-layout-8"></div>
-                      </div>
-                      <p class="u-text u-text-9">Gas ​text</p>
                     </div>
+                    <div class="u-black u-container-style u-group u-group-5">
+                      <div class="u-container-layout u-container-layout-8"></div>
+                    </div>
+                    <p class="u-text u-text-9">Gas ​text</p>
                   </div>
                 </div>
               </div>
@@ -124,11 +94,12 @@
           </div>
         </div>
       </div>
-    </section>
-    
-    
-    <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-2c9c"><div class="u-clearfix u-sheet u-sheet-1">
-        <p class="u-small-text u-text u-text-variant u-text-1">Copyright &amp;copy; 2022 Insper Dynamics •&nbsp;All rights reserved</p>
-      </div></footer>
+    </div>
+  </section>
+  
+  
+  <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-2c9c"><div class="u-clearfix u-sheet u-sheet-1">
+      <p class="u-small-text u-text u-text-variant u-text-1">Copyright &amp;copy; 2022 Insper Dynamics •&nbsp;All rights reserved</p>
+    </div></footer>
   
 </body></html>
