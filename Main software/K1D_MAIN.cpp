@@ -68,15 +68,20 @@ void checkUserInput()
 		MoveAutonomous();
 }
 
-void checkSensorsFeed()
+void captureFrame()
 {
-	ReadOpenCR();
-	UpdateThermal(current_temperature);
 	captureA >> frameA;
 	captureB >> frameB;
 	resize(frameA, frameA, Size(resolution_horizontal, resolution_vertical), INTER_NEAREST);
 	resize(frameB, frameB, Size(resolution_horizontal, resolution_vertical), INTER_NEAREST);
 	hconcat(frameA, frameB, webcam_image);
+}
+
+void checkSensorsFeed()
+{
+	ReadOpenCR();
+	UpdateThermal(current_temperature);
+	captureFrame();
 	if (qr_detection)
 		webcam_image = ReadQR(webcam_image);
 	if (hazmat_detection)
