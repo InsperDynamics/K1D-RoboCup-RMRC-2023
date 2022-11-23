@@ -10,6 +10,7 @@ static Mat DetectMotion(Mat image)
 {
 	Mat blurred;
 	GaussianBlur(image, blurred, Size(3, 3), 0);
+	blur(blurred, blurred, Size(5, 5));
 	if (firstFrame.empty())
 		firstFrame = blurred;
 	Mat frameDelta;
@@ -17,7 +18,7 @@ static Mat DetectMotion(Mat image)
 	cvtColor(frameDelta, frameDelta, COLOR_BGR2GRAY);
 	Mat DeltaThresholded;
 	double thresh = threshold(frameDelta, DeltaThresholded, 50, 255, THRESH_BINARY);
-	Mat dilate_kernel = getStructuringElement(MORPH_RECT, Size(5, 5), Point(2, 2));
+	Mat dilate_kernel = getStructuringElement(MORPH_RECT, Size(20, 20), Point(2, 2));
 	dilate(DeltaThresholded, DeltaThresholded, dilate_kernel, Point(-1, -1), 2);
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy;

@@ -22,7 +22,7 @@ bool autonomous_mode = false;
 bool dexterity_mode = false;
 bool qr_detection = true;
 bool hazmat_detection = true;
-bool motion_detection = true;
+bool motion_detection = false;
 std_msgs::String opencr_command;
 std_msgs::UInt16 opencr_value_1, opencr_value_2;
 std_msgs::Header header;
