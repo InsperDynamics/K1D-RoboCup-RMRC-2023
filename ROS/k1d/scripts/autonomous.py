@@ -44,7 +44,6 @@ if __name__=="__main__":
         if dir == 1 and scan_data is not None and scan_data[0] < 0.15:
             if erro < 3:
                 print('bump')
-                K = -1
                 dir = -1
                 velocidade = Twist(Vector3(0.15, 0, 0), Vector3(0, 0, 0))
                 velocidade_saida.publish(velocidade)
@@ -55,7 +54,6 @@ if __name__=="__main__":
         elif dir == -1 and scan_data is not None and scan_data[180] < 0.15:
             if erro < 3:
                 print('bump')
-                K = 1
                 dir = 1
                 velocidade = Twist(Vector3(-0.15, 0, 0), Vector3(0, 0, 0))
                 velocidade_saida.publish(velocidade)
