@@ -69,3 +69,17 @@ gas.subscribe(function(message) {
 });
 
 // Publishing to Topics
+function pubButton(button, topic) {
+    if (button.value == 'Activate') {
+        button.value = 'Deactivate';
+        button.style.backgroundColor = '#00ff00';
+        var msg = new ROSLIB.Message({ data : true });
+    } 
+    else {
+        button.value = 'Activate';
+        button.style.backgroundColor = '#ff0000';
+        var msg = new ROSLIB.Message({ data : false })
+    }
+    topic.publish(msg);
+    alert('Published to ' + topic.name + ': ' + msg.data);
+}
