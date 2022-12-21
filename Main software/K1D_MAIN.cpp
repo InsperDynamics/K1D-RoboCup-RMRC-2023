@@ -26,6 +26,11 @@ void openCamera()
 	captureB.set(CAP_PROP_FPS, 30);
 }
 
+float mapPwm(float x, float out_min, float out_max)
+{
+  return x * (out_max - out_min) + out_min;
+}
+
 void MoveManual()
 {
 	if (invert_camera)
@@ -40,9 +45,15 @@ void MoveManual()
 
 void MoveAutonomous()
 {
-	int pwm_l = 0;
-	int pwm_r = 0;
-	//autonomous mode pwm logic goes here
+	const float wheelBase = 0.12;
+	const float wheelRadius = 0.055;
+	//value caps at [-1, 1]
+  	float x = max(min(cmdvel_linear_x, 1.0f), -1.0f);
+  	float z = max(min(cmdvel_angular_z, 1.0f), -1.0f);
+	float l = ((2*msg.linear.x) - (msg.angular.z*wheelBase)) / (2*wheelRadius);
+  	float r = ((2*msg.linear.x) + (msg.angular.z*wheelBase)) / (2*wheelRadius);
+	uint16_t pwm_l = mapPwm(fabs(l), 50, 250);
+	uint16_t pwm_r = mapPwm(fabs(r), 50, 250);
 	cout << "(AUTONOMOUS) MotorsMove " << to_string(pwm_l) << " " << to_string(pwm_r) << "\n";
 	PublishOpenCR("MotorsMove", pwm_l, pwm_r);
 }
