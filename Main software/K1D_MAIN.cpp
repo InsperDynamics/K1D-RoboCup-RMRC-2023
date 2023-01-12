@@ -116,7 +116,7 @@ void loop()
 {
 	if (SDL_NumJoysticks() < 1)
 		InitializeGamepad();
-	UpdateGamepadInput();
+	UpdateGamepadInput(dexterity_mode);
 	checkUserInput();
 	checkSensorsFeed();
 	PublishMats(webcam_image, thermal_image);

@@ -59,7 +59,7 @@ void UpdateAnalog()
 }
 
 
-void UpdateGamepadInput()
+void UpdateGamepadInput(bool isDexterity)
 {
 	float magnitude = sqrt(xAnalog_left * xAnalog_left + yAnalog_left * yAnalog_left);
 	int pwm = static_cast<int>(magnitude);
@@ -70,33 +70,39 @@ void UpdateGamepadInput()
 	double theta = atan2(yAnalog_left, xAnalog_left);
 	if (theta < 0)
 		theta += 2 * M_PI;
-	if (xAnalog_left == 0 && yAnalog_left == 0)
-	{
-		gamepad_command = "MotorsStop";
-	}
-	else 
-	{
-		gamepad_command = "MotorsMove";
-		if (xAnalog_left >= 0 && yAnalog_left >= 0)
+	if (!isDexterity){
+		if (xAnalog_left == 0 && yAnalog_left == 0)
 		{
-			gamepad_value_1 = int(pwm);
-			gamepad_value_2 = int(pwm*((4*theta/M_PI) - 1));
-		}
-		else if (xAnalog_left < 0 && yAnalog_left >= 0)
-		{
-			gamepad_value_1 = int(pwm*(1 - (4*(theta-(M_PI/2))/M_PI)));
-			gamepad_value_2 = int(pwm);
-		}
-		else if (xAnalog_left < 0 && yAnalog_left < 0)
-		{
-			gamepad_value_1 = -int(pwm);
-			gamepad_value_2 = int(pwm*(1 - (4*(theta-M_PI)/M_PI)));
+			gamepad_command = "MotorsStop";
 		}
 		else 
 		{
-			gamepad_value_1 = -int(pwm*(1 - (4*(theta-(3*M_PI/2))/M_PI)));
-			gamepad_value_2 = -int(pwm);
+			gamepad_command = "MotorsMove";
+			if (xAnalog_left >= 0 && yAnalog_left >= 0)
+			{
+				gamepad_value_1 = int(pwm);
+				gamepad_value_2 = int(pwm*((4*theta/M_PI) - 1));
+			}
+			else if (xAnalog_left < 0 && yAnalog_left >= 0)
+			{
+				gamepad_value_1 = int(pwm*(1 - (4*(theta-(M_PI/2))/M_PI)));
+				gamepad_value_2 = int(pwm);
+			}
+			else if (xAnalog_left < 0 && yAnalog_left < 0)
+			{
+				gamepad_value_1 = -int(pwm);
+				gamepad_value_2 = int(pwm*(1 - (4*(theta-M_PI)/M_PI)));
+			}
+			else 
+			{
+				gamepad_value_1 = -int(pwm*(1 - (4*(theta-(3*M_PI/2))/M_PI)));
+				gamepad_value_2 = -int(pwm);
+			}
 		}
+	}
+	else{
+		// add claw commands
+		// publish to /joy topic
 	}
 	UpdateAnalog();
 }
