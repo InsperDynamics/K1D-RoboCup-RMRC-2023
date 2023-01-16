@@ -33,12 +33,6 @@ float mapPwm(float x, float out_min, float out_max)
 
 void MoveManual()
 {
-	if (invert_camera)
-	{
-		int temp = gamepad_value_1;	
-		gamepad_value_1 = -gamepad_value_2;
-		gamepad_value_2 = -temp;
-	}
 	cout << gamepad_command << " " << to_string(gamepad_value_1) << " " << to_string(gamepad_value_2) << "\n";
 	PublishOpenCR(gamepad_command, gamepad_value_1, gamepad_value_2);
 }
@@ -63,16 +57,37 @@ void checkUserInput()
 	if (gamepad_command == "autonomous_mode")
 		autonomous_mode = !autonomous_mode;
 	else if (gamepad_command == "dexterity_mode")
+	{
+		if (dexterity_mode)
+			ClawRetract();
 		dexterity_mode = !dexterity_mode;
+	}
 	else if (gamepad_command == "motion_detection")
 		motion_detection = !motion_detection;
 	else if (gamepad_command == "qr_detection")
 		qr_detection = !qr_detection;
 	else if (gamepad_command == "hazmat_detection")
 		hazmat_detection = !hazmat_detection;
-	else if (gamepad_command == "invert_camera")
-		invert_camera = !invert_camera;
-	//condition for claw goes here
+	else if (gamepad_command == "RaiseFrontFlippers")
+		RaiseFrontFlippers();
+	else if (gamepad_command == "LowerFrontFlippers")
+		LowerFrontFlippers();
+	else if (gamepad_command == "RaiseBackFlippers")
+		RaiseBackFlippers();
+	else if (gamepad_command == "LowerBackFlippers")
+		LowerBackFlippers();
+	else if (gamepad_command == "ClawUp" && dexterity_mode)
+		ClawUp();
+	else if (gamepad_command == "ClawDown" && dexterity_mode)
+		ClawDown();
+	else if (gamepad_command == "ClawForward" && dexterity_mode)
+		ClawForward();
+	else if (gamepad_command == "ClawBackward" && dexterity_mode)
+		ClawBackward();
+	else if (gamepad_command == "ClawOpen" && dexterity_mode)
+		ClawOpen();
+	else if (gamepad_command == "ClawClose" && dexterity_mode)
+		ClawClose();
 	else if (!autonomous_mode && !gamepad_command.empty())
 		MoveManual();
 	else if (autonomous_mode)
@@ -116,7 +131,7 @@ void loop()
 {
 	if (SDL_NumJoysticks() < 1)
 		InitializeGamepad();
-	UpdateGamepadInput(dexterity_mode);
+	UpdateGamepadInput();
 	checkUserInput();
 	checkSensorsFeed();
 	PublishMats(webcam_image, thermal_image);

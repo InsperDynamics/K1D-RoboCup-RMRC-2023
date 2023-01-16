@@ -13,7 +13,6 @@ static int yAnalog_left = 0;
 string gamepad_command = "";
 int gamepad_value_1 = 0;
 int gamepad_value_2 = 0;
-bool invert_camera = false;
 
 
 void InitializeGamepad()
@@ -23,17 +22,44 @@ void InitializeGamepad()
 }
 
 
-void UpdateAnalog()
+void UpdateRawInput()
 {
 	while (SDL_PollEvent(&sdl_event) != 0)
     {
 		if (sdl_event.type == SDL_JOYBUTTONDOWN)
 		{
-			int buttonId = sdl_event.jbutton.button;
-			if (buttonId == 4 || buttonId == 5)
+			switch (sdl_event.jbutton.button)
 			{
-				gamepad_command = "invert_camera";
-				return;
+				case 4:
+					gamepad_command = "RaiseFrontFlippers";
+					break;
+				case 5:
+				    gamepad_command = "RaiseRearFlippers";
+                    break;
+				case 6:
+					gamepad_command = "LowerFrontFlippers";
+					break;
+				case 7:
+				    gamepad_command = "LowerBackFlippers";
+					break;
+				case 8:
+					gamepad_command = "ClawUp";
+					break;
+				case 9:
+					gamepad_command = "ClawDown";
+                    break;
+				case 10:
+					gamepad_command = "ClawForward";
+                    break;
+				case 11:
+					gamepad_command = "ClawBackward";
+                    break;
+				case 12:
+                    gamepad_command = "ClawOpen";
+				    break;
+                case 13:
+				    gamepad_command = "ClawClose";
+                    break;
 			}
 		}
 		else if (sdl_event.type == SDL_JOYAXISMOTION)
@@ -59,8 +85,9 @@ void UpdateAnalog()
 }
 
 
-void UpdateGamepadInput(bool isDexterity)
+void UpdateGamepadInput()
 {
+	UpdateRawInput();
 	float magnitude = sqrt(xAnalog_left * xAnalog_left + yAnalog_left * yAnalog_left);
 	int pwm = static_cast<int>(magnitude);
 	if (pwm > max_pwm)
@@ -70,39 +97,30 @@ void UpdateGamepadInput(bool isDexterity)
 	double theta = atan2(yAnalog_left, xAnalog_left);
 	if (theta < 0)
 		theta += 2 * M_PI;
-	if (!isDexterity){
-		if (xAnalog_left == 0 && yAnalog_left == 0)
+	if (xAnalog_left == 0 && yAnalog_left == 0)
+		gamepad_command = "MotorsStop";
+	else 
+	{
+		gamepad_command = "MotorsMove";
+		if (xAnalog_left >= 0 && yAnalog_left >= 0)
 		{
-			gamepad_command = "MotorsStop";
+			gamepad_value_1 = int(pwm);
+			gamepad_value_2 = int(pwm*((4*theta/M_PI) - 1));
+		}
+		else if (xAnalog_left < 0 && yAnalog_left >= 0)
+		{
+			gamepad_value_1 = int(pwm*(1 - (4*(theta-(M_PI/2))/M_PI)));
+			gamepad_value_2 = int(pwm);
+		}
+		else if (xAnalog_left < 0 && yAnalog_left < 0)
+		{
+			gamepad_value_1 = -int(pwm);
+			gamepad_value_2 = int(pwm*(1 - (4*(theta-M_PI)/M_PI)));
 		}
 		else 
 		{
-			gamepad_command = "MotorsMove";
-			if (xAnalog_left >= 0 && yAnalog_left >= 0)
-			{
-				gamepad_value_1 = int(pwm);
-				gamepad_value_2 = int(pwm*((4*theta/M_PI) - 1));
-			}
-			else if (xAnalog_left < 0 && yAnalog_left >= 0)
-			{
-				gamepad_value_1 = int(pwm*(1 - (4*(theta-(M_PI/2))/M_PI)));
-				gamepad_value_2 = int(pwm);
-			}
-			else if (xAnalog_left < 0 && yAnalog_left < 0)
-			{
-				gamepad_value_1 = -int(pwm);
-				gamepad_value_2 = int(pwm*(1 - (4*(theta-M_PI)/M_PI)));
-			}
-			else 
-			{
-				gamepad_value_1 = -int(pwm*(1 - (4*(theta-(3*M_PI/2))/M_PI)));
-				gamepad_value_2 = -int(pwm);
-			}
+			gamepad_value_1 = -int(pwm*(1 - (4*(theta-(3*M_PI/2))/M_PI)));
+			gamepad_value_2 = -int(pwm);
 		}
 	}
-	else{
-		// add claw commands
-		// publish to /joy topic
-	}
-	UpdateAnalog();
 }
