@@ -8,9 +8,10 @@
 #include <sensor_msgs/JointState.h>
 #include "Sensors.h"
 #include "Motors.h"
-#include "Servos.h"
+#include "Flippers.h"
 #include "IMU.h"
 #include "Encoders.h"
+#include "usb_to_dxl.h"
 
 String current_command = "";
 int current_value_1 = 0;
@@ -29,24 +30,13 @@ void value1Callback(const std_msgs::UInt16& value1){
 void value2Callback(const std_msgs::UInt16& value2){
   current_value_2 = value2.data;
 }
-void jointStateCallback(const sensor_msgs::JointState& joint_state){
-  joint_states_claw = joint_state.data;
-}
-void FrontFlipperCallback(const std_msgs::Float64& position_frontFlipper){
-  position_frontFlipper = position_frontFlipper.data;
-}
-void BackFlipperCallback(const std_msgs::Float64& position_backFlipper){
-  position_backFlipper = position_backFlipper.data;
-}
+
 ros::NodeHandle nodehandle;
 ros::Publisher pub_temperature("temperature", &temperature);
 ros::Publisher pub_gas("gas", &gas);
 ros::Subscriber<std_msgs::String> sub_command("arduino_command", commandCallback);
 ros::Subscriber<std_msgs::UInt16> sub_value_1("arduino_value_1", value1Callback);
 ros::Subscriber<std_msgs::UInt16> sub_value_2("arduino_value_2", value2Callback);
-ros::Subscriber<sensor_msgs::JointState> sub_joint_state("joint_states", jointStateCallback);
-ros::Subscriber<sensor_msgs::JointState> sub_joint_state_frontFlipper("position_frontFlipper", FrontFlipperCallback);
-ros::Subscriber<sensor_msgs::JointState> sub_joint_state_backFlipper("position_backFlipper", BackFlipperCallback);
 
 void ControlMotors(String command, int command_parameter_1, int command_parameter_2) {
   switch (command)
@@ -67,6 +57,7 @@ void setup() {
   RetractClaw();
   SensorsInitialize();
   CalibrateIMU();
+  SerialInitialize();
   nodehandle.getHardware()->setBaud(115200);
   nodehandle.initNode();
   temperature.layout.dim[0].label = "temperature";
@@ -83,6 +74,7 @@ void setup() {
 
 void loop() {
   ReadSensors();
+  DxlSerial();
   UpdateIMU();
   UpdateEncoders();
   temperature.data_length = 32*24;
@@ -95,5 +87,5 @@ void loop() {
   nodehandle.spinOnce();
   delay(1);
   ControlMotors(current_command, current_value_1, current_value_2);
-  ControlDynamixels(joint_states_claw, position_frontFlipper, position_backFlipper);
+  ControlDynamixel(current_command, current_value_1, current_value_2);
 }
