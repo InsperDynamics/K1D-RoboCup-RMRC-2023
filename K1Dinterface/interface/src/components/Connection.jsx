@@ -44,7 +44,7 @@ function Connection() {
             messageType: Config.MSGTYPE_AUTONOMOUS
         });
         var autonomousMsg = new window.ROSLIB.Message({
-            bool: autonomousOn
+            data: autonomousOn
         });
         autonomousTopic.publish(autonomousMsg);
     }
@@ -56,7 +56,7 @@ function Connection() {
             messageType: Config.MSGTYPE_DEXTERITY
         });
         var dexterityMsg = new window.ROSLIB.Message({
-            bool: dexterityOn
+            data: dexterityOn
         });
         dexterityTopic.publish(dexterityMsg);
     }
@@ -68,7 +68,7 @@ function Connection() {
             messageType: Config.MSGTYPE_QRCODE
         });
         var qrCodeMsg = new window.ROSLIB.Message({
-            bool: qrCodeOn
+            data: qrCodeOn
         });
         qrCodeTopic.publish(qrCodeMsg);
     }
@@ -80,7 +80,7 @@ function Connection() {
             messageType: Config.MSGTYPE_HAZMAT
         });
         var hazmatMsg = new window.ROSLIB.Message({
-            bool: hazmatOn
+            data: hazmatOn
         });
         hazmatTopic.publish(hazmatMsg);
     }
@@ -92,7 +92,7 @@ function Connection() {
             messageType: Config.MSGTYPE_MOTION
         });
         var motionMsg = new window.ROSLIB.Message({
-            bool: motionOn
+            data: motionOn
         });
         motionTopic.publish(motionMsg);
     }
@@ -110,8 +110,17 @@ function Connection() {
             </Row>
             <Row>
                 <Col>
-                    <h1 className="text-center m-3" style={{color: "#e66111"}}>Switch Modes</h1>
+                    <h1 className="text-left m-3" style={{color: "#e66111"}}>Camera</h1>
                 </Col>
+                <Col>
+                    <h1 className="text-right m-3" style={{color: "#e66111"}}>Sensors</h1>
+                </Col>
+            </Row>
+            <Row>
+
+            </Row>
+            <Row>
+                <h1 className="text-center m-3" style={{color: "#e66111"}}>Switch Modes</h1>
             </Row>
             <Row>
                 <Col>
