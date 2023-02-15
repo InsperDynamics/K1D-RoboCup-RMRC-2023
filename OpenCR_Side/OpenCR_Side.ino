@@ -10,7 +10,6 @@
 #include "Motors.h"
 #include "Servos.h"
 #include "IMU.h"
-#include "Encoders.h"
 
 String current_command = "";
 int current_value_1 = 0;
@@ -49,22 +48,16 @@ ros::Subscriber<sensor_msgs::JointState> sub_joint_state_frontFlipper("position_
 ros::Subscriber<sensor_msgs::JointState> sub_joint_state_backFlipper("position_backFlipper", BackFlipperCallback);
 
 void ControlMotors(String command, int command_parameter_1, int command_parameter_2) {
-  switch (command)
-  {
-  case "MotorsMove":
+  if (command == "MotorsMove"){
     Move(command_parameter_1, command_parameter_2);
-    break;
-  case "MotorsStop":
+  }
+  else if (command == "MotorsStop"){
     MotorsStop();
-    break;
-  default:
-    break;
   }
 }
 
 void setup() {
   MotorsInitialize();
-  RetractClaw();
   SensorsInitialize();
   CalibrateIMU();
   nodehandle.getHardware()->setBaud(115200);
@@ -84,7 +77,6 @@ void setup() {
 void loop() {
   ReadSensors();
   UpdateIMU();
-  UpdateEncoders();
   temperature.data_length = 32*24;
   for (int i=0; i < 32*24; i++) {
     temperature.data[i] = mlx90640_pixels[i];

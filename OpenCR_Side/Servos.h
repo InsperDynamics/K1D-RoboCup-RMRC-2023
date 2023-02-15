@@ -19,18 +19,8 @@ void SetupServo(){
   dxl.begin(57600);
 }
 
-float constrain(pos, min, max){
-  if (pos < min){
-    pos = min;
-  }
-  if (pos > max){
-    pos = max;
-  }
-  return pos;
-}
-
 void ControlDynamixels(sensor_msgs::JointState joint_states_claw, float position_frontFlipper, float position_backFlipper){
-  for (i = 0; i < joint_states_claw.length; i++) {
+  for (int i = 0; i < joint_states_claw.length; i++) {
     switch(joint_states_claw.name[i]){
       case "joint0":
         dxl.setGoalPosition(baserotator, joint_states_claw.position[i], UNIT_DEGREE);
@@ -55,4 +45,3 @@ void ControlDynamixels(sensor_msgs::JointState joint_states_claw, float position
   dxl.setGoalPosition(frontFlipper, position_frontFlipper, UNIT_DEGREE);
   dxl.setGoalPosition(backFlipper, position_backFlipper, UNIT_DEGREE);
 }
-
