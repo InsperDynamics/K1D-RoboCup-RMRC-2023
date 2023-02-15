@@ -1,16 +1,23 @@
 import { useState } from 'react';
 import Config from '../scripts/config';
 import Alert from 'react-bootstrap/Alert';
-import { Container, Row, Col} from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import Logo from './../img/logo.png';
+import RosImg from './RosImg';
+
+// resolução do site: 1920px x 920px
 
 function Connection() {
     const [isConnected, setIsConnected] = useState(false);
     const [ros, setRos] = useState(new window.ROSLIB.Ros());
+    
     const [autonomousOn, setAutonomousOn] = useState(false);
     const [dexterityOn, setDexterityOn] = useState(false);
     const [qrCodeOn, setQrCodeOn] = useState(false);
     const [hazmatOn, setHazmatOn] = useState(false);
     const [motionOn, setMotionOn] = useState(false);
+    
+    const [ppm, setPpm] = useState(null);
     const ipAdress = 'ws://'+Config.ROSBRIDGE_SERVER_IP+':'+Config.ROSBRIDGE_SERVER_PORT
     
     
@@ -36,7 +43,7 @@ function Connection() {
         }
     }
 
-    function onAutonomous() {
+    function pubAutonomous() {
         setAutonomousOn(!autonomousOn);
         var autonomousTopic = new window.ROSLIB.Topic({
             ros: ros,
@@ -48,7 +55,7 @@ function Connection() {
         });
         autonomousTopic.publish(autonomousMsg);
     }
-    function onDexterity() {
+    function pubDexterity() {
         setDexterityOn(!dexterityOn);
         var dexterityTopic = new window.ROSLIB.Topic({
             ros: ros,
@@ -60,7 +67,7 @@ function Connection() {
         });
         dexterityTopic.publish(dexterityMsg);
     }
-    function onQrCode() {
+    function pubQrCode() {
         setQrCodeOn(!qrCodeOn);
         var qrCodeTopic = new window.ROSLIB.Topic({
             ros: ros,
@@ -72,7 +79,7 @@ function Connection() {
         });
         qrCodeTopic.publish(qrCodeMsg);
     }
-    function onHazmat() {
+    function pubHazmat() {
         setHazmatOn(!hazmatOn);
         var hazmatTopic = new window.ROSLIB.Topic({
             ros: ros,
@@ -84,7 +91,7 @@ function Connection() {
         });
         hazmatTopic.publish(hazmatMsg);
     }
-    function onMotion() {
+    function pubMotion() {
         setMotionOn(!motionOn);
         var motionTopic = new window.ROSLIB.Topic({
             ros: ros,
@@ -96,57 +103,86 @@ function Connection() {
         });
         motionTopic.publish(motionMsg);
     }
+    function subGas() {
+        var gasTopic = new window.ROSLIB.Topic({
+            ros: ros,
+            name: Config.TOPIC_CO2,
+            messageType: Config.MSGTYPE_CO2
+        });
+        gasTopic.subscribe((message) => {
+            // document.getElementById('thermalcam_img').src = "data:image/jpg;base64," + message.data;
+            gasTopic.unsubscribe();
+            setPpm(message.data);
+        });
+    }
 
     init_connection();
+    subGas();
 
     return (
-        <Container>
+        <Container fluid style={{margin: "0px"}}>
             <Row>
-                <Col md={{ span: 6, offset: 3 }}>
-                    <Alert className="text-center m-3" variant={isConnected? "success": "danger"}>
+                <Col>
+                    <img src={Logo} alt="Insper Dynamics" width={150} height={150}/>
+                </Col>
+                <Col className='mt-5'>
+                    <Alert className="text-center" variant={isConnected? "success": "danger"}>
                         {isConnected? "Robot Connected": "Robot Disconnected"}
                     </Alert>
                 </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h1 className="text-left m-3" style={{color: "#e66111"}}>Camera</h1>
-                </Col>
-                <Col>
-                    <h1 className="text-right m-3" style={{color: "#e66111"}}>Sensors</h1>
+                <Col className='mt-5'>
+                    <h1 className="text-right" style={{color: "#e66111"}}>K1D Control Panel</h1>
                 </Col>
             </Row>
+            <h1 className="text-left" style={{color: "#e66111"}}>Camera</h1>
             <Row>
-
+                <Col style={{display: "flex", justifyContent: "center"}}>
+                    <RosImg style={{justifySelf: "center"}} ros={ros} topic={Config.TOPIC_CAMERA} msg={Config.MSGTYPE_CAMERA} width={1280} height={480} />
+                </Col>
             </Row>
+            
             <Row>
-                <h1 className="text-center m-3" style={{color: "#e66111"}}>Switch Modes</h1>
+                <Col>
+                    <h1 className="text-left mt-3" style={{color: "#e66111"}}>Switch Modes</h1>
+                </Col>
+                <Col md={4} style={{paddingLeft: "75px"}}>
+                    <h1 className="text-left mt-3" style={{color: "#e66111"}}>Sensors</h1>
+                </Col>
             </Row>
             <Row>
                 <Col>
-                    <button className="btn btn-primary" style={{backgroundColor: (autonomousOn? "green": "red")}} onClick={() => onAutonomous()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (autonomousOn? "green": "red")}} onClick={() => pubAutonomous()}>
                         {autonomousOn? "Autonomous On": "Autonomous Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" style={{backgroundColor: (dexterityOn? "green": "red")}} onClick={() => onDexterity()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (dexterityOn? "green": "red")}} onClick={() => pubDexterity()}>
                         {dexterityOn? "Dexterity On": "Dexterity Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" style={{backgroundColor: (qrCodeOn? "green": "red")}} onClick={() => onQrCode()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (qrCodeOn? "green": "red")}} onClick={() => pubQrCode()}>
                         {qrCodeOn? "QR Code On": "QR Code Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" style={{backgroundColor: (hazmatOn? "green": "red")}} onClick={() => onHazmat()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (hazmatOn? "green": "red")}} onClick={() => pubHazmat()}>
                         {hazmatOn? "Hazmat On": "Hazmat Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" style={{backgroundColor: (motionOn? "green": "red")}} onClick={() => onMotion()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (motionOn? "green": "red")}} onClick={() => pubMotion()}>
                         {motionOn? "Motion On": "Motion Off"}
                     </button>
+                </Col>
+                <Col>
+                    <div>
+                        <RosImg ros={ros} topic={Config.TOPIC_TEMPERATURE} msg={Config.MSGTYPE_TEMPERATURE} width={160} height={160} />
+                    </div>
+                    <p className="" style={{color: "#e66111", fontSize: "15px", marginLeft: "29px"}}>Thermal Cam</p>
+                </Col>
+                <Col>
+                    <h4 className="text-left m-3" style={{color: "#e66111"}}>{ppm ? ppm : "Loading gas sensor..."}{ppm && "PPM"}</h4>
                 </Col>
             </Row>
         </Container>
