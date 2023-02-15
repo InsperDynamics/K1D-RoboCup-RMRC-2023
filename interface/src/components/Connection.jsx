@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Config from '../scripts/config';
 import Alert from 'react-bootstrap/Alert';
 import { Container, Row, Col } from 'react-bootstrap';
-import Logo from './../img/logo.png';
+import Logo from '../img/logo.png';
 import RosImg from './RosImg';
 
 // resolução do site: 1920px x 920px
