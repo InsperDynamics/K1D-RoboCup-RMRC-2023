@@ -108,30 +108,34 @@ function Connection() {
                     </Alert>
                 </Col>
             </Row>
-            <h1 className="text-center m-3">Switch Modes</h1>
             <Row>
                 <Col>
-                    <button className="btn btn-primary" onClick={() => onAutonomous()}>
+                    <h1 className="text-center m-3" style={{color: "#e66111"}}>Switch Modes</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <button className="btn btn-primary" style={{backgroundColor: (autonomousOn? "green": "red")}} onClick={() => onAutonomous()}>
                         {autonomousOn? "Autonomous On": "Autonomous Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" onClick={() => onDexterity()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (dexterityOn? "green": "red")}} onClick={() => onDexterity()}>
                         {dexterityOn? "Dexterity On": "Dexterity Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" onClick={() => onQrCode()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (qrCodeOn? "green": "red")}} onClick={() => onQrCode()}>
                         {qrCodeOn? "QR Code On": "QR Code Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" onClick={() => onHazmat()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (hazmatOn? "green": "red")}} onClick={() => onHazmat()}>
                         {hazmatOn? "Hazmat On": "Hazmat Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" onClick={() => onMotion()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (motionOn? "green": "red")}} onClick={() => onMotion()}>
                         {motionOn? "Motion On": "Motion Off"}
                     </button>
                 </Col>

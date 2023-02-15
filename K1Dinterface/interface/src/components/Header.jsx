@@ -10,7 +10,7 @@ function Header() {
             <img src={Logo} alt="Insper Dynamics" width={150} height={150}/>
           </Col>
           <Col md={{ span: 4, offset: 4 }}>
-            <h1 className="mt-5">K1D Control Panel</h1>
+            <h1 className="mt-5" style={{color: "#e66111"}}>K1D Control Panel</h1>
           </Col>
         </Row>
       </Container>
