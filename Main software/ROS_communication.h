@@ -14,9 +14,10 @@
 #include <std_msgs/Float32MultiArray.h>
 #include <geometry_msgs/Twist.h>
 #include <sensor_msgs/JointState.h>
-#include <sensor_msgs/Joy.h>
 #include "open_manipulator_msgs/SetJointPosition.h"
 #include "open_manipulator_msgs/SetKinematicsPose.h"
+#define PATH_TIME 0.03
+#define DELTA 0.005
 using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
@@ -36,8 +37,8 @@ std_msgs::Header header;
 cv_bridge::CvImage img_bridge;
 sensor_msgs::Image img_msg;
 ros::Publisher pub_command, pub_value_1, pub_value_2, pub_webcam, pub_mattemp;
-ros::Subscriber sub_temperature, sub_cmdvel, sub_autonomousmode, sub_dexteritymode, sub_qrdetection, sub_hazmatdetection, sub_motiondetection;
-
+ros::Subscriber sub_temperature, sub_cmdvel, sub_autonomousmode, sub_dexteritymode, sub_qrdetection, sub_hazmatdetection, sub_motiondetection, kinematics_pose_sub, joint_states_sub;
+ros::ServiceClient goal_joint_space_path_client_, goal_task_space_path_from_present_position_only_client_, goal_tool_control_client_, goal_task_space_path_from_present_orientation_only_client_;
 
 void temperatureCallback(const std_msgs::Float32MultiArray& temperature)
 {
@@ -71,29 +72,6 @@ void kinematicsPoseCallback(const open_manipulator_msgs::KinematicsPose::ConstPt
   present_kinematic_position = {msg->pose.position.x, msg->pose.position.y, msg->pose.position.z};
 }
 
-// Without SDL
-
-//void joyCallback(const sensor_msgs::Joy::ConstPtr &msg)
-//{
-  //if (msg->axes.at(1) >= 0.9) setGoal("x+");
-  //else if (msg->axes.at(1) <= -0.9) clawGoal = "x-";
-  //else if (msg->axes.at(0) >=  0.9) clawGoal = "y+";
-  //else if (msg->axes.at(0) <= -0.9) clawGoal = "y-";
-  //else if (msg->buttons.at(3) == 1) clawGoal = "z+";
-  //else if (msg->buttons.at(0) == 1) clawGoal = "z-";
-  //else if (msg->buttons.at(5) == 1) clawGoal =  "home";
-  //else if (msg->buttons.at(4) == 1) clawGoal =  "init";
-
-  //if (msg->buttons.at(2) == 1) clawGoal = "gripper close";
-  //else if (msg->buttons.at(1) == 1) clawGoal = "gripper open";
-//}
-
-// With SDL
-
-void joyCallback(const std_msgs::String& joycmd){
-  setGoal(joycmd.data);
-}
-
 void autonomousModeCallback(const std_msgs::Bool& autonomous){autonomous_mode = autonomous.data;}
 void dexterityModeCallback(const std_msgs::Bool& dexterity){dexterity_mode = dexterity.data;}
 void qrDetectionCallback(const std_msgs::Bool& qr){qr_detection = qr.data;}
@@ -123,12 +101,12 @@ void ConnectROS(int argc, char** argv)
 	sub_qrdetection = nodehandle.subscribe("qr_detection", 1000, &qrDetectionCallback);
 	sub_hazmatdetection = nodehandle.subscribe("hazmat_detection", 1000, &hazmatDetectionCallback);
 	sub_motiondetection = nodehandle.subscribe("motion_detection", 1000, &motionDetectionCallback);
-	joint_states_sub = nodehandle.subscribe("joint_states", 10, &OpenManipulatorTeleop::jointStatesCallback);
-  	kinematics_pose_sub = nodehandle.subscribe("kinematics_pose", 10, &OpenManipulatorTeleop::kinematicsPoseCallback);
-  	joy_command_sub = nodehandle.subscribe("joy", 10, &OpenManipulatorTeleop::joyCallback);
+	joint_states_sub = nodehandle.subscribe("joint_states", 1000, &jointStatesCallback);
+  kinematics_pose_sub = nodehandle.subscribe("/gripper/kinematics_pose", 1000, &kinematicsPoseCallback);
 	goal_joint_space_path_client_ = nodehandle.serviceClient<open_manipulator_msgs::SetJointPosition>("goal_joint_space_path");
-  	goal_task_space_path_from_present_position_only_client_ = nodehandle.serviceClient<open_manipulator_msgs::SetKinematicsPose>("goal_task_space_path_from_present_position_only");
-  	goal_tool_control_client_ = nodehandle.serviceClient<open_manipulator_msgs::SetJointPosition>("goal_tool_control");
+  goal_task_space_path_from_present_position_only_client_ = nodehandle.serviceClient<open_manipulator_msgs::SetKinematicsPose>("goal_task_space_path_from_present_position_only");
+  goal_tool_control_client_ = nodehandle.serviceClient<open_manipulator_msgs::SetJointPosition>("goal_tool_control");
+	goal_task_space_path_from_present_orientation_only_client_ = nodehandle.serviceClient<open_manipulator_msgs::SetKinematicsPose>("goal_task_space_path_from_present_orientation_only");
 }
 
 bool setJointSpacePath(std::vector<std::string> joint_name, std::vector<double> joint_angle, double 0.5)
@@ -174,92 +152,82 @@ bool setTaskSpacePathFromPresentPositionOnly(std::vector<double> kinematics_pose
   return false;
 }
 
-void setGoal(const char* str)
+bool setTaskSpacePathFromPresentOrientationOnly(std::vector<double> kinematics_pose)
 {
-  std::vector<double> goalPose;  goalPose.resize(3, 0.0);
-  std::vector<double> goalJoint; goalJoint.resize(4, 0.0);
+  open_manipulator_msgs::SetKinematicsPose srv;
+  double x  = sin(kinematics_pose.at(0)/2) * cos(kinematics_pose.at(1)/2) * cos(kinematics_pose.at(2)/2) - cos(kinematics_pose.at(0)/2) * sin(kinematics_pose.at(1)/2) * sin(kinematics_pose.at(2)/2);
+  double y = cos(kinematics_pose.at(0)/2) * sin(kinematics_pose.at(1)/2) * cos(kinematics_pose.at(2)/2) + sin(kinematics_pose.at(0)/2) * cos(kinematics_pose.at(1)/2) * sin(kinematics_pose.at(2)/2);
+  double w = cos(kinematics_pose.at(0)/2) * cos(kinematics_pose.at(1)/2) * cos(kinematics_pose.at(2)/2) + sin(kinematics_pose.at(0)/2) * sin(kinematics_pose.at(1)/2) * sin(kinematics_pose.at(2)/2);
+  double z = cos(kinematics_pose.at(0)/2) * cos(kinematics_pose.at(1)/2) * sin(kinematics_pose.at(2)/2) - sin(kinematics_pose.at(0)/2) * sin(kinematics_pose.at(1)/2) * cos(kinematics_pose.at(2)/2);
+  srv.request.planning_group = "gripper";
+  srv.request.kinematics_pose.pose.orientation.w = w;
+  srv.request.kinematics_pose.pose.orientation.x = x;
+  srv.request.kinematics_pose.pose.orientation.y = y;
+  srv.request.kinematics_pose.pose.orientation.z = z;
+  srv.request.path_time = PATH_TIME;
 
-  if (dexterity_mode){
-    if (str == "x+")
-    {
-      printf("increase(++) x axis in cartesian space\n");
-      goalPose.at(0) = 0.01;
-      setTaskSpacePathFromPresentPositionOnly(goalPose, 0.5);
-    }
-    else if (str == "x-")
-    {
-      printf("decrease(--) x axis in cartesian space\n");
-      goalPose.at(0) = -0.01;
-      setTaskSpacePathFromPresentPositionOnly(goalPose, 0.5);
-    }
-    else if (str == "y+")
-    {
-      printf("increase(++) y axis in cartesian space\n");
-      goalPose.at(1) = 0.01;
-      setTaskSpacePathFromPresentPositionOnly(goalPose, 0.5);
-    }
-    else if (str == "y-")
-    {
-      printf("decrease(--) y axis in cartesian space\n");
-      goalPose.at(1) = -0.01;
-      setTaskSpacePathFromPresentPositionOnly(goalPose, 0.5);
-    }
-    else if (str == "z+")
-    {
-      printf("increase(++) z axis in cartesian space\n");
-      goalPose.at(2) = 0.01;
-      setTaskSpacePathFromPresentPositionOnly(goalPose, 0.5);
-    }
-    else if (str == "z-")
-    {
-      printf("decrease(--) z axis in cartesian space\n");
-      goalPose.at(2) = -0.01;
-      setTaskSpacePathFromPresentPositionOnly(goalPose, 0.5);
-    }
-    else if (str == "gripper open")
-    {
-      printf("open gripper\n");
-      std::vector<double> joint_angle;
-
-      joint_angle.push_back(0.01);
-      setToolControl(joint_angle);
-    }
-    else if (str == "gripper close")
-    {
-      printf("close gripper\n");
-      std::vector<double> joint_angle;
-      joint_angle.push_back(-0.01);
-      setToolControl(joint_angle);
-    }
-    else if (str == "home")
-    {
-      printf("home pose\n");
-      std::vector<std::string> joint_name;
-      std::vector<double> joint_angle;
-      double 0.5 = 2.0;
-
-      joint_name.push_back("joint1"); joint_angle.push_back(0.0);
-      joint_name.push_back("joint2"); joint_angle.push_back(-1.05);
-      joint_name.push_back("joint3"); joint_angle.push_back(0.35);
-      joint_name.push_back("joint4"); joint_angle.push_back(0.70);
-      setJointSpacePath(joint_name, joint_angle, 0.5);
-    }
-    else if (str == "init")
-    {
-      printf("init pose\n");
-
-      std::vector<std::string> joint_name;
-      std::vector<double> joint_angle;
-      double 0.5 = 2.0;
-      joint_name.push_back("joint1"); joint_angle.push_back(0.0);
-      joint_name.push_back("joint2"); joint_angle.push_back(0.0);
-      joint_name.push_back("joint3"); joint_angle.push_back(0.0);
-      joint_name.push_back("joint4"); joint_angle.push_back(0.0);
-      setJointSpacePath(joint_name, joint_angle, 0.5);
-    }
+  if (goal_task_space_path_from_present_orientation_only_client_.call(srv))
+  {
+    return srv.response.is_planned;
   }
+  return false;
 }
 
+void ClawBackward()
+{
+  std::vector<double> goal {0.0, 0.0, DELTA};
+  setTaskSpacePathFromPresentPositionOnly(goal);
+}
+
+void ClawForward()
+{
+  std::vector<double> goal {0.0, 0.0, -DELTA};
+  setTaskSpacePathFromPresentPositionOnly(goal);
+}
+
+void ClawDown()
+{
+  std::vector<double> goal {DELTA, 0.0, 0.0};
+  setTaskSpacePathFromPresentPositionOnly(goal); 
+}
+
+void ClawUp()
+{
+  std::vector<double> goal {-DELTA, 0.0, 0.0};
+  setTaskSpacePathFromPresentPositionOnly(goal); 
+}
+
+void ClawLeft()
+{
+  std::vector<double> goal {0.0, DELTA, 0.0};
+  setTaskSpacePathFromPresentPositionOnly(goal); 
+}
+
+void ClawRight()
+{
+  std::vector<double> goal {0.0, -DELTA, 0.0};
+  setTaskSpacePathFromPresentPositionOnly(goal); 
+}
+
+void ClawOpen()
+{
+  std::vector<double> joint_angle;
+  joint_angle.push_back(0.01);
+  setToolControl(joint_angle);
+}
+
+void ClawClose()
+{
+  std::vector<double> joint_angle;
+  joint_angle.push_back(-0.01);
+  setToolControl(joint_angle);
+}
+
+void GoToPreset(vector<double> angles)
+{
+	vector<string> name = {"joint1","joint2","joint3","joint4"};
+	setJointSpacePath(name, angles);
+}
 
 void ReadOpenCR() 
 {

@@ -129,7 +129,7 @@ void setup(int argc, char** argv)
 
 void loop()
 {
-	if (SDL_NumJoysticks() < 1)
+	if (SDL_GameControllerGetPlayerIndex(gGameController) < 1)
 		InitializeGamepad();
 	UpdateGamepadInput();
 	checkUserInput();

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16.3)
 project(K1D)
 
 find_package(OpenCV REQUIRED)
-find_package(SDL2 REQUIRED)
+find_package(SDL2 2.26.3 EXACT REQUIRED PATHS /usr/local/include/SDL2)
 find_package(catkin REQUIRED COMPONENTS
   cmake_modules
   message_filters
