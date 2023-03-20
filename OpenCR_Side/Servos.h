@@ -1,47 +1,48 @@
-#include <Dynamixel2Arduino.h>
-#include <std_msgs/Float64.h>
-#include <std_msgs/Float64MultiArray.h>
-#include <sensor_msgs/JointState.h>
-#define DXL_DIR_PIN 84
-#define baserotator 0
-#define basearm 0
-#define forearm 0
-#define hand 0
-#define gripperOpener 0
-#define gripperTurner 0 
-#define frontFlipper 0
-#define backFlipper 0
+#include <DynamixelWorkbench.h>
+#define DXL_BAUD              1000000
 
-Dynamixel2Arduino dxl(Serial3,DXL_DIR_PIN);
-bool extended = false;
+DynamixelWorkbench dxl;
+uint8_t dxl_joint[4] = {11,12,13,14};
+uint8_t id_array[5] = {11,12,13,14,15};
+uint8_t gripper_id = 15;
+uint8_t *pid = &gripper_id;
+int32_t position_values[5] = {};
+int32_t velocity_values[5] = {};
+int32_t current_values[5] = {}; 
 
-void SetupServo(){
-  dxl.begin(57600);
-}
 
-void ControlDynamixels(sensor_msgs::JointState joint_states_claw, float position_frontFlipper, float position_backFlipper){
-  for (int i = 0; i < joint_states_claw.length; i++) {
-    switch(joint_states_claw.name[i]){
-      case "joint0":
-        dxl.setGoalPosition(baserotator, joint_states_claw.position[i], UNIT_DEGREE);
-        break;
-      case "joint1":
-        dxl.setGoalPosition(basearm, joint_states_claw.position[i], UNIT_DEGREE);
-        break;
-      case "joint2":
-        dxl.setGoalPosition(forearm, joint_states_claw.position[i], UNIT_DEGREE);
-        break;
-      case "joint3":
-        dxl.setGoalPosition(hand, joint_states_claw.position[i], UNIT_DEGREE);
-        break;
-      case "joint4":
-        dxl.setGoalPosition(gripperOpener, joint_states_claw.position[i], UNIT_DEGREE);
-        break;
-      case "joint5":
-        dxl.setGoalPosition(gripperTurner, joint_states_claw.position[i], UNIT_DEGREE);
-        break;
-    }
+void ServosInitialize()
+{
+  const char *log;
+  Serial3.begin(DXL_BAUD);
+  dxl.init("",DXL_BAUD);
+  dxl.addSyncWriteHandler(dxl_joint[0], "Goal_Position", &log);
+  dxl.addSyncReadHandler(126, 10); 
+  for (int i = 0; i < 4; i++){
+    uint8_t id = dxl_joint[i];
+    dxl.setVelocityBasedProfile(id);
+    dxl.jointMode(id);
   }
-  dxl.setGoalPosition(frontFlipper, position_frontFlipper, UNIT_DEGREE);
-  dxl.setGoalPosition(backFlipper, position_backFlipper, UNIT_DEGREE);
+  dxl.setVelocityBasedProfile(gripper_id);
+  dxl.currentBasedPositionMode(gripper_id, 200);
 }
+
+void ControlJointDynamixel(long int *joint_values)
+{
+  dxl.syncWrite(0 , dxl_joint, 4, joint_values, 1);
+}
+
+void ControlGripperDynamixel(long int gripper_value)
+{  
+  int32_t *p = &gripper_value;
+  dxl.syncWrite(0, pid, 1, p, 1);
+}
+
+void ReadJointValues()
+{
+  dxl.syncRead(0, id_array, 5);
+  dxl.getSyncReadData(0, id_array, 5, 126, 2, current_values);
+  dxl.getSyncReadData(0, id_array, 5, 128, 4, velocity_values);
+  dxl.getSyncReadData(0, id_array, 5, 132, 4, position_values);
+}
+
