@@ -18,13 +18,6 @@ SDL_GameControllerAxis lastAxis = SDL_CONTROLLER_AXIS_INVALID;
 
 map<Uint8,vector<double>> preset;
 
-void InitializeGamepad()
-{
-	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
-    gGameController = SDL_GameControllerOpen(0);
-	SetHomePreset();
-}
-
 void SetHomePreset()
 {
 	std::vector<double> joint_angle;
@@ -36,6 +29,13 @@ void SetHomePreset()
 
 	preset[SDL_CONTROLLER_BUTTON_X] = joint_angle;
 
+}
+
+void InitializeGamepad()
+{
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
+    gGameController = SDL_GameControllerOpen(0);
+	SetHomePreset();
 }
 
 void UpdateRawInput()

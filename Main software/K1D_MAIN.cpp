@@ -2,8 +2,8 @@
 #include <string>
 #include <opencv2/opencv.hpp>
 #include "ROS_communication.h"
-#include "Gamepad_controller.h"
 #include "Claw.h"
+#include "Gamepad_controller.h"
 #include "Thermal.h"
 #include "QR_read.h"
 #include "Motion_detection.h"
