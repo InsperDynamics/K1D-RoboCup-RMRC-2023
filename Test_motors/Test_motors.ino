@@ -115,3 +115,18 @@ void Move(int speedL, int speedR){
   analogWrite(motorUR, constrain(abs(speedR), 0, 255));
   analogWrite(motorLR, constrain(abs(speedR), 0, 255));
 }
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Initialize");
+  MotorsInitialize();
+}
+
+void loop() {
+  Serial.println("Move");
+  Move(120, 120);
+  delay(1000);
+  Serial.println("Stop");
+  MotorsStop();
+  delay(1000);
+}

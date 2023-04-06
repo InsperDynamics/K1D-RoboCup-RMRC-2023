@@ -5,7 +5,7 @@
 Melopero_AMG8833 ThermalImager;
 DFRobot_CCS811 GasDetector;
 int CO2level = 0;
-float mlx90640_pixels[8*8];
+float amg8833_pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 
 void SensorsInitialize() {
 	Wire.begin();
@@ -22,7 +22,7 @@ void ReadSensors() {
 	ThermalImager.updatePixelMatrix();
   for (int x = 0; x < 8; x++){
     for (int y = 0; y < 8; y++){
-      mlx90640_pixels[(8*x) + y] = ThermalImager.pixelMatrix[y][x];
+      amg8833_pixels[(8*x) + y] = ThermalImager.pixelMatrix[y][x];
     }
   }
 }
