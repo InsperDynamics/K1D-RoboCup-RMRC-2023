@@ -109,12 +109,12 @@ void ConnectROS(int argc, char** argv)
 	goal_task_space_path_from_present_orientation_only_client_ = nodehandle.serviceClient<open_manipulator_msgs::SetKinematicsPose>("goal_task_space_path_from_present_orientation_only");
 }
 
-bool setJointSpacePath(std::vector<std::string> joint_name, std::vector<double> joint_angle, double 0.5)
+bool setJointSpacePath(std::vector<std::string> joint_name, std::vector<double> joint_angle)
 {
   open_manipulator_msgs::SetJointPosition srv;
   srv.request.joint_position.joint_name = joint_name;
   srv.request.joint_position.position = joint_angle;
-  srv.request.0.5 = 0.5;
+  srv.request.path_time = 1.0;
 
   if (goal_joint_space_path_client_.call(srv))
   {
@@ -126,7 +126,7 @@ bool setJointSpacePath(std::vector<std::string> joint_name, std::vector<double> 
 bool setToolControl(std::vector<double> joint_angle)
 {
   open_manipulator_msgs::SetJointPosition srv;
-  srv.request.joint_position.joint_name.push_back(priv_node_handle_.param<std::string>("end_effector_name", "gripper"));
+  srv.request.joint_position.joint_name.push_back({"gripper"});
   srv.request.joint_position.position = joint_angle;
 
   if (goal_tool_control_client_.call(srv))
@@ -136,14 +136,14 @@ bool setToolControl(std::vector<double> joint_angle)
   return false;
 }
 
-bool setTaskSpacePathFromPresentPositionOnly(std::vector<double> kinematics_pose, double 0.5)
+bool setTaskSpacePathFromPresentPositionOnly(std::vector<double> kinematics_pose)
 {
   open_manipulator_msgs::SetKinematicsPose srv;
-  srv.request.planning_group = priv_node_handle_.param<std::string>("end_effector_name", "gripper");
+  srv.request.planning_group = "gripper";
   srv.request.kinematics_pose.pose.position.x = kinematics_pose.at(0);
   srv.request.kinematics_pose.pose.position.y = kinematics_pose.at(1);
   srv.request.kinematics_pose.pose.position.z = kinematics_pose.at(2);
-  srv.request.0.5 = 0.5;
+  srv.request.path_time = PATH_TIME;
 
   if (goal_task_space_path_from_present_position_only_client_.call(srv))
   {
@@ -172,7 +172,6 @@ bool setTaskSpacePathFromPresentOrientationOnly(std::vector<double> kinematics_p
   }
   return false;
 }
-
 void ReadOpenCR() 
 {
 	ros::spinOnce();

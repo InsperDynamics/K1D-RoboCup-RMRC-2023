@@ -54,6 +54,36 @@ void ClawClose()
   setToolControl(joint_angle);
 }
 
+void RaiseFrontFlippers()
+{
+  std::vector<double> goal {0.0, -DELTA, 0.0};
+  setTaskSpacePathFromPresentPositionOnly(goal); 
+}
+
+void LowerFrontFlippers()
+{
+  std::vector<double> goal {0.0, -DELTA, 0.0};
+  setTaskSpacePathFromPresentPositionOnly(goal); 
+}
+
+void RaiseBackFlippers()
+{
+  std::vector<double> goal {0.0, -DELTA, 0.0};
+  setTaskSpacePathFromPresentPositionOnly(goal); 
+}
+
+void LowerBackFlippers()
+{
+  std::vector<double> goal {0.0, -DELTA, 0.0};
+  setTaskSpacePathFromPresentPositionOnly(goal); 
+}
+
+void ClawRetract()
+{
+  std::vector<double> goal {0.0, -DELTA, 0.0};
+  setTaskSpacePathFromPresentPositionOnly(goal); 
+}
+
 void GoToPreset(vector<double> angles)
 {
 	vector<string> name = {"joint1","joint2","joint3","joint4"};

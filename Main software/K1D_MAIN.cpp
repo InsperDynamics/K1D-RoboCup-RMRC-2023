@@ -44,8 +44,8 @@ void MoveAutonomous()
 	//value caps at [-1, 1]
   	float x = max(min(cmdvel_linear_x, 1.0f), -1.0f);
   	float z = max(min(cmdvel_angular_z, 1.0f), -1.0f);
-	float l = ((2*msg.linear.x) - (msg.angular.z*wheelBase)) / (2*wheelRadius);
-  	float r = ((2*msg.linear.x) + (msg.angular.z*wheelBase)) / (2*wheelRadius);
+	float l = ((2*cmdvel_linear_x) - (cmdvel_angular_z*wheelBase)) / (2*wheelRadius);
+  	float r = ((2*cmdvel_linear_x) + (cmdvel_angular_z*wheelBase)) / (2*wheelRadius);
 	uint16_t pwm_l = mapPwm(fabs(l), 50, 250);
 	uint16_t pwm_r = mapPwm(fabs(r), 50, 250);
 	cout << "(AUTONOMOUS) MotorsMove " << to_string(pwm_l) << " " << to_string(pwm_r) << "\n";
