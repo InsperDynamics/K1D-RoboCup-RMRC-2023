@@ -136,6 +136,7 @@ void loop()
 	checkSensorsFeed();
 	PublishMats(webcam_image, thermal_image);
 	imshow("K1D", webcam_image);
+	imshow("Thermal", thermal_image);
 	waitKey(1);
 }
 

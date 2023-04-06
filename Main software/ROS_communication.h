@@ -22,7 +22,7 @@ using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
 using namespace cv;
-float current_temperature[768] = {0};
+float current_temperature[64] = {0};
 float cmdvel_linear_x = 0, cmdvel_angular_z = 0;
 bool autonomous_mode = false;
 bool dexterity_mode = false;
