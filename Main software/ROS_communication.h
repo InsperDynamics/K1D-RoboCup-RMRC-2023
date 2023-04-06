@@ -173,62 +173,6 @@ bool setTaskSpacePathFromPresentOrientationOnly(std::vector<double> kinematics_p
   return false;
 }
 
-void ClawBackward()
-{
-  std::vector<double> goal {0.0, 0.0, DELTA};
-  setTaskSpacePathFromPresentPositionOnly(goal);
-}
-
-void ClawForward()
-{
-  std::vector<double> goal {0.0, 0.0, -DELTA};
-  setTaskSpacePathFromPresentPositionOnly(goal);
-}
-
-void ClawDown()
-{
-  std::vector<double> goal {DELTA, 0.0, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
-}
-
-void ClawUp()
-{
-  std::vector<double> goal {-DELTA, 0.0, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
-}
-
-void ClawLeft()
-{
-  std::vector<double> goal {0.0, DELTA, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
-}
-
-void ClawRight()
-{
-  std::vector<double> goal {0.0, -DELTA, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
-}
-
-void ClawOpen()
-{
-  std::vector<double> joint_angle;
-  joint_angle.push_back(0.01);
-  setToolControl(joint_angle);
-}
-
-void ClawClose()
-{
-  std::vector<double> joint_angle;
-  joint_angle.push_back(-0.01);
-  setToolControl(joint_angle);
-}
-
-void GoToPreset(vector<double> angles)
-{
-	vector<string> name = {"joint1","joint2","joint3","joint4"};
-	setJointSpacePath(name, angles);
-}
-
 void ReadOpenCR() 
 {
 	ros::spinOnce();
