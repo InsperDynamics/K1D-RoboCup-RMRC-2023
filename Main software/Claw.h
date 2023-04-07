@@ -3,6 +3,7 @@
 #include <string>
 #include "ROS_communication.h"
 using namespace std;
+#define FLIPPER_DELTA 25
 
 void ClawBackward()
 {
@@ -56,26 +57,22 @@ void ClawClose()
 
 void RaiseFrontFlippers()
 {
-  std::vector<double> goal {0.0, -DELTA, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
+  PublishOpenCR("RaiseFrontFlippers", FLIPPER_DELTA, 0);
 }
 
 void LowerFrontFlippers()
 {
-  std::vector<double> goal {0.0, -DELTA, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
+  PublishOpenCR("LowerFrontFlippers", FLIPPER_DELTA, 0);
 }
 
 void RaiseBackFlippers()
 {
-  std::vector<double> goal {0.0, -DELTA, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
+  PublishOpenCR("RaiseBackFlippers", FLIPPER_DELTA, 0);
 }
 
 void LowerBackFlippers()
 {
-  std::vector<double> goal {0.0, -DELTA, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
+  PublishOpenCR("LowerBackFlippers", FLIPPER_DELTA, 0);
 }
 
 void ClawRetract()

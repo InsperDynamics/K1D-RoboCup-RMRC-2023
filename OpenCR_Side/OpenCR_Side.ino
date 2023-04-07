@@ -53,6 +53,18 @@ void ControlMotors(String command, int command_parameter_1, int command_paramete
   else if (command == "MotorsStop"){
     MotorsStop();
   }
+  else if (command == "RaiseFrontFlippers"){
+    RaiseFrontFlipper(current_value_1);
+  }
+  else if (command == "RaiseBackFlippers"){
+    RaiseBackFlipper(current_value_1);
+  }
+  else if (command == "LowerFrontFlippers"){
+    LowerFrontFlipper(current_value_1);
+  }
+  else if (command == "LowerBackFlippers"){
+    LowerBackFlipper(current_value_1);
+  }
 }
 
 void setup() {
