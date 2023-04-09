@@ -9,9 +9,13 @@ uint8_t flipper_id[4] = {1,2,3,4};
 uint8_t *pid = &gripper_id;
 
 int32_t flipper_position[4] = {};
+
 int32_t joint_position[4] = {};
+int32_t joint_velocity[4] = {};
+
 int32_t gripper_position;
 
+sensor_msgs::JointState joint_states;
 
 void ServosInitialize()
 {
@@ -21,6 +25,7 @@ void ServosInitialize()
 
   dxl.addSyncWriteHandler(claw_id[0], "Goal_Position", &log);
   dxl.addSyncWriteHandler(flipper_id[0], "Goal_Position", &log);
+  dxl.addSyncReadHandler(128, 8);
   dxl.addSyncReadHandler(132, 4);
 
   for (int i = 0; i < 4; i++){
@@ -58,13 +63,24 @@ void ControlFlipperDynamixel(int32_t *flipper_values)
 void ReadJointValues()
 {
   dxl.syncRead(0, joint_id, 4);
+  dxl.getSyncReadData(0, joint_id, 4, 128, 4, joint_velocity);
   dxl.getSyncReadData(0, joint_id, 4, 132, 4, joint_position);
+}
+
+void GetJointState()
+{
+  ReadJointValues();
+  for (int i = 0; i < 4; i++){
+    float radian = dxl.convertValue2Radian(joint_id[i], joint_position[i]);
+    joint_states.position[i] = radian;
+    joint_states.velocity[i] = radian * 0.1047197551;
+  }  
 }
 
 void ReadFlipperValues()
 {
-  dxl.syncRead(0, flipper_id, 4);
-  dxl.getSyncReadData(0, flipper_id, 4, 132, 4, flipper_position);
+  dxl.syncRead(1, flipper_id, 4);
+  dxl.getSyncReadData(1, flipper_id, 4, 132, 4, flipper_position);
 }
 
 void RaiseFrontFlipper(int delta)

@@ -17,7 +17,7 @@ int current_value_1 = 0;
 int current_value_2 = 0;
 std_msgs::UInt16 gas;
 std_msgs::Float32MultiArray temperature;
-sensor_msgs::JointState joint_states;
+
 
 
 void commandCallback(const std_msgs::String& command){
@@ -97,9 +97,10 @@ void loop() {
     temperature.data[i] = amg8833_pixels[i];
   }
   gas.data = CO2level;
-  ReadJointValues();
+  GetJointState();
   pub_temperature.publish(&temperature);
   pub_gas.publish(&gas);
+  pub_joint_states.publish(&joint_states);
   nodehandle.spinOnce();
   delay(1);
   ControlMotors(current_command, current_value_1, current_value_2);
