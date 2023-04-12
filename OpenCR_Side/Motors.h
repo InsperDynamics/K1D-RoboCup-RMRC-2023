@@ -2,18 +2,18 @@
 #define enableB A1
 #define enableC A2
 #define enableD A3
-#define motorUL 12
-#define motorULdirA 9
-#define motorULdirB 10
-#define motorLL 11
-#define motorLLdirA 13
-#define motorLLdirB 8
+#define motorUL 9
+#define motorULdirA 10
+#define motorULdirB 12
+#define motorUR 11
+#define motorURdirA 8
+#define motorURdirB 13
 #define motorLR 6
 #define motorLRdirA 3
 #define motorLRdirB 4
-#define motorUR 5
-#define motorURdirA 2
-#define motorURdirB 7
+#define motorLL 5
+#define motorLLdirA 7
+#define motorLLdirB 2
 
 void MotorsRelease(){
   digitalWrite(motorULdirA, LOW);
