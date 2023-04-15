@@ -5,15 +5,15 @@
 #define motorUL 9
 #define motorULdirA 10
 #define motorULdirB 12
-#define motorUR 11
-#define motorURdirA 8
-#define motorURdirB 13
+#define motorLL 11
+#define motorLLdirA 13
+#define motorLLdirB 8
 #define motorLR 6
 #define motorLRdirA 3
 #define motorLRdirB 4
-#define motorLL 5
-#define motorLLdirA 7
-#define motorLLdirB 2
+#define motorUR 5
+#define motorURdirA 2
+#define motorURdirB 7
 
 void MotorsRelease(){
   digitalWrite(motorULdirA, LOW);
