@@ -6,6 +6,7 @@ frame1 = cv.GaussianBlur(frame1, (5, 5), 0)
 prvs = cv.cvtColor(frame1, cv.COLOR_BGR2GRAY)
 hsv = np.zeros_like(frame1)
 hsv[..., 1] = 255
+
 while(1):
     ret, frame2 = cap.read()
     if not ret:
@@ -29,4 +30,5 @@ while(1):
         cv.imwrite('opticalfb.png', frame2)
         cv.imwrite('opticalhsv.png', bgr)
     prvs = next
+    
 cv.destroyAllWindows()
