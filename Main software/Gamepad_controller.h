@@ -8,6 +8,7 @@ using namespace std;
 static SDL_GameController* gGameController = NULL;
 static SDL_Event sdl_event;
 static int max_pwm = 250;
+static int min_pwm = 40;
 static int xAnalog_left = 0;
 static int yAnalog_left = 0;
 string gamepad_command = "";
@@ -157,8 +158,8 @@ void UpdateGamepadInput()
 	int pwm = static_cast<int>(magnitude);
 	if (pwm > max_pwm)
 		pwm = max_pwm;
-	else if (pwm < 0)
-		pwm = 0;
+	else if (pwm < min_pwm)
+		pwm = min_pwm;
 	double theta = atan2(yAnalog_left, xAnalog_left);
 	if (theta < 0)
 		theta += 2 * M_PI;
