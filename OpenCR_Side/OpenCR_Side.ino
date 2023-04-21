@@ -71,7 +71,6 @@ void setup() {
   MotorsInitialize();
   SensorsInitialize();
   ServosInitialize();
-  CalibrateIMU();
   nodehandle.getHardware()->setBaud(115200);
   nodehandle.initNode();
   temperature.layout.dim[0].label = "temperature";
@@ -91,7 +90,6 @@ void setup() {
 
 void loop() {
   ReadSensors();
-  UpdateIMU();
   temperature.data_length = AMG88xx_PIXEL_ARRAY_SIZE;
   for (int i=0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++) {
     temperature.data[i] = amg8833_pixels[i];
