@@ -20,8 +20,8 @@ Mat webcam_image = Mat::zeros(2 * resolution_horizontal, resolution_vertical, CV
 
 void openCamera()
 {
-	captureA.open(2);
-	captureB.open(4);
+	captureA.open(0);
+	captureB.open(2);
 	captureA.set(CAP_PROP_FPS, 30);
 	captureB.set(CAP_PROP_FPS, 30);
 }

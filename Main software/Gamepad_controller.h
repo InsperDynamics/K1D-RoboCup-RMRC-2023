@@ -88,7 +88,7 @@ void UpdateRawInput()
 					gamepad_command = "RaiseFrontFlippers";
 					break;
 				case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-				    gamepad_command = "RaiseRearFlippers";
+				    gamepad_command = "RaiseBackFlippers";
                     break;
 				case SDL_CONTROLLER_BUTTON_Y:
 					gamepad_command = "ClawUp";
@@ -127,7 +127,7 @@ void UpdateRawInput()
 			{
 			case SDL_CONTROLLER_AXIS_LEFTX:
 				if (abs(sdl_event.caxis.value) > abs(JOYSTICK_DEAD_ZONE))
-					xAnalog_left = sdl_event.jaxis.value / pwm_to_joystick_zone;
+					xAnalog_left = sdl_event.caxis.value / pwm_to_joystick_zone;
 				else
 					xAnalog_left = 0;
 				break;

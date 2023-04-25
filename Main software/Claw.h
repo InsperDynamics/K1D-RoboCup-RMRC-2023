@@ -3,56 +3,78 @@
 #include <string>
 #include "ROS_communication.h"
 using namespace std;
-#define FLIPPER_DELTA 25
+#define DELTA 1
+#define FLIPPER_DELTA 30
+#define GRIPPER_DELTA 1
 
 void ClawBackward()
 {
-  std::vector<double> goal {0.0, 0.0, DELTA};
-  setTaskSpacePathFromPresentPositionOnly(goal);
+	for (int i = 0; i < 3; i++)
+	{
+		joint_msg.data[i] = present_joint_angle.at(i);
+  	}
+	joint_msg.data[0] -= DELTA;
+	pub_goal_joints.publish(joint_msg);
 }
 
 void ClawForward()
 {
-  std::vector<double> goal {0.0, 0.0, -DELTA};
-  setTaskSpacePathFromPresentPositionOnly(goal);
+	for (int i = 0; i < 3; i++)
+	{
+		joint_msg.data[i] = present_joint_angle.at(i);
+  	}
+	joint_msg.data[0] += DELTA;
+	pub_goal_joints.publish(joint_msg);	
 }
 
 void ClawDown()
 {
-  std::vector<double> goal {DELTA, 0.0, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
+	for (int i = 0; i < 3; i++)
+	{
+		joint_msg.data[i] = present_joint_angle.at(i);
+  	}
+	joint_msg.data[1] -= DELTA;
+	pub_goal_joints.publish(joint_msg);
 }
 
 void ClawUp()
 {
-  std::vector<double> goal {-DELTA, 0.0, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
+	for (int i = 0; i < 3; i++)
+	{
+		joint_msg.data[i] = present_joint_angle.at(i);
+  	}
+	joint_msg.data[1] += DELTA;
+	pub_goal_joints.publish(joint_msg);
 }
 
 void ClawLeft()
 {
-  std::vector<double> goal {0.0, DELTA, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
+	for (int i = 0; i < 3; i++)
+	{
+		joint_msg.data[i] = present_joint_angle.at(i);
+  	}
+	joint_msg.data[2] -= DELTA;
+	pub_goal_joints.publish(joint_msg);
 }
 
 void ClawRight()
 {
-  std::vector<double> goal {0.0, -DELTA, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
+  	for (int i = 0; i < 3; i++)
+	{
+		joint_msg.data[i] = present_joint_angle.at(i);
+  	}
+	joint_msg.data[2] += DELTA;
+	pub_goal_joints.publish(joint_msg);
 }
 
 void ClawOpen()
 {
-  std::vector<double> joint_angle;
-  joint_angle.push_back(0.01);
-  setToolControl(joint_angle);
+  PublishOpenCR("MoveGripper", GRIPPER_DELTA, 0);
 }
 
 void ClawClose()
 {
-  std::vector<double> joint_angle;
-  joint_angle.push_back(-0.01);
-  setToolControl(joint_angle);
+  PublishOpenCR("MoveGripper", -GRIPPER_DELTA, 0);
 }
 
 void RaiseFrontFlippers()
@@ -77,12 +99,10 @@ void LowerBackFlippers()
 
 void ClawRetract()
 {
-  std::vector<double> goal {0.0, -DELTA, 0.0};
-  setTaskSpacePathFromPresentPositionOnly(goal); 
+  
 }
 
 void GoToPreset(vector<double> angles)
 {
-	vector<string> name = {"joint1","joint2","joint3","joint4"};
-	setJointSpacePath(name, angles);
+	
 }
