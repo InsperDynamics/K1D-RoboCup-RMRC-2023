@@ -2,6 +2,7 @@
 // Insper Dynamics
 #include <ros.h>
 #include <std_msgs/String.h>
+#include <std_msgs/Int16.h>
 #include <std_msgs/UInt16.h>
 #include <std_msgs/Int32.h>
 #include <std_msgs/Int32MultiArray.h>
@@ -23,10 +24,10 @@ std_msgs::Float32MultiArray temperature;
 void commandCallback(const std_msgs::String& command){
   current_command = command.data;
 }
-void value1Callback(const std_msgs::UInt16& value1){
+void value1Callback(const std_msgs::Int16& value1){
   current_value_1 = value1.data;
 }
-void value2Callback(const std_msgs::UInt16& value2){
+void value2Callback(const std_msgs::Int16& value2){
   current_value_2 = value2.data;
 }
 void jointsCallback(const std_msgs::Int32MultiArray& joint_msg){
@@ -41,8 +42,8 @@ ros::Publisher pub_temperature("temperature", &temperature);
 ros::Publisher pub_gas("gas", &gas);
 ros::Publisher pub_joint_states("joint_states", &joint_states);
 ros::Subscriber<std_msgs::String> sub_command("arduino_command", commandCallback);
-ros::Subscriber<std_msgs::UInt16> sub_value_1("arduino_value_1", value1Callback);
-ros::Subscriber<std_msgs::UInt16> sub_value_2("arduino_value_2", value2Callback);
+ros::Subscriber<std_msgs::Int16> sub_value_1("arduino_value_1", value1Callback);
+ros::Subscriber<std_msgs::Int16> sub_value_2("arduino_value_2", value2Callback);
 ros::Subscriber<std_msgs::Int32MultiArray> sub_joints("goal_joints", jointsCallback);
 ros::Subscriber<std_msgs::Int32> sub_gripper("goal_gripper", gripperCallback);
 
