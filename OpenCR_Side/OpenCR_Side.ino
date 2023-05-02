@@ -33,9 +33,6 @@ void value2Callback(const std_msgs::Int16& value2){
 void jointsCallback(const std_msgs::Int32MultiArray& joint_msg){
   ControlJointDynamixel(joint_msg.data);
 }
-void gripperCallback(const std_msgs::Int32& gripper_msg){  
-  ControlGripperDynamixel(gripper_msg.data);
-}
 
 ros::NodeHandle nodehandle;
 ros::Publisher pub_temperature("temperature", &temperature);
@@ -45,7 +42,6 @@ ros::Subscriber<std_msgs::String> sub_command("arduino_command", commandCallback
 ros::Subscriber<std_msgs::Int16> sub_value_1("arduino_value_1", value1Callback);
 ros::Subscriber<std_msgs::Int16> sub_value_2("arduino_value_2", value2Callback);
 ros::Subscriber<std_msgs::Int32MultiArray> sub_joints("goal_joints", jointsCallback);
-ros::Subscriber<std_msgs::Int32> sub_gripper("goal_gripper", gripperCallback);
 
 void ControlMotors(String command, int command_parameter_1, int command_parameter_2) {
   if (command == "MotorsMove"){
@@ -65,6 +61,30 @@ void ControlMotors(String command, int command_parameter_1, int command_paramete
   }
   else if (command == "LowerBackFlippers"){
     LowerBackFlipper(command_parameter_1);
+  }
+  else if (command == "OpenGripper"){
+    OpenGripper(command_parameter_1);
+  }
+  else if (command == "CloseGripper"){
+    CloseGripper(command_parameter_1);
+  }
+  else if (command == "First+"){
+    FirstPlus(command_parameter_1);
+  }
+  else if (command == "First-"){
+    FirstMinus(command_parameter_1);
+  }
+  else if (command == "Second+"){
+    SecondPlus(command_parameter_1);
+  }
+  else if (command == "Second-"){
+    SecondMinus(command_parameter_1);
+  }
+  else if (command == "Third+"){
+    ThirdPlus(command_parameter_1);
+  }
+  else if (command == "Third-"){
+    ThirdMinus(command_parameter_1);
   }
 }
 
@@ -86,7 +106,6 @@ void setup() {
   nodehandle.subscribe(sub_value_1);
   nodehandle.subscribe(sub_value_2);
   nodehandle.subscribe(sub_joints);
-  nodehandle.subscribe(sub_gripper);
 }
 
 void loop() {
@@ -96,10 +115,10 @@ void loop() {
     temperature.data[i] = amg8833_pixels[i];
   }
   gas.data = CO2level;
-  GetJointState();
+  //GetJointState();
   pub_temperature.publish(&temperature);
   pub_gas.publish(&gas);
-  pub_joint_states.publish(&joint_states);
+  //pub_joint_states.publish(&joint_states);
   nodehandle.spinOnce();
   delay(1);
   ControlMotors(current_command, current_value_1, current_value_2);

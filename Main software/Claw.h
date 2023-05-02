@@ -3,78 +3,48 @@
 #include <string>
 #include "ROS_communication.h"
 using namespace std;
-#define DELTA 1
+#define DELTA 25
 #define FLIPPER_DELTA 30
-#define GRIPPER_DELTA 1
+#define GRIPPER_DELTA 30
 
-void ClawBackward()
+void FirstPlus()
 {
-	for (int i = 0; i < 3; i++)
-	{
-		joint_msg.data[i] = present_joint_angle.at(i);
-  	}
-	joint_msg.data[0] -= DELTA;
-	pub_goal_joints.publish(joint_msg);
+	PublishOpenCR("First+", DELTA, 0);	
 }
 
-void ClawForward()
+void FirstMinus()
 {
-	for (int i = 0; i < 3; i++)
-	{
-		joint_msg.data[i] = present_joint_angle.at(i);
-  	}
-	joint_msg.data[0] += DELTA;
-	pub_goal_joints.publish(joint_msg);	
+	PublishOpenCR("First-", DELTA, 0);	
 }
 
-void ClawDown()
+void SecondPlus()
 {
-	for (int i = 0; i < 3; i++)
-	{
-		joint_msg.data[i] = present_joint_angle.at(i);
-  	}
-	joint_msg.data[1] -= DELTA;
-	pub_goal_joints.publish(joint_msg);
+  PublishOpenCR("Second+", DELTA, 0);
 }
 
-void ClawUp()
+void SecondMinus()
 {
-	for (int i = 0; i < 3; i++)
-	{
-		joint_msg.data[i] = present_joint_angle.at(i);
-  	}
-	joint_msg.data[1] += DELTA;
-	pub_goal_joints.publish(joint_msg);
+  PublishOpenCR("Second-", DELTA, 0);
 }
 
-void ClawLeft()
+void ThirdPlus()
 {
-	for (int i = 0; i < 3; i++)
-	{
-		joint_msg.data[i] = present_joint_angle.at(i);
-  	}
-	joint_msg.data[2] -= DELTA;
-	pub_goal_joints.publish(joint_msg);
+  PublishOpenCR("Third+", DELTA, 0);
 }
 
-void ClawRight()
+void ThirdMinus()
 {
-  	for (int i = 0; i < 3; i++)
-	{
-		joint_msg.data[i] = present_joint_angle.at(i);
-  	}
-	joint_msg.data[2] += DELTA;
-	pub_goal_joints.publish(joint_msg);
+  PublishOpenCR("Third-", DELTA, 0);
 }
 
 void ClawOpen()
 {
-  PublishOpenCR("MoveGripper", GRIPPER_DELTA, 0);
+  PublishOpenCR("OpenGripper", GRIPPER_DELTA, 0);
 }
 
 void ClawClose()
 {
-  PublishOpenCR("MoveGripper", -GRIPPER_DELTA, 0);
+  PublishOpenCR("CloseGripper", GRIPPER_DELTA, 0);
 }
 
 void RaiseFrontFlippers()

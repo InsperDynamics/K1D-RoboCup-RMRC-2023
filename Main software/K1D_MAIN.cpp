@@ -76,17 +76,25 @@ void checkUserInput()
 		RaiseBackFlippers();
 	else if (gamepad_command == "LowerBackFlippers")
 		LowerBackFlippers();
-	else if (gamepad_command == "ClawUp" && dexterity_mode)
-		ClawUp();
-	else if (gamepad_command == "ClawDown" && dexterity_mode)
-		ClawDown();
-	else if (gamepad_command == "ClawForward" && dexterity_mode)
-		ClawForward();
-	else if (gamepad_command == "ClawBackward" && dexterity_mode)
-		ClawBackward();
+	else if (gamepad_command == "First+" && dexterity_mode)
+		FirstPlus();
+	else if (gamepad_command == "First-" && dexterity_mode)
+		FirstMinus();
+	else if (gamepad_command == "Second+" && dexterity_mode)
+		SecondPlus();
+	else if (gamepad_command == "Second-" && dexterity_mode)
+		SecondMinus();
 	else if (gamepad_command == "ClawOpen" && dexterity_mode)
 		ClawOpen();
 	else if (gamepad_command == "ClawClose" && dexterity_mode)
+		ClawClose();
+	else if (gamepad_command == "Third+" && dexterity_mode)
+		ThirdPlus();
+	else if (gamepad_command == "Third-" && dexterity_mode)
+		ThirdMinus();
+	else if (gamepad_command == "OpenGripper" && dexterity_mode)
+		ClawOpen();
+	else if (gamepad_command == "CloseGripper" && dexterity_mode)
 		ClawClose();
 	else if (!autonomous_mode && !gamepad_command.empty())
 		MoveManual();

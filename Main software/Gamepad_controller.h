@@ -91,22 +91,22 @@ void UpdateRawInput()
 				    gamepad_command = "RaiseBackFlippers";
                     break;
 				case SDL_CONTROLLER_BUTTON_Y:
-					gamepad_command = "ClawUp";
+					gamepad_command = "Third+";
 					break;
 				case SDL_CONTROLLER_BUTTON_A:
-					gamepad_command = "ClawDown";
+					gamepad_command = "Third-";
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_UP:
-					gamepad_command = "ClawForward";
+					gamepad_command = "Second+";
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-					gamepad_command = "ClawBackward";
+					gamepad_command = "Second-";
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-					gamepad_command = "ClawRight";
+					gamepad_command = "First+";
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-					gamepad_command = "ClawLeft";
+					gamepad_command = "First-";
                     break;
 				case SDL_CONTROLLER_BUTTON_X:
                     gamepad_command = "ClawOpen";
