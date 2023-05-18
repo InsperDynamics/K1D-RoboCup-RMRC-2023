@@ -47,18 +47,10 @@ void UpdateRawInput()
 		{
 			isPressed = false;
 		} 
-		else if (isPressed)
-		{
-			break;	
-		}
 
-		if (SDL_GameControllerGetAxis(gGameController, lastAxis) == 0 )
+		if (SDL_GameControllerGetAxis(gGameController, lastAxis) < JOYSTICK_DEAD_ZONE)
 		{
 			lastAxis = SDL_CONTROLLER_AXIS_INVALID;
-		}
-		else
-		{
-			break;
 		}
 
 		if (sdl_event.cbutton.type == SDL_CONTROLLERBUTTONDOWN)
