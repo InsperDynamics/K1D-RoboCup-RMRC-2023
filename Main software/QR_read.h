@@ -28,10 +28,6 @@ static Point getCentroid(InputArray Points)
 
 static void InitializeQR() 
 {
-	scanner.set_config(ZBAR_NONE, ZBAR_CFG_ENABLE, 0);
-	scanner.set_config(ZBAR_QRCODE, ZBAR_CFG_ENABLE, 1);
-	scanner.set_config(ZBAR_QRCODE, ZBAR_CFG_X_DENSITY, 0);
-	scanner.set_config(ZBAR_QRCODE, ZBAR_CFG_Y_DENSITY, 0);
 	myfile.open("qr_results.txt");
 }
 
