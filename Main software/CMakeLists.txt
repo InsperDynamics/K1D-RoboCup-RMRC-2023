@@ -15,7 +15,6 @@ find_package(catkin REQUIRED COMPONENTS
   genmsg
   cv_bridge
   image_transport
-  open_manipulator_msgs
 )
 
 include_directories(${PROJECT_SOURCE_DIR})
@@ -25,11 +24,6 @@ include_directories(${SDL2_INCLUDE_DIRS})
 
 add_executable(K1D K1D_MAIN.cpp)
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(ZBar REQUIRED IMPORTED_TARGET zbar)
-target_link_libraries(K1D PUBLIC PkgConfig::ZBar)
-
 target_link_libraries(K1D PUBLIC ${OpenCV_LIBS})
-target_link_libraries(K1D PUBLIC ${ZBAR_LIBRARIES} zbar)
 target_link_libraries(K1D PUBLIC ${SDL2_LIBRARIES})
 target_link_libraries(K1D PUBLIC ${catkin_LIBRARIES})
