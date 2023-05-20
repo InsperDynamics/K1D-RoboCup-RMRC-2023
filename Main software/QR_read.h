@@ -1,18 +1,18 @@
 #pragma once
-#include <zbar.h>
 #include <opencv2/opencv.hpp>
+#include <opencv2/objdetect.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
 #include <numeric>
 #include <fstream>
 using namespace std;
 using namespace cv;
-using namespace zbar;
 
-static ImageScanner scanner;
 static Mat image;
-static Mat imageGray;
-static vector<Point2f> obj_location;
-static vector<string> qr_results{};
 static ofstream myfile;
+QRCodeDetector qrDetector;
+vector<Point> points;
+string qrContent;
 
 static Point getCentroid(InputArray Points)
 {
@@ -28,49 +28,25 @@ static Point getCentroid(InputArray Points)
 
 static void InitializeQR() 
 {
-	scanner.set_config(ZBAR_NONE, ZBAR_CFG_ENABLE, 0);
-	scanner.set_config(ZBAR_QRCODE, ZBAR_CFG_ENABLE, 1);
-	scanner.set_config(ZBAR_QRCODE, ZBAR_CFG_X_DENSITY, 0);
-	scanner.set_config(ZBAR_QRCODE, ZBAR_CFG_Y_DENSITY, 0);
 	myfile.open("qr_results.txt");
 }
 
-
 static Mat ReadQR(Mat image)
 {
-	Mat imageGray;
-	cvtColor(image, imageGray, COLOR_RGB2GRAY);
-	int width = imageGray.cols;
-	int height = imageGray.rows;
-	uchar* raw = (uchar*)imageGray.data;
-	Image imageZbar(width, height, "Y800", raw, width * height);
-	scanner.scan(imageZbar);
-	Image::SymbolIterator symbol = imageZbar.symbol_begin();
-	if (imageZbar.symbol_begin() != imageZbar.symbol_end())
+	Mat frame;
+	image.copyTo(frame);
+    qrContent = qrDetector.detectAndDecode(frame, points);
+	if (!qrContent.empty()) 
 	{
-		for (; symbol != imageZbar.symbol_end(); ++symbol)
+		if (points.size() == 4)
 		{
-			for (int i = 0; i < symbol->get_location_size(); i++)
-			{
-				obj_location.push_back(Point(symbol->get_location_x(i), symbol->get_location_y(i)));
-			}
-			for (int i = 0; i < obj_location.size(); i++)
-			{
-				line(image, obj_location[i], obj_location[(i + 1) % obj_location.size()], Scalar(255, 0, 0), 3);
-			}
-			String text = symbol->get_data();
-			int fontFace = FONT_HERSHEY_SIMPLEX;
-			double fontScale = 1.1;
-			int thickness = 2;
-			Size textSize = getTextSize(text, fontFace, fontScale, thickness, 0);
-			Point textOrg(getCentroid(obj_location).x - (textSize.width / 2), getCentroid(obj_location).y);
-			putText(image, text, textOrg, fontFace, fontScale, (0, 0, 255), thickness);
-			obj_location.clear();
-			if (find(qr_results.begin(), qr_results.end(), symbol->get_data()) == qr_results.end())
-				myfile << "\nDecode Result: " << endl << symbol->get_data() << endl;
-			qr_results.push_back(symbol->get_data());
+			line(frame, points[0], points[1], Scalar(0, 255, 0), 2);
+			line(frame, points[1], points[2], Scalar(0, 255, 0), 2);
+			line(frame, points[2], points[3], Scalar(0, 255, 0), 2);
+			line(frame, points[3], points[0], Scalar(0, 255, 0), 2);
 		}
-		imageZbar.set_data(NULL, 0);
+		putText(frame, qrContent, getCentroid(points), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 255), 2);
+		myfile << qrContent << endl;
 	}
 	return image;
 }

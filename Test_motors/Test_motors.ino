@@ -1,10 +1,13 @@
+#include <DynamixelWorkbench.h>
+#define DXL_BAUD 1000000
+DynamixelWorkbench dxl;
 #define enableA A0
 #define enableB A1
 #define enableC A2
 #define enableD A3
-#define motorUL 12
-#define motorULdirA 9
-#define motorULdirB 10
+#define motorUL 9
+#define motorULdirA 10
+#define motorULdirB 12
 #define motorLL 11
 #define motorLLdirA 13
 #define motorLLdirB 8
@@ -58,6 +61,12 @@ void MotorsInitialize(){
   pinMode(motorLRdirA, OUTPUT);
   pinMode(motorLRdirB, OUTPUT);
   MotorsRelease();
+  const char *log;
+  dxl.init("",DXL_BAUD);
+  for (int i = 0; i < 4; i++){
+    dxl.ping(i+1);
+    dxl.jointMode(i+1);
+  }
 }
 
 void URForward(){
@@ -124,9 +133,13 @@ void setup() {
 
 void loop() {
   Serial.println("Move");
-  Move(120, 120);
-  delay(1000);
+  Move(40, 40);
+  delay(2000);
   Serial.println("Stop");
   MotorsStop();
-  delay(1000);
+  delay(2000);
+  Move(-40, -40);
+  delay(2000);
+  MotorsStop();
+  delay(2000);
 }
