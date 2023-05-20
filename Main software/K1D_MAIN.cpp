@@ -2,8 +2,8 @@
 #include <string>
 #include <opencv2/opencv.hpp>
 #include "ROS_communication.h"
-#include "Gamepad_controller.h"
 #include "Claw.h"
+#include "Gamepad_controller.h"
 #include "Thermal.h"
 #include "QR_read.h"
 #include "Motion_detection.h"
@@ -20,8 +20,8 @@ Mat webcam_image = Mat::zeros(2 * resolution_horizontal, resolution_vertical, CV
 
 void openCamera()
 {
-	captureA.open(2);
-	captureB.open(4);
+	captureA.open(0);
+	captureB.open(2);
 	captureA.set(CAP_PROP_FPS, 30);
 	captureB.set(CAP_PROP_FPS, 30);
 }
@@ -44,8 +44,8 @@ void MoveAutonomous()
 	//value caps at [-1, 1]
   	float x = max(min(cmdvel_linear_x, 1.0f), -1.0f);
   	float z = max(min(cmdvel_angular_z, 1.0f), -1.0f);
-	float l = ((2*msg.linear.x) - (msg.angular.z*wheelBase)) / (2*wheelRadius);
-  	float r = ((2*msg.linear.x) + (msg.angular.z*wheelBase)) / (2*wheelRadius);
+	float l = ((2*cmdvel_linear_x) - (cmdvel_angular_z*wheelBase)) / (2*wheelRadius);
+  	float r = ((2*cmdvel_linear_x) + (cmdvel_angular_z*wheelBase)) / (2*wheelRadius);
 	uint16_t pwm_l = mapPwm(fabs(l), 50, 250);
 	uint16_t pwm_r = mapPwm(fabs(r), 50, 250);
 	cout << "(AUTONOMOUS) MotorsMove " << to_string(pwm_l) << " " << to_string(pwm_r) << "\n";
@@ -76,17 +76,25 @@ void checkUserInput()
 		RaiseBackFlippers();
 	else if (gamepad_command == "LowerBackFlippers")
 		LowerBackFlippers();
-	else if (gamepad_command == "ClawUp" && dexterity_mode)
-		ClawUp();
-	else if (gamepad_command == "ClawDown" && dexterity_mode)
-		ClawDown();
-	else if (gamepad_command == "ClawForward" && dexterity_mode)
-		ClawForward();
-	else if (gamepad_command == "ClawBackward" && dexterity_mode)
-		ClawBackward();
+	else if (gamepad_command == "First+" && dexterity_mode)
+		FirstPlus();
+	else if (gamepad_command == "First-" && dexterity_mode)
+		FirstMinus();
+	else if (gamepad_command == "Second+" && dexterity_mode)
+		SecondPlus();
+	else if (gamepad_command == "Second-" && dexterity_mode)
+		SecondMinus();
 	else if (gamepad_command == "ClawOpen" && dexterity_mode)
 		ClawOpen();
 	else if (gamepad_command == "ClawClose" && dexterity_mode)
+		ClawClose();
+	else if (gamepad_command == "Third+" && dexterity_mode)
+		ThirdPlus();
+	else if (gamepad_command == "Third-" && dexterity_mode)
+		ThirdMinus();
+	else if (gamepad_command == "OpenGripper" && dexterity_mode)
+		ClawOpen();
+	else if (gamepad_command == "CloseGripper" && dexterity_mode)
 		ClawClose();
 	else if (!autonomous_mode && !gamepad_command.empty())
 		MoveManual();
@@ -129,7 +137,7 @@ void setup(int argc, char** argv)
 
 void loop()
 {
-	if (SDL_NumJoysticks() < 1)
+	if (SDL_GameControllerGetPlayerIndex(gGameController) < 1)
 		InitializeGamepad();
 	UpdateGamepadInput();
 	checkUserInput();

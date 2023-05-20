@@ -2,9 +2,9 @@
 #define enableB A1
 #define enableC A2
 #define enableD A3
-#define motorUL 12
-#define motorULdirA 9
-#define motorULdirB 10
+#define motorUL 9
+#define motorULdirA 10
+#define motorULdirB 12
 #define motorLL 11
 #define motorLLdirA 13
 #define motorLLdirB 8
