@@ -4,32 +4,32 @@
 using namespace std;
 using namespace cv;
 
-Mat frame1, frame2, hsv;
-
-const double PI = 3.14159265358979323846;
+Mat firstFrame;
 
 static Mat DetectMotion(Mat image)
 {
-	frame2 = image;
-	if (frame1.empty())
+	Mat blurred;
+	GaussianBlur(image, blurred, Size(3, 3), 0);
+	if (firstFrame.empty())
+		firstFrame = blurred;
+	Mat frameDelta;
+	absdiff(firstFrame, blurred, frameDelta);
+	cvtColor(frameDelta, frameDelta, COLOR_BGR2GRAY);
+	Mat DeltaThresholded;
+	double thresh = threshold(frameDelta, DeltaThresholded, 50, 255, THRESH_BINARY);
+	Mat dilate_kernel = getStructuringElement(MORPH_RECT, Size(5, 5), Point(2, 2));
+	dilate(DeltaThresholded, DeltaThresholded, dilate_kernel, Point(-1, -1), 2);
+	vector<vector<Point>> contours;
+	vector<Vec4i> hierarchy;
+	DeltaThresholded.convertTo(DeltaThresholded, CV_8UC1);
+	findContours(DeltaThresholded, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+	for (size_t c = 0; c < contours.size(); c++)
 	{
-		frame1 = frame2;
-		return frame2;
+		if (0.5 < boundingRect(contours[c]).height / boundingRect(contours[c]).width < 2) 
+		{
+			drawContours(image, contours, (int)c, Scalar(0, 0, 255), 2);
+		}
 	}
-	GaussianBlur(frame2, frame2, Size(5, 5), 0);
-	cvtColor(frame2, frame2, COLOR_BGR2GRAY);
-	Mat flow(frame1.size(), CV_32FC2);
-	calcOpticalFlowFarneback(frame1, frame2, flow, 0.5, 3, 15, 3, 5, 1.2, 0);
-	Mat magnitude, angle;
-	cartToPolar(flow.col(0), flow.col(1), magnitude, angle, true);
-	hsv.setTo(Scalar(0, 0, 0)); // set H and V channels to 0
-	angle *= 180 / PI / 2;
-	hsv(Range::all(), Range::all(), 0) = angle;
-	normalize(magnitude, magnitude, 0, 255, NORM_MINMAX);
-	threshold(magnitude, magnitude, 50, 255, THRESH_TOZERO);
-	hsv(Range::all(), Range::all(), 2) = magnitude;
-	Mat bgr;
-	cvtColor(hsv, bgr, COLOR_HSV2BGR);
-	frame1 = frame2;
-	return bgr;
+	firstFrame = blurred;
+	return image;
 }
