@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Config from '../scripts/config';
 import Alert from 'react-bootstrap/Alert';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -18,8 +18,73 @@ function Connection() {
     const [motionOn, setMotionOn] = useState(false);
     
     const [ppm, setPpm] = useState(null);
+    const [imgdata, setImgdata] = useState(null);
+    const [thermaldata, setTermaldata] = useState(null);
     const ipAdress = 'ws://'+Config.ROSBRIDGE_SERVER_IP+':'+Config.ROSBRIDGE_SERVER_PORT
+
+    let autonomousTopic = new window.ROSLIB.Topic({
+        ros: ros,
+        name: Config.TOPIC_AUTONOMOUS,
+        messageType: Config.MSGTYPE_AUTONOMOUS
+    });
+    let autonomousMsg = new window.ROSLIB.Message({
+        data: autonomousOn
+    });
+
+    let dexterityTopic = new window.ROSLIB.Topic({
+        ros: ros,
+        name: Config.TOPIC_DEXTERITY,
+        messageType: Config.MSGTYPE_DEXTERITY
+    });
+    let dexterityMsg = new window.ROSLIB.Message({
+        data: dexterityOn
+    });
     
+    let qrCodeTopic = new window.ROSLIB.Topic({
+        ros: ros,
+        name: Config.TOPIC_QRCODE,
+        messageType: Config.MSGTYPE_QRCODE
+    });
+    let qrCodeMsg = new window.ROSLIB.Message({
+        data: qrCodeOn
+    });
+
+    let hazmatTopic = new window.ROSLIB.Topic({
+        ros: ros,
+        name: Config.TOPIC_HAZMAT,
+        messageType: Config.MSGTYPE_HAZMAT
+    });
+    let hazmatMsg = new window.ROSLIB.Message({
+        data: hazmatOn
+    });
+
+    let motionTopic = new window.ROSLIB.Topic({
+        ros: ros,
+        name: Config.TOPIC_MOTION,
+        messageType: Config.MSGTYPE_MOTION
+    });
+    let motionMsg = new window.ROSLIB.Message({
+        data: motionOn
+    });
+
+    let gasTopic = new window.ROSLIB.Topic({
+        ros: ros,
+        name: Config.TOPIC_CO2,
+        messageType: Config.MSGTYPE_CO2
+    });
+
+    let webcamTopic = new window.ROSLIB.Topic({
+        ros: ros,
+        name: Config.TOPIC_CAMERA,
+        messageType: Config.MSGTYPE_CAMERA
+    });
+
+    let thermalTopic = new window.ROSLIB.Topic({
+        ros: ros,
+        name: Config.TOPIC_TEMPERATURE,
+        messageType: Config.MSGTYPE_TEMPERATURE
+    });
+
     
     function init_connection() {
         ros.on('connection', () => {
@@ -43,81 +108,50 @@ function Connection() {
         }
     }
 
-    function pubAutonomous() {
-        setAutonomousOn(!autonomousOn);
-        var autonomousTopic = new window.ROSLIB.Topic({
-            ros: ros,
-            name: Config.TOPIC_AUTONOMOUS,
-            messageType: Config.MSGTYPE_AUTONOMOUS
-        });
-        var autonomousMsg = new window.ROSLIB.Message({
-            data: autonomousOn
-        });
-        autonomousTopic.publish(autonomousMsg);
-    }
-    function pubDexterity() {
-        setDexterityOn(!dexterityOn);
-        var dexterityTopic = new window.ROSLIB.Topic({
-            ros: ros,
-            name: Config.TOPIC_DEXTERITY,
-            messageType: Config.MSGTYPE_DEXTERITY
-        });
-        var dexterityMsg = new window.ROSLIB.Message({
-            data: dexterityOn
-        });
-        dexterityTopic.publish(dexterityMsg);
-    }
-    function pubQrCode() {
-        setQrCodeOn(!qrCodeOn);
-        var qrCodeTopic = new window.ROSLIB.Topic({
-            ros: ros,
-            name: Config.TOPIC_QRCODE,
-            messageType: Config.MSGTYPE_QRCODE
-        });
-        var qrCodeMsg = new window.ROSLIB.Message({
-            data: qrCodeOn
-        });
-        qrCodeTopic.publish(qrCodeMsg);
-    }
-    function pubHazmat() {
-        setHazmatOn(!hazmatOn);
-        var hazmatTopic = new window.ROSLIB.Topic({
-            ros: ros,
-            name: Config.TOPIC_HAZMAT,
-            messageType: Config.MSGTYPE_HAZMAT
-        });
-        var hazmatMsg = new window.ROSLIB.Message({
-            data: hazmatOn
-        });
-        hazmatTopic.publish(hazmatMsg);
-    }
-    function pubMotion() {
-        setMotionOn(!motionOn);
-        var motionTopic = new window.ROSLIB.Topic({
-            ros: ros,
-            name: Config.TOPIC_MOTION,
-            messageType: Config.MSGTYPE_MOTION
-        });
-        var motionMsg = new window.ROSLIB.Message({
-            data: motionOn
-        });
-        motionTopic.publish(motionMsg);
-    }
-    function subGas() {
-        var gasTopic = new window.ROSLIB.Topic({
-            ros: ros,
-            name: Config.TOPIC_CO2,
-            messageType: Config.MSGTYPE_CO2
-        });
-        gasTopic.subscribe((message) => {
-            // document.getElementById('thermalcam_img').src = "data:image/jpg;base64," + message.data;
-            gasTopic.unsubscribe();
-            setPpm(message.data);
-        });
+    function pubAutonomous(msg, data, topic) {
+        setAutonomousOn(!data);
+        msg.data = !data;
+        topic.publish(msg);
     }
 
+    function pubDexterity(msg, data, topic) {
+        setDexterityOn(!data);
+        msg.data = !data;
+        topic.publish(msg);
+    }
+
+    function pubQrCode(msg, data, topic) {
+        setQrCodeOn(!data);
+        msg.data = !data;
+        topic.publish(msg);
+    }
+
+    function pubHazmat(msg, data, topic) {
+        setHazmatOn(!data);
+        msg.data = !data;
+        topic.publish(msg);
+    }
+
+    function pubMotion(msg, data, topic) {
+        setMotionOn(!data);
+        msg.data = !data;
+        topic.publish(msg);
+    }
+
+    gasTopic.subscribe((message) => {
+        setPpm(message.data);
+    });
+
+    webcamTopic.subscribe(function(message) {
+        setImgdata(message.data);
+    });
+
+    thermalTopic.subscribe((message) => {
+        setTermaldata(message.data);
+    });
+
+
     init_connection();
-    subGas();
 
     return (
         <Container fluid style={{margin: "0px"}}>
@@ -126,7 +160,7 @@ function Connection() {
                     <img src={Logo} alt="Insper Dynamics" width={150} height={150}/>
                 </Col>
                 <Col className='mt-5'>
-                    <Alert className="text-center" variant={isConnected? "success": "danger"}>
+                    <Alert className="text-center" letiant={isConnected? "success": "danger"}>
                         {isConnected? "Robot Connected": "Robot Disconnected"}
                     </Alert>
                 </Col>
@@ -137,7 +171,7 @@ function Connection() {
             <h1 className="text-left" style={{color: "#e66111"}}>Camera</h1>
             <Row>
                 <Col style={{display: "flex", justifyContent: "center"}}>
-                    <RosImg style={{justifySelf: "center"}} ros={ros} topic={Config.TOPIC_CAMERA} msg={Config.MSGTYPE_CAMERA} width={1280} height={480} />
+                    <img src={imgdata != null ? `data:image/jpeg;base64,` + imgdata: `https://via.placeholder.com/${1280}x${480}`} width={1280} height={480} alt="camera"/>
                 </Col>
             </Row>
             
@@ -151,38 +185,38 @@ function Connection() {
             </Row>
             <Row>
                 <Col>
-                    <button className="btn btn-primary" style={{backgroundColor: (autonomousOn? "green": "red")}} onClick={() => pubAutonomous()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (autonomousOn? "green": "red")}} onClick={() => pubAutonomous(autonomousMsg, autonomousOn, autonomousTopic)}>
                         {autonomousOn? "Autonomous On": "Autonomous Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" style={{backgroundColor: (dexterityOn? "green": "red")}} onClick={() => pubDexterity()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (dexterityOn? "green": "red")}} onClick={() => pubDexterity(dexterityMsg, dexterityOn, dexterityTopic)}>
                         {dexterityOn? "Dexterity On": "Dexterity Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" style={{backgroundColor: (qrCodeOn? "green": "red")}} onClick={() => pubQrCode()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (qrCodeOn? "green": "red")}} onClick={() => pubQrCode(qrCodeMsg, qrCodeOn, qrCodeTopic)}>
                         {qrCodeOn? "QR Code On": "QR Code Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" style={{backgroundColor: (hazmatOn? "green": "red")}} onClick={() => pubHazmat()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (hazmatOn? "green": "red")}} onClick={() => pubHazmat(hazmatMsg, hazmatOn, hazmatTopic)}>
                         {hazmatOn? "Hazmat On": "Hazmat Off"}
                     </button>
                 </Col>
                 <Col>
-                    <button className="btn btn-primary" style={{backgroundColor: (motionOn? "green": "red")}} onClick={() => pubMotion()}>
+                    <button className="btn btn-primary" style={{backgroundColor: (motionOn? "green": "red")}} onClick={() => pubMotion(motionMsg, motionOn, motionTopic)}>
                         {motionOn? "Motion On": "Motion Off"}
                     </button>
                 </Col>
                 <Col>
                     <div>
-                        <RosImg ros={ros} topic={Config.TOPIC_TEMPERATURE} msg={Config.MSGTYPE_TEMPERATURE} width={160} height={160} />
+                        <img src={thermaldata != null ? `data:image/jpeg;base64,` + thermaldata: `https://via.placeholder.com/${160}x${160}`} width={160} height={160} alt="camera"/>
                     </div>
                     <p className="" style={{color: "#e66111", fontSize: "15px", marginLeft: "29px"}}>Thermal Cam</p>
                 </Col>
                 <Col>
-                    <h4 className="text-left m-3" style={{color: "#e66111"}}>{ppm ? ppm : "Loading gas sensor..."}{ppm && "PPM"}</h4>
+                    <h4 className="text-left m-3" style={{color: "#e66111"}}>{ppm != null ? ppm : "Loading gas sensor..."}{ppm && "PPM"}</h4>
                 </Col>
             </Row>
         </Container>

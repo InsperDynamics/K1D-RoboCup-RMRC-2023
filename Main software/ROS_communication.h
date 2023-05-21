@@ -5,6 +5,7 @@
 #include <chrono>
 #include <thread>
 #include <ros/ros.h>
+#include "base64.cpp"
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
@@ -33,7 +34,9 @@ std_msgs::Int16 arduino_value_1, arduino_value_2;
 std_msgs::Header header;
 std_msgs::Int32MultiArray joint_msg;
 cv_bridge::CvImage img_bridge;
-sensor_msgs::Image img_msg;
+std::vector<uchar> to_str_buf;
+std_msgs::String img_msg;
+std::string encoded;
 ros::Publisher pub_command, pub_value_1, pub_value_2, pub_webcam, pub_mattemp, pub_goal_joints;
 ros::Subscriber sub_temperature, sub_cmdvel, sub_autonomousmode, sub_dexteritymode, sub_qrdetection, sub_hazmatdetection, sub_motiondetection, joint_states_sub;
 
@@ -81,8 +84,8 @@ void ConnectROS(int argc, char** argv)
 	pub_command = nodehandle.advertise<std_msgs::String>("arduino_command", 1000);
 	pub_value_1 = nodehandle.advertise<std_msgs::Int16>("arduino_value_1", 1000);
 	pub_value_2 = nodehandle.advertise<std_msgs::Int16>("arduino_value_2", 1000);
-	pub_webcam = nodehandle.advertise<sensor_msgs::Image>("webcam", 1000);
-	pub_mattemp = nodehandle.advertise<sensor_msgs::Image>("thermalcam", 1000);
+	pub_webcam = nodehandle.advertise<std_msgs::String>("webcam", 1000);
+	pub_mattemp = nodehandle.advertise<std_msgs::String>("thermalcam", 1000);
   	pub_goal_joints = nodehandle.advertise<std_msgs::Int32MultiArray>("goal_joints", 1000);
 	sub_temperature = nodehandle.subscribe("temperature", 1000, &temperatureCallback);
 	sub_cmdvel = nodehandle.subscribe("cmd_vel", 1000, &cmdvelCallback);
@@ -113,11 +116,15 @@ void PublishOpenCR(string command, int value_1, int value_2)
 
 void PublishMats(Mat webcam, Mat mattemp)
 {
-	header.stamp = ros::Time::now();
-	img_bridge = cv_bridge::CvImage(header, sensor_msgs::image_encodings::BGR8, webcam);
-	img_bridge.toImageMsg(img_msg);
+    cv::imencode(".jpg", webcam, to_str_buf);
+    auto *enc_msg = reinterpret_cast<unsigned char*>(to_str_buf.data());
+    encoded = base64_encode(enc_msg, to_str_buf.size());
+	img_msg.data = encoded;
 	pub_webcam.publish(img_msg);
-	img_bridge = cv_bridge::CvImage(header, sensor_msgs::image_encodings::BGR8, mattemp);
-	img_bridge.toImageMsg(img_msg);
+
+	cv::imencode(".jpg", mattemp, to_str_buf);
+    enc_msg = reinterpret_cast<unsigned char*>(to_str_buf.data());
+    encoded = base64_encode(enc_msg, to_str_buf.size());
+	img_msg.data = encoded;
 	pub_mattemp.publish(img_msg);
 }
