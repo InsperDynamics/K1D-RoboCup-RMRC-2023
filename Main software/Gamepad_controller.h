@@ -18,6 +18,7 @@ bool isPressed = false;
 SDL_GameControllerAxis lastAxis = SDL_CONTROLLER_AXIS_INVALID;
 
 map<Uint8,vector<double>> preset;
+int dir = 1;
 
 void SetHomePreset()
 {
@@ -108,6 +109,8 @@ void UpdateRawInput()
                     break;
 				case SDL_CONTROLLER_BUTTON_BACK:
 					break;
+				case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
+					dir *= -1;
                 default:
                     break;
 			}
@@ -183,6 +186,8 @@ void UpdateGamepadInput()
 				gamepad_value_1 = -int(pwm*(1 - (4*(theta-(3*M_PI/2))/M_PI)));
 				gamepad_value_2 = -int(pwm);
 			}
+			gamepad_value_1 *= dir;
+			gamepad_value_2 *= dir;
 		}
 	}
 }
