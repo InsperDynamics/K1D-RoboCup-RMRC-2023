@@ -17,9 +17,9 @@ const Config = {
   MSGTYPE_QRCODE: "std_msgs/Bool",
   MSGTYPE_HAZMAT: "std_msgs/Bool",
   MSGTYPE_MOTION: "std_msgs/Bool",
-  MSGTYPE_CAMERA: "sensor_msgs/Image",
-  MSGTYPE_TEMPERATURE: "sensor_msgs/Image",
-  MSGTYPE_CO2: "sensor_msgs/UInt16",
+  MSGTYPE_CAMERA: "std_msgs/String",
+  MSGTYPE_TEMPERATURE: "std_msgs/String",
+  MSGTYPE_CO2: "std_msgs/UInt16",
 };
 
 export default Config;
