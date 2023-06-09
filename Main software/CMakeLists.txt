@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${zbar_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${catkin_INCLUDE_DIRS})
 include_directories(${SDL2_INCLUDE_DIRS})
@@ -26,4 +27,5 @@ add_executable(K1D K1D_MAIN.cpp)
 
 target_link_libraries(K1D PUBLIC ${OpenCV_LIBS})
 target_link_libraries(K1D PUBLIC ${SDL2_LIBRARIES})
+target_link_libraries(K1D PUBLIC ${ZBAR_LIBRARIES} zbar)
 target_link_libraries(K1D PUBLIC ${catkin_LIBRARIES})
