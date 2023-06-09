@@ -6,7 +6,7 @@ using namespace cv;
 
 Mat firstFrame;
 
-static Mat DetectMotion(Mat image)
+static Mat DetectMotionAbsdiff(Mat image)
 {
 	Mat blurred;
 	GaussianBlur(image, blurred, Size(3, 3), 0);
@@ -32,4 +32,29 @@ static Mat DetectMotion(Mat image)
 	}
 	firstFrame = blurred;
 	return image;
+}
+
+static Mat DetectMotionOpticalFlow(Mat image)
+{
+	Mat gray;
+	cvtColor(image, gray, COLOR_BGR2GRAY);
+	if (firstFrame.empty())
+		firstFrame = gray;
+	Mat flow(firstFrame.size(), CV_32FC2);
+	optflow:calcOpticalFlowFarneback(firstFrame, gray, flow, 0.2, 10, 15, 10, 5, 1.2, 0);
+	Mat flow_parts[2];
+	split(flow, flow_parts);
+	Mat magnitude, angle, magn_norm;
+	cartToPolar(flow_parts[0], flow_parts[1], magnitude, angle, true);
+	normalize(magnitude, magn_norm, 0.0f, 1.0f, NORM_MINMAX);
+	angle *= ((1.1f / 360.f) * (180.f / 255.f));
+	Mat _hsv[3], hsv, hsv8, bgr;
+	_hsv[0] = angle;
+	_hsv[1] = Mat::ones(angle.size(), CV_32F);
+	_hsv[2] = magn_norm;
+	merge(_hsv, 3, hsv);
+	hsv.convertTo(hsv8, CV_8U, 255.0);
+	cvtColor(hsv8, bgr, COLOR_HSV2BGR);
+	firstFrame = gray;
+	return bgr;
 }

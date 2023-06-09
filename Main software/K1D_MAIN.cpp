@@ -121,7 +121,7 @@ void checkSensorsFeed()
 	if (hazmat_detection)
 		webcam_image = DetectHazmat(webcam_image);
 	if (motion_detection)
-		webcam_image = DetectMotion(webcam_image);
+		webcam_image = DetectMotionAbsdiff(webcam_image);
 }
 
 
@@ -143,8 +143,8 @@ void loop()
 	checkUserInput();
 	checkSensorsFeed();
 	PublishMats(webcam_image, thermal_image);
-	imshow("K1D", webcam_image);
-	imshow("Thermal", thermal_image);
+	//imshow("K1D", webcam_image);
+	//imshow("Thermal", thermal_image);
 	waitKey(1);
 }
 
