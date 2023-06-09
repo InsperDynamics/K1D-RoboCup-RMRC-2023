@@ -72,6 +72,7 @@ static Mat ReadQR(Mat image)
 			qr_results.push_back(symbol->get_data());
 		}
 		imageZbar.set_data(NULL, 0);
+		myfile.flush();
 	}
 	return image;
 }
