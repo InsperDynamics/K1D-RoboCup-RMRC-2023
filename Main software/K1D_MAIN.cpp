@@ -121,7 +121,7 @@ void checkSensorsFeed()
 	if (hazmat_detection)
 		webcam_image = DetectHazmat(webcam_image);
 	if (motion_detection)
-		webcam_image = DetectMotion(webcam_image);
+		webcam_image = DetectMotionAbsdiff(webcam_image);
 }
 
 
