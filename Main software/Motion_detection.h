@@ -8,30 +8,52 @@ Mat firstFrame;
 
 static Mat DetectMotionAbsdiff(Mat image)
 {
-	Mat blurred;
-	GaussianBlur(image, blurred, Size(3, 3), 0);
-	if (firstFrame.empty())
-		firstFrame = blurred;
-	Mat frameDelta;
-	absdiff(firstFrame, blurred, frameDelta);
-	cvtColor(frameDelta, frameDelta, COLOR_BGR2GRAY);
-	Mat DeltaThresholded;
-	double thresh = threshold(frameDelta, DeltaThresholded, 50, 255, THRESH_BINARY);
-	Mat dilate_kernel = getStructuringElement(MORPH_RECT, Size(5, 5), Point(2, 2));
-	dilate(DeltaThresholded, DeltaThresholded, dilate_kernel, Point(-1, -1), 2);
-	vector<vector<Point>> contours;
-	vector<Vec4i> hierarchy;
-	DeltaThresholded.convertTo(DeltaThresholded, CV_8UC1);
-	findContours(DeltaThresholded, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
-	for (size_t c = 0; c < contours.size(); c++)
-	{
-		if (0.5 < boundingRect(contours[c]).height / boundingRect(contours[c]).width < 2) 
-		{
-			drawContours(image, contours, (int)c, Scalar(0, 0, 255), 2);
-		}
-	}
-	firstFrame = blurred;
-	return image;
+    Mat blurred;
+    GaussianBlur(image, blurred, Size(3, 3), 0);
+    if (firstFrame.empty())
+        firstFrame = blurred;
+    Mat frameDelta;
+    absdiff(firstFrame, blurred, frameDelta);
+    cvtColor(frameDelta, frameDelta, COLOR_BGR2GRAY);
+    Mat DeltaThresholded;
+    double thresh = threshold(frameDelta, DeltaThresholded, 50, 255, THRESH_BINARY);
+    Mat dilate_kernel = getStructuringElement(MORPH_RECT, Size(5, 5), Point(2, 2));
+    dilate(DeltaThresholded, DeltaThresholded, dilate_kernel, Point(-1, -1), 2);
+    vector<vector<Point>> contours;
+    vector<Vec4i> hierarchy;
+    DeltaThresholded.convertTo(DeltaThresholded, CV_8UC1);
+    findContours(DeltaThresholded, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+    vector<vector<Point>> joinedContours;
+    for (size_t c = 0; c < contours.size(); c++)
+    {
+        if (0.5 < boundingRect(contours[c]).height / boundingRect(contours[c]).width < 2) 
+        {
+            if (joinedContours.empty())
+                joinedContours.push_back(contours[c]);
+            else
+            {
+                bool joined = false;
+                for (size_t j = 0; j < joinedContours.size(); j++)
+                {
+                    double distance = pointPolygonTest(joinedContours[j], contours[c][0], true);
+                    if (distance >= 0)
+                    {
+                        joinedContours[j].insert(joinedContours[j].end(), contours[c].begin(), contours[c].end());
+                        joined = true;
+                        break;
+                    }
+                }
+                if (!joined)
+                    joinedContours.push_back(contours[c]);
+            }
+        }
+    }
+    for (size_t c = 0; c < joinedContours.size(); c++)
+    {
+        drawContours(image, joinedContours, (int)c, Scalar(0, 0, 255), 2);
+    }
+    firstFrame = blurred;
+    return image;
 }
 
 static Mat DetectMotionOpticalFlow(Mat image)
