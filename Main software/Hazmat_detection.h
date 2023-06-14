@@ -10,97 +10,103 @@ using namespace std;
 using namespace cv;
 using namespace dnn;
 
-Net network;
-vector<string> classes = { "poison", "oxygen", "flammable", "flammable-solid", "corrosive", "dangerous", "non-flammable-gas", "organic-peroxide", "explosive", "radioactive", "inhalation-hazard", "spontaneously-combustible", "infectious-substance" };
-float confThreshold = 0.5;
-float nmsThreshold = 0.4;
+Net net;
+vector<string> class_list = {
+    "Corrosive", "Dangerous when wet", "Explosive", "Flammable Fluid", "Flammable solid",
+    "Infectious substance", "Inhalation hazard", "Miscellaneous", "Non-flammable gas",
+    "Organic peroxide", "Oxidizer", "Poison", "Radioactive", "Spontaneously combustile"
+};
+vector<Scalar> colors = {
+    Scalar(255, 255, 0), Scalar(0, 255, 0), Scalar(0, 255, 255), Scalar(255, 0, 0)
+};
+const int INPUT_WIDTH = 640;
+const int INPUT_HEIGHT = 640;
+const float SCORE_THRESHOLD = 0.25;
+const float NMS_THRESHOLD = 0.4;
+const float CONFIDENCE_THRESHOLD = 0.5;
 
-void drawPred(int classId, float conf, int left, int top, int right, int bottom, Mat& frame)
-{
-    rectangle(frame, Point(left, top), Point(right, bottom), Scalar(255, 178, 50), 3);
-    string label = format("%.2f", conf);
-    if (!classes.empty())
-    {
-        CV_Assert(classId < (int)classes.size());
-        label = classes[classId] + ":" + label;
-    }
-    int baseLine;
-    Size labelSize = getTextSize(label, FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
-    top = max(top, labelSize.height);
-    rectangle(frame, Point(left, top - round(1.5 * labelSize.height)), Point(left + round(1.5 * labelSize.width), top + baseLine), Scalar(255, 255, 255), FILLED);
-    putText(frame, label, Point(left, top), FONT_HERSHEY_SIMPLEX, 0.75, Scalar(0, 0, 0), 1);
+void detect(cv::Mat& image, cv::dnn::Net& net, cv::Mat& preds) {
+    cv::Mat blob = cv::dnn::blobFromImage(image, 1/255.0, cv::Size(INPUT_WIDTH, INPUT_HEIGHT), cv::Scalar(), true, false);
+    net.setInput(blob);
+    preds = net.forward();
 }
 
-void postprocess(Mat& frame, const vector<Mat>& outs)
-{
-    vector<int> classIds;
-    vector<float> confidences;
-    vector<Rect> boxes;
-    for (size_t i = 0; i < outs.size(); ++i)
-    {
-        float* data = (float*)outs[i].data;
-        for (int j = 0; j < outs[i].rows; ++j, data += outs[i].cols)
-        {
-            Mat scores = outs[i].row(j).colRange(5, outs[i].cols);
-            Point classIdPoint;
-            double confidence;
-            minMaxLoc(scores, 0, &confidence, 0, &classIdPoint);
-            if (confidence > confThreshold)
-            {
-                int centerX = (int)(data[0] * frame.cols);
-                int centerY = (int)(data[1] * frame.rows);
-                int width = (int)(data[2] * frame.cols);
-                int height = (int)(data[3] * frame.rows);
-                int left = centerX - width / 2;
-                int top = centerY - height / 2;
-
-                classIds.push_back(classIdPoint.x);
-                confidences.push_back((float)confidence);
-                boxes.push_back(Rect(left, top, width, height));
+void wrap_detection(cv::Mat& input_image, cv::Mat& output_data, std::vector<int>& class_ids, std::vector<float>& confidences, std::vector<cv::Rect>& boxes) {
+    int rows = output_data.size[2];
+    int image_width = input_image.cols;
+    int image_height = input_image.rows;
+    float x_factor = static_cast<float>(image_width) / INPUT_WIDTH;
+    float y_factor = static_cast<float>(image_height) / INPUT_HEIGHT;
+    for (int r = 0; r < rows; ++r) {
+        cv::Mat row = output_data.row(r);
+        float confidence = row.at<float>(4);
+        if (confidence >= 0.4) {
+            cv::Mat classes_scores = row.colRange(5, row.cols);
+            cv::Point max_indx;
+            cv::minMaxLoc(classes_scores, nullptr, nullptr, nullptr, &max_indx);
+            int class_id = max_indx.y;
+            if (classes_scores.at<float>(class_id) > 0.25) {
+                confidences.push_back(confidence);
+                class_ids.push_back(class_id);
+                float x = row.at<float>(0);
+                float y = row.at<float>(1);
+                float w = row.at<float>(2);
+                float h = row.at<float>(3);
+                int left = static_cast<int>((x - 0.5 * w) * x_factor);
+                int top = static_cast<int>((y - 0.5 * h) * y_factor);
+                int width = static_cast<int>(w * x_factor);
+                int height = static_cast<int>(h * y_factor);
+                boxes.emplace_back(left, top, width, height);
             }
         }
     }
-    vector<int> indices;
-    NMSBoxes(boxes, confidences, confThreshold, nmsThreshold, indices);
-    for (size_t i = 0; i < indices.size(); ++i)
-    {
-        int idx = indices[i];
-        Rect box = boxes[idx];
-        drawPred(classIds[idx], confidences[idx], box.x, box.y,
-            box.x + box.width, box.y + box.height, frame);
+    std::vector<int> indexes;
+    cv::dnn::NMSBoxes(boxes, confidences, SCORE_THRESHOLD, NMS_THRESHOLD, indexes);
+    std::vector<int> result_class_ids;
+    std::vector<float> result_confidences;
+    std::vector<cv::Rect> result_boxes;
+    for (int i : indexes) {
+        result_confidences.push_back(confidences[i]);
+        result_class_ids.push_back(class_ids[i]);
+        result_boxes.push_back(boxes[i]);
     }
+    class_ids = result_class_ids;
+    confidences = result_confidences;
+    boxes = result_boxes;
 }
 
-vector<String> getOutputsNames(const Net& net)
-{
-    static vector<String> names;
-    if (names.empty())
-    {
-        vector<int> outLayers = net.getUnconnectedOutLayers();
-        vector<String> layersNames = net.getLayerNames();
-        names.resize(outLayers.size());
-        for (size_t i = 0; i < outLayers.size(); ++i)
-            names[i] = layersNames[outLayers[i] - 1];
-    }
-    return names;
+cv::Mat format_yolov5(cv::Mat& frame) {
+    int row = frame.rows;
+    int col = frame.cols;
+    int _max = std::max(col, row);
+    cv::Mat result = cv::Mat::zeros(_max, _max, frame.type());
+    frame.copyTo(result(cv::Rect(0, 0, col, row)));
+    return result;
 }
 
 static void InitializeHazmat()
 {
-    string modelfile = "yolov3-tiny.weights";
-    string configfile = "yolov3-tiny.cfg";
-    network = readNetFromDarknet(configfile, modelfile);
-    network.setPreferableBackend(DNN_BACKEND_DEFAULT);
-    network.setPreferableTarget(DNN_TARGET_OPENCL);
+    string modelfile = "best.onnx";
+    net = readNetFromONNX(configfile);
 }
 
 static Mat DetectHazmat(Mat image)
 {
-    static Mat blobFromImg;
-    blobFromImage(image, blobFromImg, 1 / 255.0, cv::Size(416, 416), Scalar(0, 0, 0), true, false);
-    network.setInput(blobFromImg);
-    vector<Mat> outs;
-    network.forward(outs, getOutputsNames(network));
-    postprocess(image, outs);
+    Mat inputImage = format_yolov5(image);
+    Mat outs;
+    detect(inputImage, net, outs);
+    vector<int> class_ids;
+    vector<float> confidences;
+    vector<Rect> boxes;
+    wrap_detection(inputImage, outs, class_ids, confidences, boxes);
+    for (size_t i = 0; i < class_ids.size(); ++i) {
+        int classid = class_ids[i];
+        float confidence = confidences[i];
+        cv::Rect box = boxes[i];
+        cv::Scalar color = colors[classid % colors.size()];
+        cv::rectangle(image, box, color, 2);
+        cv::rectangle(image, cv::Point(box.x, box.y - 20), cv::Point(box.x + box.width, box.y), color, -1);
+        cv::putText(image, class_list[classid], cv::Point(box.x, box.y - 10), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
+    }
     return image;
 }
