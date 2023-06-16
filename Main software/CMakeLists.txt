@@ -6,6 +6,9 @@ find_package(OpenCV REQUIRED)
 find_package(SDL2 2.26.3 EXACT REQUIRED PATHS /usr/local/include/SDL2)
 find_package(catkin REQUIRED COMPONENTS
   cmake_modules
+  moveit_core
+  moveit_ros_planning
+  moveit_ros_planning_interface
   message_filters
   roscpp
   rospy

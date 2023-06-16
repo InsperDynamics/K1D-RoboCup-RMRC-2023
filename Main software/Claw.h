@@ -2,10 +2,67 @@
 #include <iostream>
 #include <string>
 #include "ROS_communication.h"
+#include <moveit/planning_scene_interface/planning_scene_interface.h>
 using namespace std;
-#define DELTA 25
+#define DELTA 18
+#define MDELTA 0.005
 #define FLIPPER_DELTA 30
-#define GRIPPER_DELTA 30
+#define GRIPPER_DELTA 20
+
+geometry_msgs::PoseStamped targetPose;
+vector<double> jointstate;
+
+void GripperForward() 
+{
+    targetPose = p_move->getCurrentPose();
+    targetPose.pose.position.x += MDELTA;
+    p_move->setPoseTarget(targetPose);
+
+    if (p_move->plan(*p_plan) == moveit::core::MoveItErrorCode::SUCCESS) {
+      
+      p_move->getJointValueTarget(jointstate);
+      PublishJointsOpenCR(jointstate);
+    }
+}
+
+void GripperBackward() 
+{
+    targetPose = p_move->getCurrentPose();
+    targetPose.pose.position.x -= MDELTA;
+    p_move->setPoseTarget(targetPose);
+
+    if (p_move->plan(*p_plan) == moveit::core::MoveItErrorCode::SUCCESS) {
+      
+      p_move->getJointValueTarget(jointstate);
+      PublishJointsOpenCR(jointstate);
+    }
+}
+
+void GripperUp() 
+{
+    targetPose = p_move->getCurrentPose();
+    targetPose.pose.position.z += MDELTA;
+    p_move->setPoseTarget(targetPose);
+
+    if (p_move->plan(*p_plan) == moveit::core::MoveItErrorCode::SUCCESS) {
+      
+      p_move->getJointValueTarget(jointstate);
+      PublishJointsOpenCR(jointstate);
+    }
+}
+
+void GripperDown() 
+{
+    targetPose = p_move->getCurrentPose();
+    targetPose.pose.position.z -= MDELTA;
+    p_move->setPoseTarget(targetPose);
+
+    if (p_move->plan(*p_plan) == moveit::core::MoveItErrorCode::SUCCESS) {
+      
+      p_move->getJointValueTarget(jointstate);
+      PublishJointsOpenCR(jointstate);
+    }
+}
 
 void FirstPlus()
 {
@@ -74,5 +131,5 @@ void ClawRetract()
 
 void GoToPreset(vector<double> angles)
 {
-	
+	PublishJointsOpenCR(angles);
 }

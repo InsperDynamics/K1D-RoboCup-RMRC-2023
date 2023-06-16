@@ -20,8 +20,14 @@ void ControlJointDynamixel(int32_t *joint_pos)
 {
   int32_t joint_values[3];
   for (int i = 0; i < 3; i++) {
-    //joint_values[i] = dxl.convertRadian2Value(joint_id[i], joint_pos[i]);
     dxl.goalPosition(joint_id[i], joint_pos[i]);
+  }
+}
+
+void ControlJointDynamixelMoveIt(float *joint_pos)
+{
+  for (int i = 0; i < 3; i++) {
+    dxl.goalPosition(joint_id[i], dxl.convertRadian2Value(joint_pos[i], 4095, 0, 3.1415, -3.1415));
   }
 }
 
@@ -49,7 +55,7 @@ void GetJointState()
 {
   ReadJointValues();
   for (int i = 0; i < 3; i++){
-    float radian = dxl.convertValue2Radian(joint_id[i], joint_position[i]);
+    float radian = dxl.convertValue2Radian(joint_position[i], 4095, 0, 3.1415, -3.1415);
     joint_states.position[i] = radian;
     joint_states.velocity[i] = radian * 0.1047197551;
   }  
@@ -137,7 +143,6 @@ void ServosInitialize()
   dxl.init("",DXL_BAUD);
   dxl.addSyncWriteHandler(claw_id[0], "Goal_Position", &log);
   dxl.addSyncReadHandler(128, 8);
-  dxl.addSyncReadHandler(132, 4);
   for (int i = 0; i < 4; i++){
 
     if (i < 3){

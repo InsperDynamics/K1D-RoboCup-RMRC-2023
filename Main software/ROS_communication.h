@@ -14,9 +14,9 @@
 #include <std_msgs/UInt16.h>
 #include <std_msgs/Int16.h>
 #include <std_msgs/Float32MultiArray.h>
-#include <std_msgs/Int32MultiArray.h>
 #include <geometry_msgs/Twist.h>
 #include <sensor_msgs/JointState.h>
+#include <moveit/move_group_interface/move_group_interface.h>
 using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
@@ -32,13 +32,15 @@ std::vector<double> present_joint_angle;
 std_msgs::String arduino_command;
 std_msgs::Int16 arduino_value_1, arduino_value_2;
 std_msgs::Header header;
-std_msgs::Int32MultiArray joint_msg;
+std_msgs::Float32MultiArray joint_msg;
 cv_bridge::CvImage img_bridge;
 std::vector<uchar> to_str_buf;
 std_msgs::String img_msg;
 std::string encoded;
 ros::Publisher pub_command, pub_value_1, pub_value_2, pub_webcam, pub_mattemp, pub_goal_joints;
 ros::Subscriber sub_temperature, sub_cmdvel, sub_autonomousmode, sub_dexteritymode, sub_qrdetection, sub_hazmatdetection, sub_motiondetection, joint_states_sub;
+moveit::planning_interface::MoveGroupInterface* p_move;
+moveit::planning_interface::MoveGroupInterface::Plan * p_plan;
 
 void temperatureCallback(const std_msgs::Float32MultiArray& temperature)
 {
@@ -81,12 +83,16 @@ void ConnectROS(int argc, char** argv)
 	system("gnome-terminal -- rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=115200");
 	ros::init(argc, argv, "k1d_main");
 	ros::NodeHandle nodehandle;
+	moveit::planning_interface::MoveGroupInterface move_group_interface("joints");
+	moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+	p_move = &move_group_interface;
+	p_plan = &my_plan;
 	pub_command = nodehandle.advertise<std_msgs::String>("arduino_command", 1000);
 	pub_value_1 = nodehandle.advertise<std_msgs::Int16>("arduino_value_1", 1000);
 	pub_value_2 = nodehandle.advertise<std_msgs::Int16>("arduino_value_2", 1000);
 	pub_webcam = nodehandle.advertise<std_msgs::String>("webcam", 1000);
 	pub_mattemp = nodehandle.advertise<std_msgs::String>("thermalcam", 1000);
-  	pub_goal_joints = nodehandle.advertise<std_msgs::Int32MultiArray>("goal_joints", 1000);
+  	pub_goal_joints = nodehandle.advertise<std_msgs::Float32MultiArray>("goal_joints", 1000);
 	sub_temperature = nodehandle.subscribe("temperature", 1000, &temperatureCallback);
 	sub_cmdvel = nodehandle.subscribe("cmd_vel", 1000, &cmdvelCallback);
 	sub_autonomousmode = nodehandle.subscribe("autonomous_mode", 1000, &autonomousModeCallback);
@@ -112,6 +118,14 @@ void PublishOpenCR(string command, int value_1, int value_2)
 	pub_command.publish(arduino_command);
 	pub_value_1.publish(arduino_value_1);
 	pub_value_2.publish(arduino_value_2);
+}
+
+void PublishJointsOpenCR(vector<double> joint_pos)
+{	
+	for (int i = 0; i < joint_pos.size(); i++) {
+		joint_msg.data[i] = joint_pos[i];
+	}
+	pub_goal_joints.publish(joint_msg);
 }
 
 void PublishMats(Mat webcam, Mat mattemp)

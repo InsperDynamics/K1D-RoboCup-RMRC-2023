@@ -8,4 +8,4 @@ moveit_setup_assistant_config:
   CONFIG:
     author_name: Insper Dynamics
     author_email: none@a.com
-    generated_timestamp: 1686599935
+    generated_timestamp: 1686860541

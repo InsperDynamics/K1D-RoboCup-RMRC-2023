@@ -8,6 +8,7 @@
 #include "QR_read.h"
 #include "Motion_detection.h"
 #include "Hazmat_detection.h"
+int use_moveit = 1;
 using namespace std;
 using namespace cv;
 int resolution_horizontal = 640;
@@ -77,9 +78,19 @@ void checkUserInput()
 	else if (gamepad_command == "LowerBackFlippers")
 		LowerBackFlippers();
 	else if (gamepad_command == "First+" && dexterity_mode)
-		FirstPlus();
+		if(use_moveit) {
+			GripperForward();
+		}
+		else {
+			FirstPlus();	
+		}
 	else if (gamepad_command == "First-" && dexterity_mode)
-		FirstMinus();
+		if(use_moveit) {
+			GripperBackward();
+		}
+		else {
+			FirstMinus();	
+		}
 	else if (gamepad_command == "Second+" && dexterity_mode)
 		SecondPlus();
 	else if (gamepad_command == "Second-" && dexterity_mode)
@@ -89,9 +100,19 @@ void checkUserInput()
 	else if (gamepad_command == "ClawClose" && dexterity_mode)
 		ClawClose();
 	else if (gamepad_command == "Third+" && dexterity_mode)
-		ThirdPlus();
+		if(use_moveit) {
+			GripperUp();
+		}
+		else {
+			ThirdPlus();	
+		}
 	else if (gamepad_command == "Third-" && dexterity_mode)
-		ThirdMinus();
+		if(use_moveit) {
+			GripperDown();
+		}
+		else {
+			ThirdMinus();	
+		}
 	else if (gamepad_command == "OpenGripper" && dexterity_mode)
 		ClawOpen();
 	else if (gamepad_command == "CloseGripper" && dexterity_mode)
