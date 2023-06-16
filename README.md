@@ -4,7 +4,7 @@
 > Rapidly Manufactured Robot Challenge RoboCup Rescue 2023
 >
 > Felipe Catapano Emrich Melo, Rafael Eli Katri, Katy Terra, Enricco
-> Gemha, Eduardo Mendes Vaz
+> Gemha, Eduardo Mendes Vaz, Paola Friedel
 
 March 2023
 
