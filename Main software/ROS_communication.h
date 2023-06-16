@@ -80,6 +80,8 @@ void ConnectROS(int argc, char** argv)
 	sleep_for(seconds(10));
 	system("gnome-terminal -- roslaunch rosbridge_server rosbridge_websocket.launch");
 	system("gnome-terminal -- roslaunch k1d k1d.launch");
+	system("gnome-terminal -- roslaunch k1d_moveit k1d.launch");
+	sleep_for(seconds(10));
 	system("gnome-terminal -- rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=115200");
 	ros::init(argc, argv, "k1d_main");
 	ros::NodeHandle nodehandle;
