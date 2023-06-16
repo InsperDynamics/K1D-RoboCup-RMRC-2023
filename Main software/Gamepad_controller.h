@@ -79,33 +79,43 @@ void UpdateRawInput()
 			{
 				case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
 					gamepad_command = "RaiseFrontFlippers";
+					gamepad_value_1 = FLIPPER_DELTA;
 					break;
 				case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
 				    gamepad_command = "RaiseBackFlippers";
+					gamepad_value_1 = FLIPPER_DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_Y:
 					gamepad_command = "Third+";
+					gamepad_value_1 = DELTA;
 					break;
 				case SDL_CONTROLLER_BUTTON_A:
 					gamepad_command = "Third-";
+					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_UP:
 					gamepad_command = "Second+";
+					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
 					gamepad_command = "Second-";
+					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
 					gamepad_command = "First+";
+					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
 					gamepad_command = "First-";
+					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_X:
                     gamepad_command = "ClawOpen";
+					gamepad_value_1 = GRIPPER_DELTA;
 				    break;
                 case SDL_CONTROLLER_BUTTON_B:
 				    gamepad_command = "ClawClose";
+					gamepad_value_1 = GRIPPER_DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_BACK:
 					break;
