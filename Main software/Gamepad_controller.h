@@ -17,27 +17,12 @@ int gamepad_value_2 = 0;
 bool isPressed = false;
 SDL_GameControllerAxis lastAxis = SDL_CONTROLLER_AXIS_INVALID;
 
-map<Uint8,vector<double>> preset;
 int dir = 1;
-
-void SetHomePreset()
-{
-	std::vector<double> joint_angle;
-
-	joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-
-	preset[SDL_CONTROLLER_BUTTON_X] = joint_angle;
-
-}
 
 void InitializeGamepad()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
     gGameController = SDL_GameControllerOpen(0);
-	SetHomePreset();
 }
 
 void UpdateRawInput()
@@ -60,18 +45,13 @@ void UpdateRawInput()
 
 			if (sdl_event.cbutton.button != SDL_CONTROLLER_BUTTON_BACK && SDL_GameControllerGetButton(gGameController, SDL_CONTROLLER_BUTTON_BACK))
 			{  
-				if (preset.count(sdl_event.cbutton.button))
-				{
-					GoToPreset(preset[sdl_event.cbutton.button]);
-					cout << "enviado\n";
-				}
+				GotoPreset(sdl_event.cbutton.button);
 				break;
 			}
 
 			if (sdl_event.cbutton.button != SDL_CONTROLLER_BUTTON_START && SDL_GameControllerGetButton(gGameController, SDL_CONTROLLER_BUTTON_START))
 			{  
-				preset[sdl_event.cbutton.button] = present_joint_angle;
-				cout << "Salvo\n";
+				SavePreset(sdl_event.cbutton.button);
 				break;
 			}
 

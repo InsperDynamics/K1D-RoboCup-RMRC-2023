@@ -1,4 +1,6 @@
 #include <DynamixelWorkbench.h>
+#include <map>
+#include <vector>
 #define DXL_BAUD 1000000
 
 DynamixelWorkbench dxl;
@@ -15,6 +17,8 @@ int32_t joint_velocity[3] = {};
 int32_t gripper_position = 2048;
 
 sensor_msgs::JointState joint_states;
+
+std::map<int, int32_t*> preset;
 
 void ControlJointDynamixel(int32_t *joint_pos)
 {
@@ -85,20 +89,26 @@ void LowerBackFlipper(int delta)
 
 void OpenGripper(int delta)
 {
-  gripper_position -= delta;
-  ControlGripperDynamixel(gripper_position);  
+  if (gripper_position >= 0) {
+    gripper_position -= delta;
+    ControlGripperDynamixel(gripper_position);    
+  }  
 }
 
 void CloseGripper(int delta)
 {
-  gripper_position += delta;
-  ControlGripperDynamixel(gripper_position);  
+  if (gripper_position < 2048) {
+    gripper_position += delta;
+    ControlGripperDynamixel(gripper_position);
+  }  
 }
 
 void FirstPlus(int delta)
-{
-  joint_position[0] += delta;
-  ControlJointDynamixel(joint_position);  
+{ 
+  if (joint_position[0] < 2048) {
+    joint_position[0] += delta;
+    ControlJointDynamixel(joint_position);
+  }  
 }
 
 void FirstMinus(int delta)
@@ -129,6 +139,20 @@ void ThirdMinus(int delta)
 {
   joint_position[2] -= delta;
   ControlJointDynamixel(joint_position); 
+}
+
+void savePreset(int btn) 
+{
+  int32_t v[3];
+  for (int i = 0; i < 3; i++) {
+    v[i] = joint_position[i];
+  }
+  preset[btn] = v;
+}
+
+void gotoPreset(int btn) 
+{
+  ControlJointDynamixel(preset[btn]);
 }
 
 void ServosInitialize()

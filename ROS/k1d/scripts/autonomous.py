@@ -9,10 +9,10 @@ from sensor_msgs.msg import LaserScan
 erro = 0
 scan_data = None
 dir = 1
-velocidade_linear = 0.15
-velocidade_angular = 0.3
-erro_max_frente = 1.5
-dist_bump = 0.17
+velocidade_linear = 1.13
+velocidade_angular = 15
+erro_max_frente = 1.2
+dist_bump = 0.1
 
 def filtroinf(x):
     if x == inf:
@@ -27,29 +27,30 @@ def scaneou(dado):
     readings = list(map(lambda x: filtroinf(x), readings))
     #print(f"75 graus: {readings[75]}, 105 graus: {readings[105]}, 225 graus: {readings[225]} e 285 graus: {readings[285]}")
     #print(f"0 graus: {readings[0]}, 90 graus: {readings[90]}, 180 graus: {readings[180]} e 270 graus: {readings[270]}")
+    print(readings[180])
     if dir == -1:
         if readings[75] > readings[285]:
             try:
                 erro = readings[75]/readings[285]
             except ZeroDivisionError:
-                erro = 999
+                pass
         else:
             try:
                 erro = -readings[285]/readings[75]
             except ZeroDivisionError:
-                erro = -999
+                pass
     elif dir == 1:
         if readings[105] > readings[255]:
             try:
                 erro = readings[105]/readings[255]
             except ZeroDivisionError:
-                erro = 999
+                pass
         else:
             try:
                 erro = -readings[255]/readings[105]
             except ZeroDivisionError:
-                erro = -999
-    print(f"erro: {erro}, dir: {dir}")
+                pass
+    #print(f"erro: {erro}, dir: {dir}")
 
 
 if __name__=="__main__":
@@ -58,7 +59,7 @@ if __name__=="__main__":
     recebe_scan = rospy.Subscriber("/scan", LaserScan, scaneou)
     last = rospy.Time.now()
     while not rospy.is_shutdown():
-        if dir == 1 and scan_data is not None and scan_data[0] < dist_bump:
+        if dir == 1 and scan_data is not None and scan_data[0] < dist_bump and scan_data[0] != 0.0 :
             if erro < erro_max_frente:
                 print('bump')
                 dir = -1
@@ -68,7 +69,7 @@ if __name__=="__main__":
                 continue
             else:
                 erro *= 9999
-        elif dir == -1 and scan_data is not None and scan_data[180] < dist_bump:
+        elif dir == -1 and scan_data is not None and scan_data[180] < dist_bump and scan_data[180] != 0.0:
             if erro < erro_max_frente:
                 print('bump')
                 dir = 1

@@ -45,17 +45,10 @@ void MoveAutonomous()
 	const float fromHigh = 3 / (2*wheelRadius);
 	const float toLow = -200;
 	const float toHigh = 200;
-	//x and z value caps at [-1, 1]
-  	float x = max(min(cmdvel_linear_x, 1.0f), -1.0f);
-  	float z = max(min(cmdvel_angular_z, 1.0f), -1.0f);
-	float l = ((2*x) - (z*wheelBase)) / (2*wheelRadius);
-  	float r = ((2*x) + (z*wheelBase)) / (2*wheelRadius);
+	float l = ((2*cmdvel_linear_x) - (cmdvel_angular_z*wheelBase)) / (2*wheelRadius);
+  	float r = ((2*cmdvel_linear_x) + (cmdvel_angular_z*wheelBase)) / (2*wheelRadius);
 	uint16_t pwm_l = mapPwm(l, fromLow, fromHigh, toLow, toHigh);
 	uint16_t pwm_r = mapPwm(r, fromLow, fromHigh, toLow, toHigh);
-	cout << l;
-	cout << " ";
-	cout << r;
-	cout << "\n";
 	PublishOpenCR("MotorsMove", pwm_l, pwm_r);
 }
 
