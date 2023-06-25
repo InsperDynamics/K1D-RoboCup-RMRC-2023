@@ -104,7 +104,7 @@ void CloseGripper(int delta)
 
 void FirstPlus(int delta)
 { 
-  if (joint_position[0] < 2048) {
+  if (joint_position[0] < 2600) {
     joint_position[0] += delta;
     ControlJointDynamixel(joint_position);
   }  

@@ -3,9 +3,9 @@
 #include <string>
 #include "ROS_communication.h"
 using namespace std;
-#define DELTA 15
-#define FLIPPER_DELTA 30
-#define GRIPPER_DELTA 15
+#define DELTA 20
+#define FLIPPER_DELTA 60
+#define GRIPPER_DELTA 30
 
 void FirstPlus()
 {
