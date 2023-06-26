@@ -26,9 +26,9 @@ void openCamera()
 	captureB.set(CAP_PROP_FPS, 30);
 }
 
-float mapPwm(float x, float out_min, float out_max)
-{
-  return x * (out_max - out_min) + out_min;
+float mapPwm(float n, float fromLow, float fromHigh, float outLow, float outHigh) {
+    float normalized = (n - fromLow) / (fromHigh - fromLow);
+    return outLow + normalized * (outHigh - outLow);
 }
 
 void MoveManual()
@@ -41,14 +41,14 @@ void MoveAutonomous()
 {
 	const float wheelBase = 0.12;
 	const float wheelRadius = 0.055;
-	//value caps at [-1, 1]
-  	float x = max(min(cmdvel_linear_x, 1.0f), -1.0f);
-  	float z = max(min(cmdvel_angular_z, 1.0f), -1.0f);
+	const float fromLow = -3 / (2*wheelRadius);
+	const float fromHigh = 3 / (2*wheelRadius);
+	const float toLow = -200;
+	const float toHigh = 200;
 	float l = ((2*cmdvel_linear_x) - (cmdvel_angular_z*wheelBase)) / (2*wheelRadius);
   	float r = ((2*cmdvel_linear_x) + (cmdvel_angular_z*wheelBase)) / (2*wheelRadius);
-	uint16_t pwm_l = mapPwm(fabs(l), 50, 250);
-	uint16_t pwm_r = mapPwm(fabs(r), 50, 250);
-	cout << "(AUTONOMOUS) MotorsMove " << to_string(pwm_l) << " " << to_string(pwm_r) << "\n";
+	uint16_t pwm_l = mapPwm(l, fromLow, fromHigh, toLow, toHigh);
+	uint16_t pwm_r = mapPwm(r, fromLow, fromHigh, toLow, toHigh);
 	PublishOpenCR("MotorsMove", pwm_l, pwm_r);
 }
 

@@ -1,7 +1,0 @@
-## Launching Autonomous
-
-```cd catkin_ws/src/k1d/scripts```
-```roscore```
-```roslaunch turtlebot3_bringup turtlebot3_remote.launch```
-```roslaunch hector_mapping mapping_default.launch odom_frame:=odom```
-```rviz```

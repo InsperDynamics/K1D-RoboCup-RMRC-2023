@@ -26,5 +26,7 @@ void UpdateThermal(float current_temperature[thermal_width * thermal_height])
 			thermal_image.at<Vec3b>(Point(x,y)) = color;
 		}
 	}
+	transpose(thermal_image, thermal_image);  
+	flip(thermal_image, thermal_image ,1);
 	resize(thermal_image, thermal_image, Size(), upscale_factor, upscale_factor, INTER_CUBIC);
 }

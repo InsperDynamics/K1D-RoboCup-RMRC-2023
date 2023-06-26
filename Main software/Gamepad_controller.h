@@ -17,27 +17,12 @@ int gamepad_value_2 = 0;
 bool isPressed = false;
 SDL_GameControllerAxis lastAxis = SDL_CONTROLLER_AXIS_INVALID;
 
-map<Uint8,vector<double>> preset;
 int dir = 1;
-
-void SetHomePreset()
-{
-	std::vector<double> joint_angle;
-
-	joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-    joint_angle.push_back(0.0);
-
-	preset[SDL_CONTROLLER_BUTTON_X] = joint_angle;
-
-}
 
 void InitializeGamepad()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
     gGameController = SDL_GameControllerOpen(0);
-	SetHomePreset();
 }
 
 void UpdateRawInput()
@@ -60,18 +45,13 @@ void UpdateRawInput()
 
 			if (sdl_event.cbutton.button != SDL_CONTROLLER_BUTTON_BACK && SDL_GameControllerGetButton(gGameController, SDL_CONTROLLER_BUTTON_BACK))
 			{  
-				if (preset.count(sdl_event.cbutton.button))
-				{
-					GoToPreset(preset[sdl_event.cbutton.button]);
-					cout << "enviado\n";
-				}
+				GotoPreset(sdl_event.cbutton.button);
 				break;
 			}
 
 			if (sdl_event.cbutton.button != SDL_CONTROLLER_BUTTON_START && SDL_GameControllerGetButton(gGameController, SDL_CONTROLLER_BUTTON_START))
 			{  
-				preset[sdl_event.cbutton.button] = present_joint_angle;
-				cout << "Salvo\n";
+				SavePreset(sdl_event.cbutton.button);
 				break;
 			}
 
@@ -79,33 +59,43 @@ void UpdateRawInput()
 			{
 				case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
 					gamepad_command = "RaiseFrontFlippers";
+					gamepad_value_1 = FLIPPER_DELTA;
 					break;
 				case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
 				    gamepad_command = "RaiseBackFlippers";
+					gamepad_value_1 = FLIPPER_DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_Y:
 					gamepad_command = "Third+";
+					gamepad_value_1 = DELTA;
 					break;
 				case SDL_CONTROLLER_BUTTON_A:
 					gamepad_command = "Third-";
+					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_UP:
 					gamepad_command = "Second+";
+					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
 					gamepad_command = "Second-";
+					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
 					gamepad_command = "First+";
+					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
 					gamepad_command = "First-";
+					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_X:
                     gamepad_command = "ClawOpen";
+					gamepad_value_1 = GRIPPER_DELTA;
 				    break;
                 case SDL_CONTROLLER_BUTTON_B:
 				    gamepad_command = "ClawClose";
+					gamepad_value_1 = GRIPPER_DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_BACK:
 					break;

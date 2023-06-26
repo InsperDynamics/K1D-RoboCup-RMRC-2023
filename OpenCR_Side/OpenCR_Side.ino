@@ -62,10 +62,10 @@ void ControlMotors(String command, int command_parameter_1, int command_paramete
   else if (command == "LowerBackFlippers"){
     LowerBackFlipper(command_parameter_1);
   }
-  else if (command == "OpenGripper"){
+  else if (command == "ClawOpen"){
     OpenGripper(command_parameter_1);
   }
-  else if (command == "CloseGripper"){
+  else if (command == "ClawClose"){
     CloseGripper(command_parameter_1);
   }
   else if (command == "First+"){
@@ -85,6 +85,12 @@ void ControlMotors(String command, int command_parameter_1, int command_paramete
   }
   else if (command == "Third-"){
     ThirdMinus(command_parameter_1);
+  }
+  else if (command == "SavePreset"){
+    savePreset(command_parameter_1);
+  }
+  else if (command == "GotoPreset"){
+    gotoPreset(command_parameter_1);
   }
 }
 
