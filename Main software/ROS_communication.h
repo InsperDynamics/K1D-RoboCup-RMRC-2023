@@ -77,8 +77,8 @@ void ConnectROS(int argc, char** argv)
 	system("gnome-terminal -- roscore");
 	sleep_for(seconds(10));
 	system("gnome-terminal -- roslaunch rosbridge_server rosbridge_websocket.launch");
-	system("gnome-terminal -- roslaunch k1d k1d.launch");
 	system("gnome-terminal -- rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=115200");
+	system("gnome-terminal -- roslaunch k1d k1d.launch");
 	ros::init(argc, argv, "k1d_main");
 	ros::NodeHandle nodehandle;
 	pub_command = nodehandle.advertise<std_msgs::String>("arduino_command", 1000);
