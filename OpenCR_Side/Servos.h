@@ -1,6 +1,5 @@
 #include <DynamixelWorkbench.h>
 #include <map>
-#include <vector>
 #define DXL_BAUD 1000000
 
 DynamixelWorkbench dxl;
@@ -11,6 +10,8 @@ uint8_t flipper_id[4] = {1,2,3,4};
 uint8_t *pid = &gripper_id;
 
 int32_t flipper_position[4] = {2048,2048,2048,2048};
+int32_t flipper_auto[4] = {1500,2500,1500,2500};
+
 int32_t joint_position[3] = {2600, 1125, 1850};
 int32_t joint_velocity[3] = {};
 int32_t gripper_position = 0;
