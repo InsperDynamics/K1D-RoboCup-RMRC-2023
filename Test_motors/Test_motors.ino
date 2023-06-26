@@ -132,14 +132,16 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("Move");
-  Move(40, 40);
+  Serial.println("Move fwd");
+  Move(100, 100);
   delay(2000);
   Serial.println("Stop");
   MotorsStop();
   delay(2000);
-  Move(-40, -40);
+  Serial.println("Move backwards");
+  Move(-100, -100);
   delay(2000);
+  Serial.println("Stop");
   MotorsStop();
   delay(2000);
 }
