@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+print(cv2.__version__)
 
 INPUT_WIDTH = 640
 INPUT_HEIGHT = 640
