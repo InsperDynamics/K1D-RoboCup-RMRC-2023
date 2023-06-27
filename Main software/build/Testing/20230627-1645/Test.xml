@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20230627-1645-Experimental"
+	Name="enriccog-ROG-Flow-Z13-GZ301ZE-GZ301ZE"
+	Generator="ctest-3.16.3"
+	CompilerName="/usr/bin/g++"
+	CompilerVersion="9.4.0"
+	OSName="Linux"
+	Hostname="enriccog-ROG-Flow-Z13-GZ301ZE-GZ301ZE"
+	OSRelease="5.15.0-75-generic"
+	OSVersion="#82~20.04.1-Ubuntu SMP Wed Jun 7 19:37:37 UTC 2023"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="154"
+	ProcessorCacheSize="24576"
+	NumberOfLogicalCPU="20"
+	NumberOfPhysicalCPU="14"
+	TotalVirtualMemory="2047"
+	TotalPhysicalMemory="15678"
+	LogicalProcessorsPerPhysical="1"
+	ProcessorClockFrequency="996.587"
+	>
+	<Testing>
+		<StartDateTime>Jun 27 18:18 -03</StartDateTime>
+		<StartTestTime>1687900701</StartTestTime>
+		<TestList/>
+		<EndDateTime>Jun 27 18:18 -03</EndDateTime>
+		<EndTestTime>1687900701</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>
