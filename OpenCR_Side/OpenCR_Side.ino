@@ -38,11 +38,11 @@ void jointsCallback(const std_msgs::Int32MultiArray& joint_msg){
 ros::NodeHandle nodehandle;
 ros::Publisher pub_temperature("temperature", &temperature);
 ros::Publisher pub_gas("gas", &gas);
-ros::Publisher pub_joint_states("joint_states", &joint_states);
+//ros::Publisher pub_joint_states("joint_states", &joint_states);
 ros::Subscriber<std_msgs::String> sub_command("arduino_command", commandCallback);
 ros::Subscriber<std_msgs::Int16> sub_value_1("arduino_value_1", value1Callback);
 ros::Subscriber<std_msgs::Int16> sub_value_2("arduino_value_2", value2Callback);
-ros::Subscriber<std_msgs::Int32MultiArray> sub_joints("goal_joints", jointsCallback);
+//ros::Subscriber<std_msgs::Int32MultiArray> sub_joints("goal_joints", jointsCallback);
 
 void ControlMotors(String command, int command_parameter_1, int command_parameter_2) {
   if (command == "MotorsMove"){
@@ -118,7 +118,7 @@ void setup() {
   nodehandle.subscribe(sub_command);
   nodehandle.subscribe(sub_value_1);
   nodehandle.subscribe(sub_value_2);
-  nodehandle.subscribe(sub_joints);
+  //nodehandle.subscribe(sub_joints);
 }
 
 void loop() {
