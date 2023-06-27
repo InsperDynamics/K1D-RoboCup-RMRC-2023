@@ -25,7 +25,8 @@ function Connection() {
     let autonomousTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_AUTONOMOUS,
-        messageType: Config.MSGTYPE_AUTONOMOUS
+        messageType: Config.MSGTYPE_AUTONOMOUS,
+        queue_size: 1
     });
     let autonomousMsg = new window.ROSLIB.Message({
         data: autonomousOn
@@ -34,7 +35,8 @@ function Connection() {
     let dexterityTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_DEXTERITY,
-        messageType: Config.MSGTYPE_DEXTERITY
+        messageType: Config.MSGTYPE_DEXTERITY,
+        queue_size: 1
     });
     let dexterityMsg = new window.ROSLIB.Message({
         data: dexterityOn
@@ -43,7 +45,8 @@ function Connection() {
     let qrCodeTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_QRCODE,
-        messageType: Config.MSGTYPE_QRCODE
+        messageType: Config.MSGTYPE_QRCODE,
+        queue_size: 1
     });
     let qrCodeMsg = new window.ROSLIB.Message({
         data: qrCodeOn
@@ -52,7 +55,8 @@ function Connection() {
     let hazmatTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_HAZMAT,
-        messageType: Config.MSGTYPE_HAZMAT
+        messageType: Config.MSGTYPE_HAZMAT,
+        queue_size: 1
     });
     let hazmatMsg = new window.ROSLIB.Message({
         data: hazmatOn
@@ -61,7 +65,8 @@ function Connection() {
     let motionTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_MOTION,
-        messageType: Config.MSGTYPE_MOTION
+        messageType: Config.MSGTYPE_MOTION,
+        queue_size: 100
     });
     let motionMsg = new window.ROSLIB.Message({
         data: motionOn
@@ -70,19 +75,22 @@ function Connection() {
     let gasTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_CO2,
-        messageType: Config.MSGTYPE_CO2
+        messageType: Config.MSGTYPE_CO2,
+        queue_size: 1
     });
 
     let webcamTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_CAMERA,
-        messageType: Config.MSGTYPE_CAMERA
+        messageType: Config.MSGTYPE_CAMERA,
+        queue_size: 1
     });
 
     let thermalTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_TEMPERATURE,
-        messageType: Config.MSGTYPE_TEMPERATURE
+        messageType: Config.MSGTYPE_TEMPERATURE,
+        queue_size: 1
     });
 
     
@@ -133,6 +141,7 @@ function Connection() {
     }
 
     function pubMotion(msg, data, topic) {
+        console.log("clicou");
         setMotionOn(!data);
         msg.data = !data;
         topic.publish(msg);
