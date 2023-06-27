@@ -114,7 +114,7 @@ void setup() {
   temperature.data = (float *)malloc(sizeof(float)*AMG88xx_PIXEL_ARRAY_SIZE);
   nodehandle.advertise(pub_temperature);
   nodehandle.advertise(pub_gas);
-  nodehandle.advertise(pub_joint_states);
+  //nodehandle.advertise(pub_joint_states);
   nodehandle.subscribe(sub_command);
   nodehandle.subscribe(sub_value_1);
   nodehandle.subscribe(sub_value_2);
