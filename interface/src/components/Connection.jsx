@@ -66,7 +66,7 @@ function Connection() {
         ros: ros,
         name: Config.TOPIC_MOTION,
         messageType: Config.MSGTYPE_MOTION,
-        queue_size: 1
+        queue_size: 100
     });
     let motionMsg = new window.ROSLIB.Message({
         data: motionOn
@@ -75,19 +75,22 @@ function Connection() {
     let gasTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_CO2,
-        messageType: Config.MSGTYPE_CO2
+        messageType: Config.MSGTYPE_CO2,
+        queue_size: 1
     });
 
     let webcamTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_CAMERA,
-        messageType: Config.MSGTYPE_CAMERA
+        messageType: Config.MSGTYPE_CAMERA,
+        queue_size: 1
     });
 
     let thermalTopic = new window.ROSLIB.Topic({
         ros: ros,
         name: Config.TOPIC_TEMPERATURE,
-        messageType: Config.MSGTYPE_TEMPERATURE
+        messageType: Config.MSGTYPE_TEMPERATURE,
+        queue_size: 1
     });
 
     
@@ -116,26 +119,32 @@ function Connection() {
     function pubAutonomous(msg, data, topic) {
         setAutonomousOn(!data);
         msg.data = !data;
+        topic.publish(msg);
     }
 
     function pubDexterity(msg, data, topic) {
         setDexterityOn(!data);
         msg.data = !data;
+        topic.publish(msg);
     }
 
     function pubQrCode(msg, data, topic) {
         setQrCodeOn(!data);
         msg.data = !data;
+        topic.publish(msg);
     }
 
     function pubHazmat(msg, data, topic) {
         setHazmatOn(!data);
         msg.data = !data;
+        topic.publish(msg);
     }
 
     function pubMotion(msg, data, topic) {
+        console.log("clicou");
         setMotionOn(!data);
         msg.data = !data;
+        topic.publish(msg);
     }
 
     gasTopic.subscribe((message) => {
@@ -152,14 +161,6 @@ function Connection() {
 
 
     init_connection();
-
-    setInterval(() => {
-        autonomousTopic.publish(autonomousMsg);
-        motionTopic.publish(motionMsg);
-        qrCodeTopic.publish(qrCodeMsg);
-        hazmatTopic.publish(hazmatMsg);
-        dexterityTopic.publish(dexterityMsg);
-    }, 100);
 
     return (
         <Container fluid style={{margin: "0px"}}>

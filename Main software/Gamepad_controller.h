@@ -16,6 +16,12 @@ int gamepad_value_1 = 0;
 int gamepad_value_2 = 0;
 bool isPressed = false;
 SDL_GameControllerAxis lastAxis = SDL_CONTROLLER_AXIS_INVALID;
+int macro = 0;
+int autonomous_mode = 0;
+int dexterity_mode = 0;
+int qr_detection = 0;
+int hazmat_detection = 0;
+int motion_detection = 0;
 
 int dir = 1;
 
@@ -29,9 +35,25 @@ void UpdateRawInput()
 {	
 	while(SDL_PollEvent(&sdl_event))
 	{
-		if (sdl_event.type == SDL_CONTROLLERBUTTONUP)
+		if (sdl_event.cbutton.type == SDL_CONTROLLERBUTTONUP)
 		{
 			isPressed = false;
+			if (sdl_event.cbutton.button == SDL_CONTROLLER_BUTTON_BACK) {
+				macro = !macro;
+				while(SDL_PollEvent(&sdl_event)){}
+			}
+			else if (sdl_event.cbutton.button == SDL_CONTROLLER_BUTTON_X  && macro) {
+				motion_detection = !motion_detection;
+				while(SDL_PollEvent(&sdl_event)){}
+			}
+			else if (sdl_event.cbutton.button == SDL_CONTROLLER_BUTTON_A && macro) {
+				qr_detection = !qr_detection;
+				while(SDL_PollEvent(&sdl_event)){}
+			}
+			else if (sdl_event.cbutton.button == SDL_CONTROLLER_BUTTON_B && macro) {
+				hazmat_detection = !hazmat_detection;
+				while(SDL_PollEvent(&sdl_event)){}
+			}
 		} 
 
 		if (SDL_GameControllerGetAxis(gGameController, lastAxis) < JOYSTICK_DEAD_ZONE)
@@ -42,12 +64,6 @@ void UpdateRawInput()
 		if (sdl_event.cbutton.type == SDL_CONTROLLERBUTTONDOWN)
 		{
 			isPressed = true;
-
-			if (sdl_event.cbutton.button != SDL_CONTROLLER_BUTTON_BACK && SDL_GameControllerGetButton(gGameController, SDL_CONTROLLER_BUTTON_BACK))
-			{  
-				GotoPreset(sdl_event.cbutton.button);
-				break;
-			}
 
 			if (sdl_event.cbutton.button != SDL_CONTROLLER_BUTTON_START && SDL_GameControllerGetButton(gGameController, SDL_CONTROLLER_BUTTON_START))
 			{  
@@ -66,12 +82,16 @@ void UpdateRawInput()
 					gamepad_value_1 = FLIPPER_DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_Y:
-					gamepad_command = "Third+";
-					gamepad_value_1 = DELTA;
+					if (!macro) {
+						gamepad_command = "Third+";
+						gamepad_value_1 = DELTA;
+					}
 					break;
 				case SDL_CONTROLLER_BUTTON_A:
-					gamepad_command = "Third-";
-					gamepad_value_1 = DELTA;
+					if (!macro) {
+						gamepad_command = "Third-";
+						gamepad_value_1 = DELTA;
+					}
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_UP:
 					gamepad_command = "Second+";
@@ -82,20 +102,24 @@ void UpdateRawInput()
 					gamepad_value_1 = DELTA;
                     break;
 				case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-					gamepad_command = "First+";
-					gamepad_value_1 = DELTA;
-                    break;
-				case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
 					gamepad_command = "First-";
 					gamepad_value_1 = DELTA;
                     break;
+				case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+					gamepad_command = "First+";
+					gamepad_value_1 = DELTA;
+                    break;
 				case SDL_CONTROLLER_BUTTON_X:
-                    gamepad_command = "ClawOpen";
-					gamepad_value_1 = GRIPPER_DELTA;
+					if (!macro) {
+						gamepad_command = "ClawOpen";
+						gamepad_value_1 = GRIPPER_DELTA;
+					}
 				    break;
                 case SDL_CONTROLLER_BUTTON_B:
-				    gamepad_command = "ClawClose";
-					gamepad_value_1 = GRIPPER_DELTA;
+					if (!macro){
+						gamepad_command = "ClawClose";
+						gamepad_value_1 = GRIPPER_DELTA;
+					}
                     break;
 				case SDL_CONTROLLER_BUTTON_BACK:
 					break;

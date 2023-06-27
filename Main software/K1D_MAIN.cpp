@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <opencv2/opencv.hpp>
+#include <opencv4/opencv2/opencv.hpp>
 #include "ROS_communication.h"
 #include "Claw.h"
 #include "Gamepad_controller.h"
@@ -33,7 +33,6 @@ float mapPwm(float n, float fromLow, float fromHigh, float outLow, float outHigh
 
 void MoveManual()
 {
-	cout << gamepad_command << " " << to_string(gamepad_value_1) << " " << to_string(gamepad_value_2) << "\n";
 	PublishOpenCR(gamepad_command, gamepad_value_1, gamepad_value_2);
 }
 
@@ -54,21 +53,8 @@ void MoveAutonomous()
 
 void checkUserInput()
 {
-	if (gamepad_command == "autonomous_mode")
-		autonomous_mode = !autonomous_mode;
-	else if (gamepad_command == "dexterity_mode")
-	{
-		if (dexterity_mode)
-			ClawRetract();
-		dexterity_mode = !dexterity_mode;
-	}
-	else if (gamepad_command == "motion_detection")
-		motion_detection = !motion_detection;
-	else if (gamepad_command == "qr_detection")
-		qr_detection = !qr_detection;
-	else if (gamepad_command == "hazmat_detection")
-		hazmat_detection = !hazmat_detection;
-	else if (gamepad_command == "RaiseFrontFlippers")
+	cout << gamepad_command << " " << to_string(gamepad_value_1) << " " << to_string(gamepad_value_2) << "\n";
+	if (gamepad_command == "RaiseFrontFlippers")
 		RaiseFrontFlippers();
 	else if (gamepad_command == "LowerFrontFlippers")
 		LowerFrontFlippers();
@@ -142,9 +128,8 @@ void loop()
 	UpdateGamepadInput();
 	checkUserInput();
 	checkSensorsFeed();
-	PublishMats(webcam_image, thermal_image);
-	//imshow("K1D", webcam_image);
-	//imshow("Thermal", thermal_image);
+	imshow("K1D", webcam_image);
+	imshow("Thermal", thermal_image);
 	waitKey(1);
 }
 
