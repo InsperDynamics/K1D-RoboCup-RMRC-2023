@@ -25,11 +25,6 @@ std_msgs::Float32MultiArray temperature;
 void commandCallback(const std_msgs::String& command){
   current_command = command.data;
 }
-void autoCallback(const std_msgs::Bool& value){
-  if (value.data){
-    ControlFlipperDynamixel(flipper_auto); 
-  }
-}
 void value1Callback(const std_msgs::Int16& value1){
   current_value_1 = value1.data;
 }
@@ -48,7 +43,6 @@ ros::Subscriber<std_msgs::String> sub_command("arduino_command", commandCallback
 ros::Subscriber<std_msgs::Int16> sub_value_1("arduino_value_1", value1Callback);
 ros::Subscriber<std_msgs::Int16> sub_value_2("arduino_value_2", value2Callback);
 ros::Subscriber<std_msgs::Int32MultiArray> sub_joints("goal_joints", jointsCallback);
-ros::Subscriber<std_msgs::Bool> sub_auto("autonomous_mode", autoCallback);
 
 void ControlMotors(String command, int command_parameter_1, int command_parameter_2) {
   if (command == "MotorsMove"){
@@ -99,6 +93,12 @@ void ControlMotors(String command, int command_parameter_1, int command_paramete
   else if (command == "GotoPreset"){
     gotoPreset(command_parameter_1);
   }
+  else if (command == "autoflip"){
+    ControlFlipperDynamixel(flipper_auto);
+  }
+  else if (command == "defflip"){
+    ControlFlipperDynamixel(flipper_position);
+  }
 }
 
 void setup() {
@@ -119,7 +119,6 @@ void setup() {
   nodehandle.subscribe(sub_value_1);
   nodehandle.subscribe(sub_value_2);
   nodehandle.subscribe(sub_joints);
-  nodehandle.subscribe(sub_auto);
 }
 
 void loop() {
