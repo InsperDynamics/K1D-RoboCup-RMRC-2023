@@ -105,8 +105,7 @@ void setup() {
   nodehandle.getHardware()->setBaud(115200);
   nodehandle.initNode();
   temperature.data_length = MLX90640_PIXEL_ARRAY_SIZE;
-  temperature.data_offset = 0;
-  temperature.data = (float *)malloc(MLX90640_PIXEL_ARRAY_SIZE*sizeof(float));
+  temperature.data = (int8_t*)malloc(MLX90640_PIXEL_ARRAY_SIZE);
   nodehandle.advertise(pub_temperature);
   nodehandle.advertise(pub_gas);
   nodehandle.subscribe(sub_command);
