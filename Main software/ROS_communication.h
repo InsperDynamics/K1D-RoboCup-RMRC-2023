@@ -1,4 +1,5 @@
 #pragma once
+#define THERMAL_SIZE 768
 #include <iostream>
 #include <termios.h>
 #include <string>
@@ -21,7 +22,7 @@ using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
 using namespace cv;
-float current_temperature[64] = {0};
+float current_temperature[THERMAL_SIZE] = {0};
 int current_gas = 0;
 float cmdvel_linear_x = 0, cmdvel_angular_z = 0;
 std::vector<double> present_joint_angle;
@@ -38,7 +39,7 @@ ros::Subscriber sub_temperature, sub_gas, sub_cmdvel;
 
 void temperatureCallback(const std_msgs::Float32MultiArray& temperature)
 {
-	for (int i=0; i < 64; i++) {
+	for (int i=0; i < THERMAL_SIZE; i++) {
     	current_temperature[i] = temperature.data[i];
   	}
 }
