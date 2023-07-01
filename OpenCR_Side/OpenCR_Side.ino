@@ -8,7 +8,6 @@
 #include <std_msgs/Int32MultiArray.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float32MultiArray.h>
-#include <sensor_msgs/JointState.h>
 #include "Sensors.h"
 #include "Motors.h"
 #include "Servos.h"
@@ -38,11 +37,9 @@ void jointsCallback(const std_msgs::Int32MultiArray& joint_msg){
 ros::NodeHandle nodehandle;
 ros::Publisher pub_temperature("temperature", &temperature);
 ros::Publisher pub_gas("gas", &gas);
-//ros::Publisher pub_joint_states("joint_states", &joint_states);
 ros::Subscriber<std_msgs::String> sub_command("arduino_command", commandCallback);
 ros::Subscriber<std_msgs::Int16> sub_value_1("arduino_value_1", value1Callback);
 ros::Subscriber<std_msgs::Int16> sub_value_2("arduino_value_2", value2Callback);
-//ros::Subscriber<std_msgs::Int32MultiArray> sub_joints("goal_joints", jointsCallback);
 
 void ControlMotors(String command, int command_parameter_1, int command_parameter_2) {
   if (command == "MotorsMove"){
@@ -114,11 +111,9 @@ void setup() {
   temperature.data = (float *)malloc(sizeof(float)*AMG88xx_PIXEL_ARRAY_SIZE);
   nodehandle.advertise(pub_temperature);
   nodehandle.advertise(pub_gas);
-  //nodehandle.advertise(pub_joint_states);
   nodehandle.subscribe(sub_command);
   nodehandle.subscribe(sub_value_1);
   nodehandle.subscribe(sub_value_2);
-  //nodehandle.subscribe(sub_joints);
 }
 
 void loop() {
@@ -128,10 +123,8 @@ void loop() {
     temperature.data[i] = amg8833_pixels[i];
   }
   gas.data = CO2level;
-  //GetJointState();
   pub_temperature.publish(&temperature);
   pub_gas.publish(&gas);
-  //pub_joint_states.publish(&joint_states);
   nodehandle.spinOnce();
   delay(1);
   ControlMotors(current_command, current_value_1, current_value_2);
