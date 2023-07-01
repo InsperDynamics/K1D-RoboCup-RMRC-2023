@@ -4,7 +4,7 @@
 #include "ROS_communication.h"
 #include "Claw.h"
 #include "Gamepad_controller.h"
-#include "Thermal.h"
+#include "Thermal_gas.h"
 #include "QR_read.h"
 #include "Motion_detection.h"
 #include "Hazmat_detection.h"
@@ -100,6 +100,7 @@ void captureFrame()
 void checkSensorsFeed()
 {
 	ReadOpenCR();
+	UpdateGas(current_gas);
 	UpdateThermal(current_temperature);
 	captureFrame();
 	if (qr_detection)
@@ -115,6 +116,9 @@ void setup(int argc, char** argv)
 {
 	system("gnome-terminal -- play '|rec --buffer 512 -d'");
 	ConnectROS(argc, argv);
+	namedWindow("K1D");
+	namedWindow("CO2");
+	namedWindow("Thermal");
 	openCamera();
 	InitializeQR();
 	InitializeHazmat();
@@ -129,6 +133,7 @@ void loop()
 	checkUserInput();
 	checkSensorsFeed();
 	imshow("K1D", webcam_image);
+	imshow("CO2", gas_image);
 	imshow("Thermal", thermal_image);
 	waitKey(1);
 }

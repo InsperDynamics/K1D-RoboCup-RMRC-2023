@@ -22,6 +22,7 @@ using namespace std::this_thread;
 using namespace std::chrono;
 using namespace cv;
 float current_temperature[64] = {0};
+int current_gas = 0;
 float cmdvel_linear_x = 0, cmdvel_angular_z = 0;
 std::vector<double> present_joint_angle;
 std_msgs::String arduino_command;
@@ -33,7 +34,7 @@ std::vector<uchar> to_str_buf;
 std_msgs::String img_msg;
 std::string encoded;
 ros::Publisher pub_command, pub_value_1, pub_value_2, pub_webcam, pub_mattemp, pub_goal_joints;
-ros::Subscriber sub_temperature, sub_cmdvel, sub_autonomousmode, sub_dexteritymode, sub_qrdetection, sub_hazmatdetection, sub_motiondetection, joint_states_sub;
+ros::Subscriber sub_temperature, sub_gas, sub_cmdvel;
 
 void temperatureCallback(const std_msgs::Float32MultiArray& temperature)
 {
@@ -42,21 +43,15 @@ void temperatureCallback(const std_msgs::Float32MultiArray& temperature)
   	}
 }
 
+void gasCallback(const std_msgs::UInt16& gas)
+{
+	current_gas = gas.data;
+}
+
 void cmdvelCallback(const geometry_msgs::Twist& cmdvel)
 {
 	cmdvel_linear_x = cmdvel.linear.x;
 	cmdvel_angular_z = cmdvel.angular.z;
-}
-
-void jointStatesCallback(const sensor_msgs::JointState::ConstPtr &msg)
-{
-  std::vector<double> temp_angle;
-  temp_angle.resize(3);
-  for (int i = 0; i < 3; i++)
-  {
-	temp_angle.at(i) = (msg->position.at(i));
-  }
-  present_joint_angle = temp_angle;
 }
 
 
@@ -77,6 +72,7 @@ void ConnectROS(int argc, char** argv)
 	pub_mattemp = nodehandle.advertise<std_msgs::String>("thermalcam", 1);
   	pub_goal_joints = nodehandle.advertise<std_msgs::Int32MultiArray>("goal_joints", 1);
 	sub_temperature = nodehandle.subscribe("temperature", 1, &temperatureCallback);
+	sub_gas = nodehandle.subscribe("gas", 1, &gasCallback);
 	sub_cmdvel = nodehandle.subscribe("cmd_vel", 1, &cmdvelCallback);
 }
 
