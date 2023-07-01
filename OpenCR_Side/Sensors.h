@@ -8,17 +8,25 @@ int CO2level = 0;
 
 void SensorsInitialize() {
   MLX90640.begin();
+  GasDetector.begin();
   Wire.begin();
   Wire.setClock(500000);
   MLX90640.setMode(MLX90640_CHESS);
   MLX90640.setResolution(MLX90640_ADC_18BIT);
   MLX90640.setRefreshRate(MLX90640_16_HZ);
-	GasDetector.begin();
 }
 
 void ReadSensors() {
   if (GasDetector.checkDataReady() == true){
     CO2level = GasDetector.getCO2PPM();
   }
-	MLX90640.getFrame(MLX90640.frame);
+  if (MLX90640.getFrame(MLX90640.frame) != 0) {
+    for (int i = 0; i < MLX90640_PIXEL_ARRAY_SIZE; i++) {
+      MLX90640.frame[i] = 20;
+    }
+    MLX90640.begin();
+    GasDetector.begin();
+    Wire.begin();
+    Wire.setClock(500000);
+  }
 }
