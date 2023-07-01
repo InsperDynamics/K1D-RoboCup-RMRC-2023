@@ -150,12 +150,14 @@ void ServosInitialize()
       dxl.ping(id);
       dxl.jointMode(id);
       dxl.setPositionControlMode(id);
+      dxl.setTimeBasedProfile(id);
     }
 
     uint8_t id_flipper = flipper_id[i];
 
     dxl.ping(id_flipper);
     dxl.jointMode(id_flipper);
+    dxl.setTimeBasedProfile(id_flipper);
   }
   dxl.ping(gripper_id);
   dxl.jointMode(gripper_id);

@@ -11,11 +11,11 @@
 #include "Sensors.h"
 #include "Motors.h"
 #include "Servos.h"
-#include "IMU.h"
 
 String current_command = "";
 int current_value_1 = 0;
 int current_value_2 = 0;
+bool sensor_mode = false;
 std_msgs::UInt16 gas;
 std_msgs::Int8MultiArray temperature;
 
@@ -33,6 +33,9 @@ void value2Callback(const std_msgs::Int16& value2){
 void jointsCallback(const std_msgs::Int32MultiArray& joint_msg){
   ControlJointDynamixel(joint_msg.data);
 }
+void sensorCallback(const std_msgs::Bool& sensor_msg){
+  sensor_mode = sensor_msg.data;
+}
 
 ros::NodeHandle nodehandle;
 ros::Publisher pub_temperature("temperature", &temperature);
@@ -40,6 +43,7 @@ ros::Publisher pub_gas("gas", &gas);
 ros::Subscriber<std_msgs::String> sub_command("arduino_command", commandCallback);
 ros::Subscriber<std_msgs::Int16> sub_value_1("arduino_value_1", value1Callback);
 ros::Subscriber<std_msgs::Int16> sub_value_2("arduino_value_2", value2Callback);
+ros::Subscriber<std_msgs::Bool> sub_sensor("sensor_mode", sensorCallback);
 
 void ControlMotors(String command, int command_parameter_1, int command_parameter_2) {
   if (command == "MotorsMove"){
@@ -111,22 +115,25 @@ void setup() {
   nodehandle.subscribe(sub_command);
   nodehandle.subscribe(sub_value_1);
   nodehandle.subscribe(sub_value_2);
+  nodehandle.subscribe(sub_sensor);
 }
 
 void loop() {
-  ReadSensors();
-  temperature.data_length = MLX90640_PIXEL_ARRAY_SIZE;
-  for (int i=0; i < MLX90640_PIXEL_ARRAY_SIZE; i++) {
-    if isnan(MLX90640.frame[i]) {
-      temperature.data[i] = 0;
+  if (sensor_mode) {
+    ReadSensors();
+    temperature.data_length = MLX90640_PIXEL_ARRAY_SIZE;
+    for (int i=0; i < MLX90640_PIXEL_ARRAY_SIZE; i++) {
+      if isnan(MLX90640.frame[i]) {
+        temperature.data[i] = 0;
+      }
+      else {
+        temperature.data[i] = MLX90640.frame[i];
+      }
     }
-    else {
-      temperature.data[i] = MLX90640.frame[i];
-    }
+    gas.data = CO2level;
+    pub_temperature.publish(&temperature);
+    pub_gas.publish(&gas);
   }
-  gas.data = CO2level;
-  pub_temperature.publish(&temperature);
-  pub_gas.publish(&gas);
   nodehandle.spinOnce();
   delay(1);
   ControlMotors(current_command, current_value_1, current_value_2);
