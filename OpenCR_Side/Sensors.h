@@ -7,11 +7,12 @@ DFRobot_CCS811 GasDetector;
 int CO2level = 0;
 
 void SensorsInitialize() {
-	Wire.begin();
   MLX90640.begin();
+  Wire.begin();
+  Wire.setClock(500000);
   MLX90640.setMode(MLX90640_CHESS);
   MLX90640.setResolution(MLX90640_ADC_18BIT);
-  MLX90640.setRefreshRate(MLX90640_4_HZ);
+  MLX90640.setRefreshRate(MLX90640_16_HZ);
 	GasDetector.begin();
 }
 
