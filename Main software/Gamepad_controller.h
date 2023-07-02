@@ -4,6 +4,9 @@
 #include <SDL2/SDL.h>
 #define JOYSTICK_DEAD_ZONE 4000
 #define JOYSTICK_MAXIMUM_ZONE 33000
+#define DELTA 30
+#define FLIPPER_DELTA 100
+#define GRIPPER_DELTA 45
 using namespace std;
 static SDL_GameController* gGameController = NULL;
 static SDL_Event sdl_event;
@@ -73,12 +76,6 @@ void UpdateRawInput()
 		if (sdl_event.cbutton.type == SDL_CONTROLLERBUTTONDOWN)
 		{
 			isPressed = true;
-
-			if (sdl_event.cbutton.button != SDL_CONTROLLER_BUTTON_START && SDL_GameControllerGetButton(gGameController, SDL_CONTROLLER_BUTTON_START))
-			{  
-				SavePreset(sdl_event.cbutton.button);
-				break;
-			}
 
 			switch (sdl_event.cbutton.button)
 			{
@@ -227,7 +224,7 @@ void UpdateRawInput()
 					gamepad_value_1 = FLIPPER_DELTA;
 					while(SDL_PollEvent(&sdl_event)){}
 				}
-				lastAxis = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
+				lastAxis = SDL_CONTROLLER_AXIS_TRIGGERLEFT;
 				break;
 			}
         }
