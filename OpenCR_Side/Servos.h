@@ -67,6 +67,18 @@ void LowerBackFlipper(int delta)
   ControlFlipperDynamixel(flipper_position);  
 }
 
+void LowerFlipper(int idx, int delta) 
+{
+  flipper_position[idx] -= delta;
+  ControlFlipperDynamixel(flipper_position); 
+}
+
+void RaiseFlipper(int idx, int delta) 
+{
+  flipper_position[idx] += delta;
+  ControlFlipperDynamixel(flipper_position); 
+}
+
 void OpenGripper(int delta)
 {
   if (gripper_position >= 0) {

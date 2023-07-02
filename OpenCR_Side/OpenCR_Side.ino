@@ -64,6 +64,12 @@ void ControlMotors(String command, int command_parameter_1, int command_paramete
   else if (command == "LowerBackFlippers"){
     LowerBackFlipper(command_parameter_1);
   }
+  else if (command == "LowerIndividualFlipper"){
+    LowerFlipper(command_parameter_1, command_parameter_2);
+  }
+  else if (command == "RaiseIndividualFlipper"){
+    RaiseFlipper(command_parameter_1, command_parameter_2);
+  }
   else if (command == "ClawOpen"){
     OpenGripper(command_parameter_1);
   }
@@ -87,18 +93,6 @@ void ControlMotors(String command, int command_parameter_1, int command_paramete
   }
   else if (command == "Third-"){
     ThirdMinus(command_parameter_1);
-  }
-  else if (command == "SavePreset"){
-    savePreset(command_parameter_1);
-  }
-  else if (command == "GotoPreset"){
-    gotoPreset(command_parameter_1);
-  }
-  else if (command == "autoflip"){
-    ControlFlipperDynamixel(flipper_auto);
-  }
-  else if (command == "defflip"){
-    ControlFlipperDynamixel(flipper_position);
   }
 }
 
