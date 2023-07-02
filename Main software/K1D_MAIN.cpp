@@ -62,6 +62,10 @@ void checkUserInput()
 		RaiseBackFlippers();
 	else if (gamepad_command == "LowerBackFlippers")
 		LowerBackFlippers();
+	else if (gamepad_command == "LowerIndividualFlipper")
+		LowerFlipper();
+	else if (gamepad_command == "RaiseIndividualFlipper")
+		RaiseFlipper();
 	else if (gamepad_command == "First+" && dexterity_mode)
 		FirstPlus();
 	else if (gamepad_command == "First-" && dexterity_mode)

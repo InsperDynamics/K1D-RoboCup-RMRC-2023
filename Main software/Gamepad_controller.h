@@ -17,6 +17,7 @@ int gamepad_value_2 = 0;
 bool isPressed = false;
 SDL_GameControllerAxis lastAxis = SDL_CONTROLLER_AXIS_INVALID;
 int macro = 0;
+int macro_flipper = 0;
 int autonomous_mode = 0;
 int dexterity_mode = 0;
 int qr_detection = 0;
@@ -40,6 +41,10 @@ void UpdateRawInput()
 			isPressed = false;
 			if (sdl_event.cbutton.button == SDL_CONTROLLER_BUTTON_BACK) {
 				macro = !macro;
+				while(SDL_PollEvent(&sdl_event)){}
+			}
+			else if (sdl_event.cbutton.button == SDL_CONTROLLER_BUTTON_START) {
+				macro_flipper = !macro_flipper;
 				while(SDL_PollEvent(&sdl_event)){}
 			}
 			else if (sdl_event.cbutton.button == SDL_CONTROLLER_BUTTON_X  && macro) {
@@ -78,12 +83,44 @@ void UpdateRawInput()
 			switch (sdl_event.cbutton.button)
 			{
 				case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-					gamepad_command = "RaiseFrontFlippers";
-					gamepad_value_1 = FLIPPER_DELTA;
+					if (macro_flipper) {
+						gamepad_command = "LowerIndividualFlipper";
+					}
+					else {
+						gamepad_command = "RaiseIndividualFlipper";
+					}
+					gamepad_value_1 = 1;
+					gamepad_value_2 = FLIPPER_DELTA;
+					if (SDL_GameControllerGetButton(gGameController, SDL_CONTROLLER_BUTTON_LEFTSHOULDER)) {
+						if (macro_flipper) {
+							gamepad_command = "LowerFrontFlippers";
+						}
+						else {
+							gamepad_command = "RaiseFrontFlippers";
+						}
+						gamepad_value_1 = FLIPPER_DELTA;
+						while(SDL_PollEvent(&sdl_event)){}
+					}
 					break;
 				case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-				    gamepad_command = "RaiseBackFlippers";
-					gamepad_value_1 = FLIPPER_DELTA;
+				    if (macro_flipper) {
+						gamepad_command = "LowerIndividualFlipper";
+					}
+					else {
+						gamepad_command = "RaiseIndividualFlipper";
+					}
+					gamepad_value_1 = 0;
+					gamepad_value_2 = FLIPPER_DELTA;
+					if (SDL_GameControllerGetButton(gGameController, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER)) {
+						if (macro_flipper) {
+							gamepad_command = "LowerFrontFlippers";
+						}
+						else {
+							gamepad_command = "RaiseFrontFlippers";
+						}
+						gamepad_value_1 = FLIPPER_DELTA;
+						while(SDL_PollEvent(&sdl_event)){}
+					}
                     break;
 				case SDL_CONTROLLER_BUTTON_Y:
 					if (!macro) {
@@ -151,12 +188,46 @@ void UpdateRawInput()
 					yAnalog_left = 0;
 				break;
 			case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
-				gamepad_command = "LowerFrontFlippers";
+				if (macro_flipper) {
+					gamepad_command = "LowerIndividualFlipper";
+				}
+				else {
+					gamepad_command = "RaiseIndividualFlipper";
+				}
+				gamepad_value_1 = 3;
+				gamepad_value_2 = FLIPPER_DELTA;
+				if (SDL_GameControllerGetAxis(gGameController, SDL_CONTROLLER_AXIS_TRIGGERLEFT) >= JOYSTICK_DEAD_ZONE) {
+					if (macro_flipper) {
+						gamepad_command = "LowerBackFlippers";
+					}
+					else {
+						gamepad_command = "RaiseBackFlippers";
+					}
+					gamepad_value_1 = FLIPPER_DELTA;
+					while(SDL_PollEvent(&sdl_event)){}
+				}
 				lastAxis = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
 				break;
 			case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
-				gamepad_command = "LowerBackFlippers";
-				lastAxis = SDL_CONTROLLER_AXIS_TRIGGERLEFT;
+				if (macro_flipper) {
+					gamepad_command = "LowerIndividualFlipper";
+				}
+				else {
+					gamepad_command = "RaiseIndividualFlipper";
+				}
+				gamepad_value_1 = 2;
+				gamepad_value_2 = FLIPPER_DELTA;
+				if (SDL_GameControllerGetAxis(gGameController, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) >= JOYSTICK_DEAD_ZONE) {
+					if (macro_flipper) {
+						gamepad_command = "LowerBackFlippers";
+					}
+					else {
+						gamepad_command = "RaiseBackFlippers";
+					}
+					gamepad_value_1 = FLIPPER_DELTA;
+					while(SDL_PollEvent(&sdl_event)){}
+				}
+				lastAxis = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
 				break;
 			}
         }

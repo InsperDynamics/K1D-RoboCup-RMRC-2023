@@ -67,6 +67,16 @@ void LowerBackFlippers()
   PublishOpenCR("LowerBackFlippers", FLIPPER_DELTA, 0);
 }
 
+void LowerFlipper()
+{
+  PublishOpenCR("LowerIndividualFlipper", gamepad_value_1, gamepad_value_2);
+}
+
+void RaiseFlipper()
+{
+  PublishOpenCR("RaiseIndividualFlipper", gamepad_value_1, gamepad_value_2);
+}
+
 void SavePreset(uint8_t btn) 
 {
   PublishOpenCR("SavePreset", (int) btn, 0);
