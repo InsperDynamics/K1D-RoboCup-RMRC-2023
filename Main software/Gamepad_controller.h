@@ -27,8 +27,6 @@ int qr_detection = 0;
 int hazmat_detection = 0;
 int motion_detection = 0;
 
-int dir = 1;
-
 void InitializeGamepad()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
@@ -60,10 +58,6 @@ void UpdateRawInput()
 			}
 			else if (sdl_event.cbutton.button == SDL_CONTROLLER_BUTTON_B && macro) {
 				hazmat_detection = !hazmat_detection;
-				while(SDL_PollEvent(&sdl_event)){}
-			}
-			else if (sdl_event.cbutton.button == SDL_CONTROLLER_BUTTON_Y && macro) {
-				temperature_gas_mode = !temperature_gas_mode;
 				while(SDL_PollEvent(&sdl_event)){}
 			}
 		} 
@@ -162,7 +156,7 @@ void UpdateRawInput()
 				case SDL_CONTROLLER_BUTTON_BACK:
 					break;
 				case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
-					dir *= -1;
+					gamepad_command = "ClawRetract";
                 default:
                     break;
 			}
@@ -272,8 +266,6 @@ void UpdateGamepadInput()
 				gamepad_value_1 = -int(pwm*(1 - (4*(theta-(3*M_PI/2))/M_PI)));
 				gamepad_value_2 = -int(pwm);
 			}
-			gamepad_value_1 *= dir;
-			gamepad_value_2 *= dir;
 		}
 	}
 }

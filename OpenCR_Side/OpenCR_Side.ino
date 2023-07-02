@@ -94,6 +94,9 @@ void ControlMotors(String command, int command_parameter_1, int command_paramete
   else if (command == "Third-"){
     ThirdMinus(command_parameter_1);
   }
+  else if (command == "ClawRetract"){
+    ClawRetract();
+  }
 }
 
 void setup() {

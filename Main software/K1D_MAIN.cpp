@@ -66,6 +66,8 @@ void checkUserInput()
 		LowerFlipper();
 	else if (gamepad_command == "RaiseIndividualFlipper")
 		RaiseFlipper();
+	else if (gamepad_command == "ClawRetract")
+		ClawRetract();
 	else if (gamepad_command == "First+" && dexterity_mode)
 		FirstPlus();
 	else if (gamepad_command == "First-" && dexterity_mode)

@@ -74,17 +74,7 @@ void RaiseFlipper()
   PublishOpenCR("RaiseIndividualFlipper", gamepad_value_1, gamepad_value_2);
 }
 
-void SavePreset(uint8_t btn) 
-{
-  PublishOpenCR("SavePreset", (int) btn, 0);
-}
-
-void GotoPreset(uint8_t btn)
-{
-	PublishOpenCR("GotoPreset", (int) btn, 0);
-}
-
 void ClawRetract()
 {
-  
+  PublishOpenCR("ClawRetract", gamepad_value_1, gamepad_value_2);
 }
