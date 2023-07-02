@@ -147,6 +147,8 @@ void ClawRetract()
 {
   ControlFlipperDynamixel(flipper_position_default);
   ControlJointDynamixel(joint_position_default);
+  memcpy(flipper_position, flipper_position_default, sizeof(flipper_position));
+  memcpy(joint_position, joint_position_default, sizeof(joint_position));
 }
 
 void ServosInitialize()
