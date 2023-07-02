@@ -28,12 +28,15 @@ def list_ports():
         dev_port +=1
     return available_ports,working_ports
 
-#list_ports()
+list_ports()
 
-cap1 = cv2.VideoCapture(0)
+indexA = 0
+indexB = 2
+
+cap1 = cv2.VideoCapture(indexA)
 cap1.set(cv2.CAP_PROP_FPS, 30)
 print("Opened camera A: ", cap1.isOpened())
-cap2 = cv2.VideoCapture(1)
+cap2 = cv2.VideoCapture(indexB)
 cap2.set(cv2.CAP_PROP_FPS, 30)
 print("Opened camera B: ", cap2.isOpened())
 
@@ -45,7 +48,7 @@ while True:
     else:
         try:
             cap1.release()
-            cap1 = cv2.VideoCapture(0)
+            cap1 = cv2.VideoCapture(indexA)
             cap1.set(cv2.CAP_PROP_FPS, 30)
         except:
             print("Camera A disconnected")
@@ -54,7 +57,7 @@ while True:
     else:
         try:
             cap2.release()
-            cap2 = cv2.VideoCapture(1)
+            cap2 = cv2.VideoCapture(indexB)
             cap2.set(cv2.CAP_PROP_FPS, 30)
         except:
             print("Camera B disconnected")
