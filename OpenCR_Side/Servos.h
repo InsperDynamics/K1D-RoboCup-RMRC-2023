@@ -43,37 +43,53 @@ void ControlFlipperDynamixel(int32_t *flipper_values)
 
 void RaiseFrontFlipper(int delta)
 {
-  flipper_position[0] += delta;
-  flipper_position[1] -= delta;
+  if (flipper_position[0] < 2048) {
+    flipper_position[0] += delta; 
+  }
+  if (flipper_position[1] > 2048) {
+    flipper_position[1] -= delta; 
+  }
   ControlFlipperDynamixel(flipper_position);  
 }
 
 void RaiseBackFlipper(int delta)
 {
-  flipper_position[2] += delta;
-  flipper_position[3] -= delta;
+  if (flipper_position[2] < 2048) {
+    flipper_position[2] += delta; 
+  }
+  if (flipper_position[3] > 2048) {
+    flipper_position[3] -= delta; 
+  }
   ControlFlipperDynamixel(flipper_position);  
 }
 
 void LowerFrontFlipper(int delta)
 {
-  flipper_position[0] -= delta;
-  flipper_position[1] += delta;
+  if (flipper_position[0] > 0) {
+    flipper_position[0] -= delta; 
+  }
+  if (flipper_position[1] < 4095) {
+    flipper_position[1] += delta; 
+  }
   ControlFlipperDynamixel(flipper_position);  
 }
 
 void LowerBackFlipper(int delta)
 {
-  flipper_position[2] -= delta;
-  flipper_position[3] += delta;
+  if (flipper_position[2] > 0) {
+    flipper_position[2] -= delta; 
+  }
+  if (flipper_position[3] < 4095) {
+    flipper_position[3] += delta; 
+  }
   ControlFlipperDynamixel(flipper_position);  
 }
 
 void LowerFlipper(int idx, int delta) 
 {
-  if (idx == 0 || idx == 2) {
+  if ((idx == 0 || idx == 2) && flipper_position[idx] > 0 ) {
     flipper_position[idx] -= delta;
-  } else {
+  } else if ((idx == 1 || idx == 3) && flipper_position[idx] < 4095) {
     flipper_position[idx] += delta;
   }
   ControlFlipperDynamixel(flipper_position); 
@@ -81,9 +97,9 @@ void LowerFlipper(int idx, int delta)
 
 void RaiseFlipper(int idx, int delta) 
 {
-  if (idx == 0 || idx == 2) {
+  if ((idx == 0 || idx == 2) && flipper_position[idx] < 2048 ) {
     flipper_position[idx] += delta;
-  } else {
+  } else if ((idx == 1 || idx == 3) && flipper_position[idx] > 2048 ) {
     flipper_position[idx] -= delta;
   }
   ControlFlipperDynamixel(flipper_position); 
