@@ -139,25 +139,19 @@ void ServosInitialize()
 {
   const char *log;
   dxl.init("",DXL_BAUD);
-  dxl.addSyncWriteHandler(claw_id[0], "Goal_Position", &log);
-  dxl.addSyncReadHandler(128, 8);
-  dxl.addSyncReadHandler(132, 4);
   for (int i = 0; i < 4; i++){
 
     if (i < 3){
       uint8_t id = joint_id[i];
-      dxl.setVelocityBasedProfile(id);
       dxl.ping(id);
       dxl.jointMode(id);
       dxl.setPositionControlMode(id);
-      dxl.setTimeBasedProfile(id);
     }
 
     uint8_t id_flipper = flipper_id[i];
 
     dxl.ping(id_flipper);
     dxl.jointMode(id_flipper);
-    dxl.setTimeBasedProfile(id_flipper);
   }
   dxl.ping(gripper_id);
   dxl.jointMode(gripper_id);
