@@ -2,8 +2,8 @@
 #include <string>
 #include <opencv4/opencv2/opencv.hpp>
 #include "ROS_communication.h"
-#include "Claw.h"
 #include "Gamepad_controller.h"
+#include "Claw.h"
 #include "Thermal_gas.h"
 #include "QR_read.h"
 #include "Motion_detection.h"
@@ -62,6 +62,12 @@ void checkUserInput()
 		RaiseBackFlippers();
 	else if (gamepad_command == "LowerBackFlippers")
 		LowerBackFlippers();
+	else if (gamepad_command == "LowerIndividualFlipper")
+		LowerFlipper();
+	else if (gamepad_command == "RaiseIndividualFlipper")
+		RaiseFlipper();
+	else if (gamepad_command == "ClawRetract")
+		ClawRetract();
 	else if (gamepad_command == "First+" && dexterity_mode)
 		FirstPlus();
 	else if (gamepad_command == "First-" && dexterity_mode)

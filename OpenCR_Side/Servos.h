@@ -10,9 +10,11 @@ uint8_t flipper_id[4] = {1,2,3,4};
 uint8_t *pid = &gripper_id;
 
 int32_t flipper_position[4] = {2048,2048,2048,2048};
+int32_t flipper_position_default[4] = {2048,2048,2048,2048};
 int32_t flipper_auto[4] = {1500,2500,1500,2500};
 
 int32_t joint_position[3] = {2600, 1125, 1850};
+int32_t joint_position_default[3] = {2600, 1125, 1850};
 int32_t joint_velocity[3] = {};
 int32_t gripper_position = 0;
 
@@ -65,6 +67,26 @@ void LowerBackFlipper(int delta)
   flipper_position[2] -= delta;
   flipper_position[3] += delta;
   ControlFlipperDynamixel(flipper_position);  
+}
+
+void LowerFlipper(int idx, int delta) 
+{
+  if (idx == 0 || idx == 2) {
+    flipper_position[idx] -= delta;
+  } else {
+    flipper_position[idx] += delta;
+  }
+  ControlFlipperDynamixel(flipper_position); 
+}
+
+void RaiseFlipper(int idx, int delta) 
+{
+  if (idx == 0 || idx == 2) {
+    flipper_position[idx] += delta;
+  } else {
+    flipper_position[idx] -= delta;
+  }
+  ControlFlipperDynamixel(flipper_position); 
 }
 
 void OpenGripper(int delta)
@@ -121,18 +143,12 @@ void ThirdMinus(int delta)
   ControlJointDynamixel(joint_position); 
 }
 
-void savePreset(int btn) 
+void ClawRetract()
 {
-  int32_t v[3];
-  for (int i = 0; i < 3; i++) {
-    v[i] = joint_position[i];
-  }
-  preset[btn] = v;
-}
-
-void gotoPreset(int btn) 
-{
-  ControlJointDynamixel(preset[btn]);
+  ControlFlipperDynamixel(flipper_position_default);
+  ControlJointDynamixel(joint_position_default);
+  memcpy(flipper_position, flipper_position_default, sizeof(flipper_position));
+  memcpy(joint_position, joint_position_default, sizeof(joint_position));
 }
 
 void ServosInitialize()

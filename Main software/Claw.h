@@ -3,9 +3,6 @@
 #include <string>
 #include "ROS_communication.h"
 using namespace std;
-#define DELTA 30
-#define FLIPPER_DELTA 100
-#define GRIPPER_DELTA 45
 
 void FirstPlus()
 {
@@ -67,17 +64,17 @@ void LowerBackFlippers()
   PublishOpenCR("LowerBackFlippers", FLIPPER_DELTA, 0);
 }
 
-void SavePreset(uint8_t btn) 
+void LowerFlipper()
 {
-  PublishOpenCR("SavePreset", (int) btn, 0);
+  PublishOpenCR("LowerIndividualFlipper", gamepad_value_1, gamepad_value_2);
 }
 
-void GotoPreset(uint8_t btn)
+void RaiseFlipper()
 {
-	PublishOpenCR("GotoPreset", (int) btn, 0);
+  PublishOpenCR("RaiseIndividualFlipper", gamepad_value_1, gamepad_value_2);
 }
 
 void ClawRetract()
 {
-  
+  PublishOpenCR("ClawRetract", gamepad_value_1, gamepad_value_2);
 }
