@@ -10,13 +10,9 @@ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 
 cd ~
-sudo apt-get install ros-noetic-realsense2-camera
 sudo apt-get install ros-noetic-hls-lfcd-lds-driver
+sudo apt-get install ros-noetic-hector-slam
 sudo chmod a+rw /dev/ttyUSB0
 cd ~/catkin_ws/src
-git clone -b noetic-devel https://github.com/ROBOTIS-GIT/open_manipulator.git
-git clone -b noetic-devel https://github.com/ROBOTIS-GIT/open_manipulator_msgs.git
-git clone -b noetic-devel https://github.com/ROBOTIS-GIT/open_manipulator_simulations.git
-git clone https://github.com/ROBOTIS-GIT/open_manipulator_dependencies.git
 cd ..
 catkin_make

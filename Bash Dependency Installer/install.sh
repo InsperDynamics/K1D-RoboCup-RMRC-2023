@@ -22,17 +22,14 @@ sudo rosdep init
 rosdep update
 cd ~
 
-git clone https://github.com/libsdl-org/SDL
+### donwload SDL 2.26.3 Release from github
+### https://github.com/libsdl-org/SDL/releases/tag/release-2.26.3
+### extract the zip file and enter the folder
 mkdir build
 cd build
 ../configure
 make
 sudo make install
-cd ~
-
-git clone https://github.com/JetsonHacksNano/installLibrealsense
-cd installLibrealsense
-./installLibrealsense.sh
 cd ~
 
 sudo apt install cmake pkg-config
@@ -63,15 +60,27 @@ sudo udevadm trigger
 # Uncomment if pc is 64 bits
 #sudo apt-get install libncurses5-dev:i386
 
-sudo ln -s /usr/include/opencv4/opencv2 /usr/include/opencv
+cd ~
+# Download and unpack sources
+wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip
+wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.x.zip
+unzip opencv.zip
+unzip opencv_contrib.zip
+# Create build directory and switch into it
+mkdir -p build && cd build
+# Configure
+cmake -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib-4.x/modules ../opencv-4.x
+# Build
+cmake --build .
+# Install
+sudo make install
 
 sudo apt-get install ros-noetic-ros-controllers ros-noetic-gazebo* ros-noetic-moveit* ros-noetic-industrial-core
 sudo apt-get install ros-noetic-dynamixel-sdk ros-noetic-dynamixel-workbench*
-sudo apt-get install ros-noetic-robotis-manipulator
 
 sudo reboot
 
-# After running this script, you can setup ros workspace, upload the Arduino code and recompile the machine vision interface.
+# After running this script, you can setup ros workspace, upload the OpenCR code and recompile the machine vision interface.
 
 # copy and paste the following link to the Additional Boards Manager URLs textbox in order to add OpenCR board to Arduino IDE:
 #https://raw.githubusercontent.com/ROBOTIS-GIT/OpenCR/master/arduino/opencr_release/package_opencr_index.json
