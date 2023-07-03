@@ -60,6 +60,10 @@ void UpdateRawInput()
 				hazmat_detection = !hazmat_detection;
 				while(SDL_PollEvent(&sdl_event)){}
 			}
+			else if (sdl_event.cbutton.button == SDL_CONTROLLER_BUTTON_Y && macro) {
+				temperature_gas_mode = !temperature_gas_mode;
+				while(SDL_PollEvent(&sdl_event)){}
+			}
 		} 
 
 		if (SDL_GameControllerGetAxis(gGameController, lastAxis) < JOYSTICK_DEAD_ZONE)
