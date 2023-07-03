@@ -14,14 +14,16 @@ int resolution_horizontal = 640;
 int resolution_vertical = 480;
 VideoCapture captureA;
 VideoCapture captureB;
+int captureA_index = 4;
+int captureB_index = 6;
 Mat frameA = Mat::zeros(resolution_horizontal, resolution_vertical, CV_8UC3);
 Mat frameB = Mat::zeros(resolution_horizontal, resolution_vertical, CV_8UC3);
 Mat webcam_image = Mat::zeros(2 * resolution_horizontal, resolution_vertical, CV_8UC3);
 
 void openCamera()
 {
-	captureA.open(4);
-	captureB.open(6);
+	captureA.open(captureA_index);
+	captureB.open(captureB_index);
 	captureA.set(CAP_PROP_FPS, 30);
 	captureB.set(CAP_PROP_FPS, 30);
 }
@@ -96,8 +98,40 @@ void checkUserInput()
 
 void captureFrame()
 {
-	captureA >> frameA;
-	captureB >> frameB;
+	Mat frameA_local;
+	Mat frameB_local;
+	bool retA = captureA.read(frameA_local);
+	bool retB = captureB.read(frameB_local);
+	if (retA) {
+		frameA = frameA_local;
+	}
+	else {
+		try
+		{
+			captureA.release();
+			captureA.open(captureA_index);
+			captureA.set(CAP_PROP_FPS, 30);
+		}
+		catch(const std::exception& e)
+		{
+			std::cerr << e.what() << '\n';
+		}
+	}
+	if (retB) {
+		frameB = frameB_local;
+	}
+	else {
+		try
+		{
+			captureB.release();
+			captureB.open(captureB_index);
+			captureB.set(CAP_PROP_FPS, 30);
+		}
+		catch(const std::exception& e)
+		{
+			std::cerr << e.what() << '\n';
+		}
+	}
 	resize(frameA, frameA, Size(resolution_horizontal, resolution_vertical), INTER_NEAREST);
 	resize(frameB, frameB, Size(resolution_horizontal, resolution_vertical), INTER_NEAREST);
 	hconcat(frameA, frameB, webcam_image);
