@@ -10,8 +10,8 @@
 #include "Hazmat_detection.h"
 using namespace std;
 using namespace cv;
-int resolution_horizontal = 640;
-int resolution_vertical = 480;
+int resolution_horizontal = 800;
+int resolution_vertical = 600;
 VideoCapture captureA;
 VideoCapture captureB;
 int captureA_index = 4;
@@ -132,8 +132,10 @@ void captureFrame()
 			std::cerr << e.what() << '\n';
 		}
 	}
-	resize(frameA, frameA, Size(resolution_horizontal, resolution_vertical), INTER_NEAREST);
-	resize(frameB, frameB, Size(resolution_horizontal, resolution_vertical), INTER_NEAREST);
+	if (frameA.rows > frameB.rows)
+		resize(frameB, frameB, Size(frameA.cols, frameA.rows), INTER_NEAREST);
+	else if (frameA.rows < frameB.rows)
+		resize(frameA, frameA, Size(frameB.cols, frameB.rows), INTER_NEAREST);
 	hconcat(frameA, frameB, webcam_image);
 }
 
@@ -149,6 +151,7 @@ void checkSensorsFeed()
 		webcam_image = DetectHazmat(webcam_image);
 	if (motion_detection)
 		webcam_image = DetectMotionAbsdiff(webcam_image);
+	resize(webcam_image, webcam_image, Size(2*resolution_horizontal, resolution_vertical), INTER_NEAREST);
 }
 
 
