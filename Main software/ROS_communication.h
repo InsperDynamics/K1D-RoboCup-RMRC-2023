@@ -1,5 +1,5 @@
 #pragma once
-#define THERMAL_SIZE 768
+#define THERMAL_SIZE 64
 #include <iostream>
 #include <termios.h>
 #include <string>
@@ -14,14 +14,14 @@
 #include <std_msgs/String.h>
 #include <std_msgs/UInt16.h>
 #include <std_msgs/Int16.h>
-#include <std_msgs/Int8MultiArray.h>
+#include <std_msgs/Float32MultiArray.h>
 #include <std_msgs/Int32MultiArray.h>
 #include <geometry_msgs/Twist.h>
 using namespace std;
 using namespace std::this_thread;
 using namespace std::chrono;
 using namespace cv;
-int current_temperature[THERMAL_SIZE] = {0};
+float current_temperature[THERMAL_SIZE] = {0};
 int current_gas = 0;
 float cmdvel_linear_x = 0, cmdvel_angular_z = 0;
 std::vector<double> present_joint_angle;
@@ -38,7 +38,7 @@ std::string encoded;
 ros::Publisher pub_command, pub_value_1, pub_value_2, pub_webcam, pub_mattemp, pub_sensor_mode;
 ros::Subscriber sub_temperature, sub_gas, sub_cmdvel;
 
-void temperatureCallback(const std_msgs::Int8MultiArray& temperature)
+void temperatureCallback(const std_msgs::Float32MultiArray& temperature)
 {
 	for (int i=0; i < THERMAL_SIZE; i++) {
     	current_temperature[i] = temperature.data[i];

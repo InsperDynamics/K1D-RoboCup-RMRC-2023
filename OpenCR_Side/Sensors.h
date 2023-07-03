@@ -1,32 +1,28 @@
 #include <Wire.h>
-#include <RAK12052-MLX90640.h>
+#include <Melopero_AMG8833.h>
 #include <DFRobot_CCS811.h>
-#define MLX90640_PIXEL_ARRAY_SIZE 768
-RAK_MLX90640 MLX90640;
+#define AMG88xx_PIXEL_ARRAY_SIZE 64
+Melopero_AMG8833 ThermalImager;
 DFRobot_CCS811 GasDetector;
+float amg8833_pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 int CO2level = 0;
 
 void SensorsInitialize() {
-  MLX90640.begin();
   GasDetector.begin();
   Wire.begin();
-  Wire.setClock(500000);
-  MLX90640.setMode(MLX90640_CHESS);
-  MLX90640.setResolution(MLX90640_ADC_18BIT);
-  MLX90640.setRefreshRate(MLX90640_16_HZ);
+  ThermalImager.initI2C();
+  ThermalImager.resetFlagsAndSettings();
+  ThermalImager.setFPSMode(FPS_MODE::FPS_10);
 }
 
 void ReadSensors() {
   if (GasDetector.checkDataReady() == true){
     CO2level = GasDetector.getCO2PPM();
   }
-  if (MLX90640.getFrame(MLX90640.frame) != 0) {
-    for (int i = 0; i < MLX90640_PIXEL_ARRAY_SIZE; i++) {
-      MLX90640.frame[i] = 20;
+  ThermalImager.updatePixelMatrix();
+  for (int x = 0; x < 8; x++){
+    for (int y = 0; y < 8; y++){
+      amg8833_pixels[(8*x) + y] = ThermalImager.pixelMatrix[y][x];
     }
-    MLX90640.begin();
-    GasDetector.begin();
-    Wire.begin();
-    Wire.setClock(500000);
   }
 }

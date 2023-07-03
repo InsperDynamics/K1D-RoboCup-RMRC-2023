@@ -7,7 +7,7 @@ using namespace cv;
 #define MAX_GAS_VALUE 3000
 #define MAX_TEMP_VALUE 40
 #define MIN_TEMP_VALUE 15
-const int thermal_width = 32, thermal_height = 24, upscale_factor = 10;
+const int thermal_width = 8, thermal_height = 8, upscale_factor = 20;
 const int thermal_width_upscaled = thermal_width * upscale_factor;
 const int thermal_height_upscaled = thermal_height * upscale_factor;
 const int gas_width = 160, gas_height = 64;

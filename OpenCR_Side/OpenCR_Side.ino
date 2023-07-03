@@ -7,7 +7,7 @@
 #include <std_msgs/Int32.h>
 #include <std_msgs/Int32MultiArray.h>
 #include <std_msgs/Bool.h>
-#include <std_msgs/Int8MultiArray.h>
+#include <std_msgs/Float32MultiArray.h>
 #include "Sensors.h"
 #include "Motors.h"
 #include "Servos.h"
@@ -17,7 +17,7 @@ int current_value_1 = 0;
 int current_value_2 = 0;
 bool sensor_mode = false;
 std_msgs::UInt16 gas;
-std_msgs::Int8MultiArray temperature;
+std_msgs::Float32MultiArray temperature;
 
 
 
@@ -105,8 +105,11 @@ void setup() {
   ServosInitialize();
   nodehandle.getHardware()->setBaud(115200);
   nodehandle.initNode();
-  temperature.data_length = MLX90640_PIXEL_ARRAY_SIZE;
-  temperature.data = (int8_t*)malloc(MLX90640_PIXEL_ARRAY_SIZE);
+  temperature.layout.dim[0].label = "temperature";
+  temperature.layout.dim[0].size = AMG88xx_PIXEL_ARRAY_SIZE;
+  temperature.layout.dim[0].stride = AMG88xx_PIXEL_ARRAY_SIZE;
+  temperature.layout.data_offset = 0;
+  temperature.data = (float *)malloc(sizeof(float)*AMG88xx_PIXEL_ARRAY_SIZE);
   nodehandle.advertise(pub_temperature);
   nodehandle.advertise(pub_gas);
   nodehandle.subscribe(sub_command);
@@ -118,14 +121,9 @@ void setup() {
 void loop() {
   if (sensor_mode) {
     ReadSensors();
-    temperature.data_length = MLX90640_PIXEL_ARRAY_SIZE;
-    for (int i=0; i < MLX90640_PIXEL_ARRAY_SIZE; i++) {
-      if isnan(MLX90640.frame[i]) {
-        temperature.data[i] = 0;
-      }
-      else {
-        temperature.data[i] = MLX90640.frame[i];
-      }
+    temperature.data_length = AMG88xx_PIXEL_ARRAY_SIZE;
+    for (int i=0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++) {
+      temperature.data[i] = amg8833_pixels[i];
     }
     gas.data = CO2level;
     pub_temperature.publish(&temperature);
