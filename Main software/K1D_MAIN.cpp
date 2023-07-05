@@ -14,14 +14,39 @@ int resolution_horizontal = 800;
 int resolution_vertical = 600;
 VideoCapture captureA;
 VideoCapture captureB;
-int captureA_index = 4;
-int captureB_index = 6;
+VideoCapture camera;
+Mat frameCam = Mat::zeros(resolution_horizontal, resolution_vertical, CV_8UC3);
+int captureA_index = 0;
+int captureB_index = 1;
 Mat frameA = Mat::zeros(resolution_horizontal, resolution_vertical, CV_8UC3);
 Mat frameB = Mat::zeros(resolution_horizontal, resolution_vertical, CV_8UC3);
 Mat webcam_image = Mat::zeros(2 * resolution_horizontal, resolution_vertical, CV_8UC3);
 
 void openCamera()
 {
+    int is_working = 1;
+    int dev_port = 0;
+    while (is_working) {
+        camera = VideoCapture(dev_port);
+        if (!camera.isOpened()) {
+            is_working = 0;
+		}
+        else {
+            bool is_reading =  camera.read(frameCam);
+            double w = camera.get(3);
+            double h = camera.get(4);
+            if (is_reading) {
+				if (w == 1920 && h == 1080) {
+					captureA_index = dev_port;
+				}
+				else if (w == 2304 && h == 1536) {
+					captureB_index = dev_port;
+				}
+			}
+		}
+        dev_port += 2;
+	}
+	camera.release();
 	captureA.open(captureA_index);
 	captureB.open(captureB_index);
 	captureA.set(CAP_PROP_FPS, 30);
