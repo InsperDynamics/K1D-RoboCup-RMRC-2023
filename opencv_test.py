@@ -25,13 +25,41 @@ def list_ports():
             else:
                 print("Port %s for camera ( %s x %s) is present but does not reads." %(dev_port,h,w))
                 available_ports.append(dev_port)
-        dev_port +=1
+        dev_port +=2
     return available_ports,working_ports
 
-list_ports()
+def auto_connect():
+    is_working = True
+    dev_port = 0
+    working_ports = []
+    widths = []
+    heights = []
+    indexA = 0
+    indexB = 0
+    while is_working:
+        camera = cv2.VideoCapture(dev_port)
+        if not camera.isOpened():
+            is_working = False
+            print("Port %s is not working." %dev_port)
+        else:
+            is_reading, img = camera.read()
+            w = camera.get(3)
+            h = camera.get(4)
+            if is_reading:
+                print("Port %s is working and reads images (%s x %s)" %(dev_port,h,w))
+                working_ports.append(dev_port)
+                widths.append(int(w))
+                heights.append(int(h))
+        dev_port +=2
+    for i in range(len(widths)):
+        if widths[i] == 1920 and heights[i] == 1080:
+            indexA = working_ports[i]
+        elif widths[i] == 2304 and heights[i] == 1536:
+            indexB = working_ports[i]
+    return indexA, indexB            
 
-indexA = 0
-indexB = 2
+#list_ports()
+indexA, indexB = auto_connect()
 
 cap1 = cv2.VideoCapture(indexA)
 cap1.set(cv2.CAP_PROP_FPS, 30)

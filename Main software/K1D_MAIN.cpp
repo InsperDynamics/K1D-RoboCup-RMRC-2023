@@ -182,6 +182,7 @@ void checkSensorsFeed()
 
 void setup(int argc, char** argv) 
 {
+	system("sudo echo 'k1d'");
 	system("gnome-terminal -- play '|rec --buffer 512 -d'");
 	ConnectROS(argc, argv);
 	namedWindow("K1D");
